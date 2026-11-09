@@ -32,6 +32,7 @@
   color-scheme:light;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:auto}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--round);font-size:var(--step-0);line-height:1.8;
   background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
@@ -169,6 +170,118 @@ html.no-webgl .hint{display:none!important}
   .brand b{font-size:1.05rem}
   .brand svg{width:38px;height:38px}
 }
+
+/* ===== v2: dock, sheets, shop, games ===== */
+.head-right{display:flex;gap:10px;align-items:center;pointer-events:auto}
+.cart-btn{pointer-events:auto;display:flex;align-items:center;gap:6px;background:var(--paper);border:2.5px solid var(--ink);border-radius:var(--wobble);padding:6px 12px;cursor:pointer;font-weight:700;font-size:.9rem;box-shadow:3px 3px 0 var(--ink)}
+.cart-btn b{min-width:1.4em;height:1.4em;display:inline-grid;place-items:center;border-radius:50%;background:var(--pink-d);color:var(--paper);font-size:.75rem}
+.cart-btn.bump{animation:bump .6s}
+
+.dock{position:fixed;z-index:20;right:max(12px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px}
+.dock button{display:flex;flex-direction:column;align-items:center;gap:1px;width:64px;padding:7px 4px 5px;cursor:pointer;background:var(--paper);border:2.5px solid var(--ink);
+  border-radius:20px 16px 22px 14px/16px 22px 14px 20px;box-shadow:2px 3px 0 var(--ink);font-size:.68rem;font-weight:700;line-height:1.2;transition:transform .25s cubic-bezier(.3,1.7,.5,1)}
+.dock button:nth-child(odd){transform:rotate(-2deg)}
+.dock button:hover{transform:translateX(-4px) rotate(2deg) scale(1.06);background:var(--yellow)}
+.dock button[aria-pressed="true"]{background:var(--sky)}
+.dock svg{width:26px;height:26px}
+
+.scrim{position:fixed;inset:0;z-index:49;background:rgba(122,74,46,.28)}
+.sheet{position:fixed;z-index:50;left:50%;top:50%;transform:translate(-50%,-50%);width:min(760px,calc(100vw - 32px));max-height:calc(100svh - 48px);overflow:auto;
+  background:var(--paper);border:3px solid var(--ink);border-radius:var(--wobble);box-shadow:6px 7px 0 var(--ink);padding:22px 24px 24px}
+.sheet h2{font-family:var(--hand);font-weight:400;font-size:var(--step-2);margin:0 0 4px;padding-right:40px}
+.sheet .sub{margin:0 0 14px;font-size:var(--step--1);color:var(--ink-soft)}
+.sheet .x{position:absolute;right:12px;top:10px;border:0;background:none;font-size:1.7rem;line-height:1;cursor:pointer;padding:4px 10px}
+.sheet.side{left:auto;right:max(16px,env(safe-area-inset-right,0px));top:auto;bottom:max(16px,env(safe-area-inset-bottom,0px));transform:none;width:min(380px,calc(100vw - 32px))}
+
+.zgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:12px}
+.zcard{border:2.5px solid var(--ink);border-radius:var(--wobble);padding:10px 10px 12px;background:var(--c,#fff);display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;min-width:0}
+.zcard img{width:96px;height:96px;object-fit:contain}
+.zcard.unmet img{filter:brightness(0) opacity(.18)}
+.zcard b{font-family:var(--hand);font-weight:400;font-size:1.15rem}
+.zcard small{font-size:.66rem;letter-spacing:.08em;color:var(--ink-soft)}
+.zcard p{margin:4px 0 6px;font-size:.74rem;line-height:1.55}
+.zcard button{margin-top:auto;font-size:.75rem;cursor:pointer;background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:2px 12px}
+
+.opts{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 16px}
+.opts label{cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.74rem}
+.opts input{position:absolute;opacity:0;pointer-events:none}
+.opts .chip{width:46px;height:46px;border:2.5px solid var(--ink);border-radius:46% 54% 50% 50%/55% 48% 52% 45%;background:var(--c,#fff);display:grid;place-items:center;font-size:1.3rem;transition:transform .2s}
+.opts input:checked + .chip{box-shadow:0 0 0 4px var(--yellow);transform:scale(1.1) rotate(-6deg)}
+.opts input:focus-visible + .chip{outline:3px dashed var(--pink-d);outline-offset:4px}
+.opts .chip svg{width:30px;height:30px}
+
+.toolbar{position:fixed;z-index:45;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);transform:translateX(-50%);display:flex;flex-wrap:wrap;justify-content:center;gap:8px;align-items:center;
+  background:var(--paper);border:3px solid var(--ink);border-radius:var(--wobble);box-shadow:4px 5px 0 var(--ink);padding:10px 14px;width:max-content;max-width:calc(100vw - 32px)}
+.toolbar .lbl{font-family:var(--hand);font-size:1.05rem;margin-right:4px}
+.tb{cursor:pointer;font-family:var(--hand);font-size:1rem;background:var(--paper);border:2.5px solid var(--ink);border-radius:999px 999px 999px 999px/700px 900px 700px 900px;padding:5px 14px;line-height:1.2}
+.tb.primary{background:var(--yellow)}
+.tb.pen{width:38px;height:38px;padding:0;border-radius:50%;background:var(--c)}
+.tb.pen[aria-pressed="true"]{box-shadow:0 0 0 4px var(--ink);transform:scale(1.08)}
+html.free-mode #tour,html.free-mode .hints,html.free-mode .doodles,html.free-mode .dock,html.free-mode .site-head{visibility:hidden}
+html.free-mode body{overflow:hidden}
+html.free-mode #stage{touch-action:none}
+.flash{position:fixed;inset:0;z-index:48;background:#fff;opacity:0;pointer-events:none}
+.photo-prev img{width:100%;border:2.5px solid var(--ink);border-radius:8px;display:block}
+.photo-prev .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center}
+.photo-prev .note{font-size:var(--step--1);color:var(--ink-soft)}
+
+/* goods & news */
+.band{position:relative;z-index:3;background:var(--paper);border-top:3px solid var(--ink);
+  padding-block:64px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.band.tint{background:#FFF6F0}
+.band-inner{max-width:1080px;margin-inline:auto;display:grid;gap:24px}
+.band h2{font-family:var(--hand);font-weight:400;font-size:var(--step-2);margin:0;text-wrap:balance}
+.band .lead2{margin:0;max-width:40rem}
+.badge{display:inline-block;font-size:.72rem;font-weight:900;letter-spacing:.14em;background:var(--yellow);border:2px solid var(--ink);border-radius:999px;padding:1px 12px;transform:rotate(-2deg)}
+.goods{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:20px}
+.good{border:2.5px solid var(--ink);border-radius:var(--wobble);background:var(--paper);padding:12px 12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0;box-shadow:3px 4px 0 var(--ink);transition:transform .3s cubic-bezier(.3,1.7,.5,1)}
+.good:hover{transform:translateY(-6px) rotate(-1deg)}
+.good .pic{aspect-ratio:1;max-width:100%;border-radius:14px;overflow:hidden;background:#FBF3EA;border:2px solid var(--ink)}
+.good .pic canvas{width:100%;height:100%;display:block}
+.good h3{font-family:var(--hand);font-weight:400;font-size:1.15rem;margin:4px 0 0;line-height:1.35}
+.good p{margin:0;font-size:.8rem;line-height:1.6}
+.good .price{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-top:auto;padding-top:6px}
+.good .price b{font-size:1.1rem;font-variant-numeric:tabular-nums}
+.good .price small{font-size:.66rem;color:var(--ink-soft);display:block}
+.add{white-space:nowrap;cursor:pointer;font-family:var(--hand);font-size:.95rem;background:var(--pink);border:2.5px solid var(--ink);border-radius:999px 999px 999px 999px/700px 900px 700px 900px;padding:4px 12px}
+.add:active{transform:scale(.94)}
+.news{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.news li{display:grid;grid-template-columns:7.5em 1fr;gap:12px;border-bottom:2px dashed var(--ink-soft);padding-bottom:10px}
+.news time{font-variant-numeric:tabular-nums;font-weight:700}
+.news .tag2{font-size:.7rem;border:1.5px solid var(--ink);border-radius:999px;padding:0 8px;margin-right:6px;background:var(--mint)}
+
+.cart-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.cart-list li{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;border-bottom:2px dashed var(--ink-soft);padding-bottom:8px}
+.cart-list canvas{width:52px;height:52px;border-radius:10px;border:2px solid var(--ink)}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:28px;height:28px;border-radius:50%;border:2px solid var(--ink);background:var(--paper);cursor:pointer;font-weight:900}
+.cart-sum{display:flex;justify-content:space-between;font-size:1.1rem;font-weight:900;margin:14px 0 8px;font-variant-numeric:tabular-nums}
+.cart-note{font-size:var(--step--1);color:var(--ink-soft);margin:8px 0 0}
+
+/* games */
+.tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.tabs button{cursor:pointer;font-family:var(--hand);font-size:1.05rem;background:var(--paper);border:2.5px solid var(--ink);border-radius:999px 999px 999px 999px/700px 900px 700px 900px;padding:4px 16px}
+.tabs button[aria-selected="true"]{background:var(--yellow)}
+.gamewrap{position:relative;max-width:520px;margin-inline:auto}
+#gameCanvas{width:100%;height:auto;display:block;border:2.5px solid var(--ink);border-radius:16px;background:#FFFDF8;touch-action:none;cursor:pointer}
+.ghelp{font-size:var(--step--1);text-align:center;margin:8px 0 0;color:var(--ink-soft)}
+html.night{--bg:#2E3456}
+@media (max-width:760px){
+  .dock{top:auto;transform:none;left:0;right:0;bottom:0;flex-direction:row;overflow-x:auto;gap:6px;justify-content:flex-start;
+    padding:8px max(12px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));background:color-mix(in srgb,var(--paper) 92%,transparent);border-top:2.5px solid var(--ink)}
+  .dock button{flex:none;width:58px}
+  .dock button:hover{transform:none}
+  .scene{padding-block:90px calc(7vh + 80px)}
+  .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 92px)}
+  .sheet{top:auto;bottom:0;left:0;right:0;transform:none;width:100%;max-height:86svh;border-radius:24px 24px 0 0;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+  .sheet.side{right:0;bottom:0;width:100%}
+  .cart-btn span.t{display:none}
+  .stamp-btn > span:first-child{display:none}
+  .brand small{display:none}
+  .brand{padding:4px 12px 4px 6px}
+  .news li{grid-template-columns:1fr;gap:2px}
+}
+
 @media (prefers-reduced-motion:reduce){
   .doodle svg,.scroll-cue svg{animation:none}
   *{transition-duration:.01ms!important}
@@ -213,10 +326,92 @@ html.no-webgl .hint{display:none!important}
     <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#logo-mark"/></svg>
     <span><b>まるます町</b><small>MARUMASU TOWN</small></span>
   </a>
+  <div class="head-right">
+  <button class="cart-btn" id="cartBtn" type="button" aria-label="カートを見る"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h3l2 11h10l2-8H7" fill="none" stroke="#7A4A2E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="19" r="1.8" fill="#7A4A2E"/><circle cx="17" cy="19" r="1.8" fill="#7A4A2E"/></svg><span class="t">カート</span><b id="cartCount">0</b></button>
   <button class="stamp-btn" id="stampBtn" aria-expanded="false" aria-controls="stampbook">
     <span>スタンプ帳</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="sr-only" id="stampCount">0/5</span>
   </button>
+  </div>
 </header>
+
+
+<nav class="dock" aria-label="あそびメニュー">
+  <button type="button" data-open="zukan"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M5 6c4-1 7 0 10 2v17c-3-2-6-3-10-2z M25 6c-4-1-7 0-10 2v17c3-2 6-3 10-2z" fill="#F7C3CF" stroke="#7A4A2E" stroke-width="2.2" stroke-linejoin="round"/></svg>住人図鑑</button>
+  <button type="button" data-open="closet"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M6 17c0-7 18-7 18 0 0 6-4 9-9 9s-9-3-9-9z" fill="#FBD3A6" stroke="#7A4A2E" stroke-width="2.2"/><path d="M7 12c2-7 14-7 16 0z" fill="#F2A58B" stroke="#7A4A2E" stroke-width="2.2" stroke-linejoin="round"/><circle cx="15" cy="5" r="2.2" fill="#F2A58B" stroke="#7A4A2E" stroke-width="2"/></svg>きせかえ</button>
+  <button type="button" data-open="photo"><svg viewBox="0 0 30 30" aria-hidden="true"><rect x="4" y="9" width="22" height="15" rx="4" fill="#A8DDF4" stroke="#7A4A2E" stroke-width="2.2"/><path d="M10 9l2-3h6l2 3" fill="none" stroke="#7A4A2E" stroke-width="2.2" stroke-linejoin="round"/><circle cx="15" cy="16.5" r="4.2" fill="#FFFDF8" stroke="#7A4A2E" stroke-width="2.2"/></svg>しゃしん</button>
+  <button type="button" data-open="doodle"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M6 24l2-6L20 6l4 4L12 22z" fill="#F8D86E" stroke="#7A4A2E" stroke-width="2.2" stroke-linejoin="round"/><path d="M4 27c4-2 6 1 9-1" fill="none" stroke="#EC8FA8" stroke-width="2.4" stroke-linecap="round"/></svg>らくがき</button>
+  <button type="button" data-open="game"><svg viewBox="0 0 30 30" aria-hidden="true"><rect x="3" y="9" width="24" height="14" rx="7" fill="#B9E8CF" stroke="#7A4A2E" stroke-width="2.2"/><path d="M9 13v6M6 16h6" stroke="#7A4A2E" stroke-width="2.2" stroke-linecap="round"/><circle cx="20" cy="14" r="1.8" fill="#EC8FA8"/><circle cx="23" cy="18" r="1.8" fill="#EC8FA8"/></svg>ゲーム</button>
+  <button type="button" id="nightBtn" aria-pressed="false"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M20 4a11 11 0 1 0 6 16A9 9 0 0 1 20 4z" fill="#E3C6F2" stroke="#7A4A2E" stroke-width="2.2" stroke-linejoin="round"/></svg><span>よる</span></button>
+  <button type="button" id="soundBtn" aria-pressed="false"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M11 21V7l13-3v14" fill="none" stroke="#7A4A2E" stroke-width="2.2" stroke-linejoin="round"/><ellipse cx="8" cy="21" rx="4" ry="3.2" fill="#F8D86E" stroke="#7A4A2E" stroke-width="2.2"/><ellipse cx="21" cy="18" rx="4" ry="3.2" fill="#F8D86E" stroke="#7A4A2E" stroke-width="2.2"/></svg><span>おと OFF</span></button>
+</nav>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="flash" id="flash"></div>
+
+<div class="sheet" id="sheet-zukan" role="dialog" aria-modal="true" aria-labelledby="t-zukan" hidden>
+  <button class="x" data-close aria-label="閉じる">×</button>
+  <h2 id="t-zukan">まるます町 住人図鑑 <small id="zukanCount" style="font-size:.9rem"></small></h2>
+  <p class="sub">クルンが近くを通ったり、タップしたりすると登録されます。まだ会っていない住人は、街のどこかでさわってみてね。</p>
+  <div class="zgrid" id="zgrid"></div>
+</div>
+
+<div class="sheet side" id="sheet-closet" role="dialog" aria-modal="false" aria-labelledby="t-closet" hidden>
+  <button class="x" data-close aria-label="閉じる">×</button>
+  <h2 id="t-closet">クルンのきせかえ</h2>
+  <p class="sub">えらぶと、すぐに街のクルンが着がえます。</p>
+  <div><b>からだの色</b><div class="opts" id="optColor"></div></div>
+  <div><b>ぼうし</b><div class="opts" id="optHat"></div></div>
+</div>
+
+<div class="sheet" id="sheet-game" role="dialog" aria-modal="true" aria-labelledby="t-game" hidden>
+  <button class="x" data-close aria-label="閉じる">×</button>
+  <h2 id="t-game">まるます あそびば</h2>
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tab-run" aria-selected="true" data-game="run">ぴょんぴょんラン</button>
+    <button role="tab" id="tab-link" aria-selected="false" data-game="link">つなげて ぽこん</button>
+  </div>
+  <div class="gamewrap"><canvas id="gameCanvas" width="480" height="560" aria-label="ゲーム画面"></canvas></div>
+  <p class="ghelp" id="gameHelp"></p>
+</div>
+
+<div class="sheet side" id="sheet-cart" role="dialog" aria-modal="true" aria-labelledby="t-cart" hidden>
+  <button class="x" data-close aria-label="閉じる">×</button>
+  <h2 id="t-cart">カート</h2>
+  <p class="sub">ストアは準備中です。いま入れたグッズは、このブラウザに「予約リスト」として残ります。</p>
+  <ul class="cart-list" id="cartList"></ul>
+  <div class="cart-sum"><span>合計（予定価格・税込）</span><span id="cartTotal">¥0</span></div>
+  <button class="tb primary" id="cartReserve" type="button">予約リストに保存する</button>
+  <p class="cart-note" id="cartNote">オンラインストアは2027年春オープン予定。お支払いはまだできません。</p>
+</div>
+
+<div class="sheet photo-prev" id="sheet-photo" role="dialog" aria-modal="true" aria-labelledby="t-photo" hidden>
+  <button class="x" data-close aria-label="閉じる">×</button>
+  <h2 id="t-photo">とれたよ！</h2>
+  <img id="photoImg" alt="撮影したまるます町の写真">
+  <div class="row"><a class="tb primary" id="photoSave" download="marumasu-town.png" href="#">画像を保存</a><button class="tb" type="button" data-close>もう一枚とる</button>
+  <span class="note">保存できないときは、画像を長押し（右クリック）して保存してね。</span></div>
+</div>
+
+<div class="toolbar" id="bar-photo" hidden>
+  <span class="lbl">しゃしんモード</span>
+  <span class="note" style="font-size:.8rem">ドラッグで回す・ホイール/ピンチで寄る</span>
+  <button class="tb" type="button" data-rot="-1" aria-label="左に回す">⟲</button>
+  <button class="tb" type="button" data-rot="1" aria-label="右に回す">⟳</button>
+  <button class="tb" type="button" data-zoom="1" aria-label="寄る">＋</button>
+  <button class="tb" type="button" data-zoom="-1" aria-label="引く">－</button>
+  <button class="tb primary" type="button" id="shutter">パシャ！</button>
+  <button class="tb" type="button" data-exit>おわる</button>
+</div>
+
+<div class="toolbar" id="bar-doodle" hidden>
+  <span class="lbl">らくがきモード</span>
+  <button class="tb pen" type="button" data-pen="flower" style="--c:#F7B5C8" aria-pressed="true" aria-label="ピンク：お花がさく"></button>
+  <button class="tb pen" type="button" data-pen="bush" style="--c:#9ED98A" aria-pressed="false" aria-label="みどり：草がはえる"></button>
+  <button class="tb pen" type="button" data-pen="star" style="--c:#F8D86E" aria-pressed="false" aria-label="きいろ：星がたつ"></button>
+  <button class="tb pen" type="button" data-pen="puddle" style="--c:#A8DDF4" aria-pressed="false" aria-label="みずいろ：水たまり"></button>
+  <button class="tb" type="button" id="doodleClear">ぜんぶ消す</button>
+  <button class="tb primary" type="button" data-exit>できた！</button>
+</div>
 
 <div class="stampbook" id="stampbook" hidden role="dialog" aria-label="あそびスタンプ帳">
   <button class="close-book" id="closeBook" aria-label="スタンプ帳を閉じる">×</button>
@@ -292,11 +487,30 @@ html.no-webgl .hint{display:none!important}
         <svg class="big-logo" viewBox="0 0 100 100" aria-hidden="true"><use href="#logo-mark"/></svg>
         <h2 id="h-end">まるます町</h2>
         <p class="copy">ひとマスずつ、あそびが立ち上がる。</p>
-        <button class="again" id="again" type="button">もう一度めぐる</button>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center"><button class="again" id="again" type="button">もう一度めぐる</button><a class="again" href="#goods" style="background:var(--pink);text-decoration:none">グッズを見る</a></div>
       </div>
     </section>
   </div>
 
+
+  <section class="band" id="goods" aria-labelledby="h-goods">
+    <div class="band-inner">
+      <div><span class="badge">COMING SOON</span>
+      <h2 id="h-goods">まるます町の文房具店、もうすぐ開店。</h2>
+      <p class="lead2">住人たちがシールやはんこになりました。手帳のすみっこ、ノートのマス目に、小さな街をつれていこう。いまはカートに入れて「予約リスト」をつくれます。</p></div>
+      <div class="goods" id="goodsGrid"></div>
+    </div>
+  </section>
+  <section class="band tint" id="news" aria-labelledby="h-news">
+    <div class="band-inner">
+      <h2 id="h-news">おしらせ</h2>
+      <ul class="news">
+        <li><time datetime="2026-11-20">2026.11.20</time><span><span class="tag2">サイト</span>ティザーサイトを公開しました。住人図鑑とゲームで遊べます。</span></li>
+        <li><time datetime="2026-12-05">2026.12.05</time><span><span class="tag2" style="background:var(--pink)">グッズ</span>フレークシールとはんこの予約リスト受付を始める予定です。</span></li>
+        <li><time datetime="2027-03">2027.03</time><span><span class="tag2" style="background:var(--yellow)">ストア</span>オンラインストア「まるます町の文房具店」オープン予定。</span></li>
+      </ul>
+    </div>
+  </section>
   <section class="notes" aria-labelledby="h-notes">
     <div class="notes-inner">
       <div>
@@ -475,6 +689,424 @@ html.no-webgl .hint{display:none!important}
     const nx = e.clientX / innerWidth - .5, ny = e.clientY / innerHeight - .5;
     svgs.forEach((s, i) => gsap.to(s.parentNode, { x: nx * (14 + i * 4), duration: .8, overwrite: 'auto' }));
   }, { passive: true });
+})();
+</script>
+
+<!-- v2：住人図鑑・きせかえ・ショップ・音・ゲーム -->
+<script>
+(function(){
+  const MARU = window.MARU;
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const store = { get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } }, set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} } };
+  const toast = msg => { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 2200); };
+  MARU.toast = toast;
+
+  // ---------- residents (original characters)
+  MARU.RES = [
+    { id:'kurun', name:'クルン', tile:'方眼広場', col:'#FBD3A6', bg:'#FFF1E2', text:'まるます町の案内役。くるんと巻いたしっぽがばねになって、どこまでも跳ねていく。' },
+    { id:'masu',  name:'マス',  tile:'方眼広場', col:'#FFFDF8', bg:'#F1F5F9', text:'方眼の1マスから生まれた町いちばんの古株。体のマス目に今日の予定を書いている。' },
+    { id:'pipi',  name:'ピピ',  tile:'渦巻き花壇', col:'#F7B5C8', bg:'#FFE8EE', text:'頭の花びらが自慢の、花壇の番人。うれしいことがあると花びらがひらく。' },
+    { id:'pocha', name:'ポチャ', tile:'水色の池', col:'#9FD8F2', bg:'#E5F5FC', text:'しずく形の体で、池にぷかぷか浮かぶのが好き。返事はいつも泡ひとつ。' },
+    { id:'koron', name:'コロン', tile:'稲妻の丘', col:'#F9D46A', bg:'#FFF6D8', text:'丘のてっぺんで星を数えている。アンテナの星は、気分で光りかたが変わる。' },
+    { id:'moly',  name:'モリー', tile:'みどりの森', col:'#A8E0B4', bg:'#E6F7EB', text:'大きな葉っぱの帽子で雨やどり。町の木の名前ならなんでも知っている。' },
+    { id:'yume',  name:'ユメ',  tile:'ラベンダーの家', col:'#D9B8EF', bg:'#F4EBFB', text:'いつも眠そうな三日月の子。夜になると、急に元気になる。' },
+    { id:'mochimo', name:'モチモ', tile:'シーソー広場', col:'#FBC8A8', bg:'#FFEFE5', text:'シーソーが大好きなくいしんぼう。町でいちばんほっぺがやわらかい。' },
+    { id:'sora',  name:'ソラ',  tile:'すべり台の丘', col:'#CFE8FA', bg:'#EAF5FD', text:'雲のつばさで、すべり台のてっぺんからちょっとだけ飛べる。' },
+    { id:'poko',  name:'ポコ',  tile:'きのこの庭', col:'#B5DE95', bg:'#EEF8E4', text:'きのこの帽子をかぶったはずかしがり屋。さわると、ぽこっと跳ねる。' },
+  ];
+  const RES = MARU.RES, byId = Object.fromEntries(RES.map(r => [r.id, r]));
+
+  // fallback portraits (2D) until the 3D ones are rendered
+  MARU.portraits = {};
+  RES.forEach(r => {
+    const c = document.createElement('canvas'); c.width = c.height = 200; const g = c.getContext('2d');
+    g.lineWidth = 9; g.strokeStyle = '#7A4A2E'; g.fillStyle = r.col;
+    g.beginPath(); g.ellipse(100, 112, 74, 60, 0, 0, Math.PI * 2); g.fill(); g.stroke();
+    g.fillStyle = '#3B2A22'; [76, 124].forEach(x => { g.beginPath(); g.arc(x, 108, 8, 0, 7); g.fill(); });
+    g.fillStyle = '#F59EA8'; [52, 148].forEach(x => { g.beginPath(); g.ellipse(x, 126, 14, 9, 0, 0, 7); g.fill(); });
+    MARU.portraits[r.id] = c.toDataURL();
+  });
+  const imgCache = {};
+  function img(id){ const u = MARU.portraits[id]; if (!imgCache[id] || imgCache[id].src !== u) { const i = new Image(); i.src = u; imgCache[id] = i; } return imgCache[id]; }
+
+  // ---------- sound (WebAudio, no files)
+  let actx, master, bgmOn = false, bgmTimer, nextT = 0, step = 0;
+  function ensure(){ if (!actx) { actx = new (window.AudioContext || window.webkitAudioContext)(); master = actx.createGain(); master.gain.value = .4; master.connect(actx.destination); } if (actx.state === 'suspended') actx.resume(); }
+  function tone(f, t, dur, type = 'sine', vol = .3, f2){ const o = actx.createOscillator(), g = actx.createGain(); o.type = type; o.frequency.setValueAtTime(f, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + dur); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.0008, t + dur); o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .05); }
+  function noise(t, dur, vol = .2, freq = 1500){ const b = actx.createBuffer(1, actx.sampleRate * dur, actx.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length); const s = actx.createBufferSource(); s.buffer = b; const f = actx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = freq; const g = actx.createGain(); g.gain.value = vol; s.connect(f); f.connect(g); g.connect(master); s.start(t); }
+  const SFX = {
+    jump: t => tone(380, t, .18, 'triangle', .22, 820),
+    pop: t => { tone(660, t, .1, 'sine', .28, 1320); tone(990, t + .05, .12, 'sine', .18); },
+    ripple: t => tone(1100, t, .5, 'sine', .18, 300),
+    flag: t => noise(t, .25, .3, 1800),
+    stamp: t => { tone(784, t, .25, 'triangle', .22); tone(1175, t + .1, .4, 'triangle', .2); },
+    spin: t => tone(500, t, .35, 'triangle', .18, 1000),
+    hit: t => tone(260, t, .35, 'sawtooth', .12, 80),
+    coin: t => { tone(988, t, .08, 'square', .1); tone(1319, t + .07, .16, 'square', .1); },
+    chain: (t, n) => tone(440 * Math.pow(2, Math.min(n, 14) / 12), t, .12, 'triangle', .2),
+    bomb: t => { noise(t, .4, .4, 400); tone(200, t, .4, 'sine', .3, 60); },
+    shutter: t => { noise(t, .06, .4, 3000); noise(t + .08, .05, .3, 2400); },
+    meet: t => { [523, 659, 784].forEach((f, i) => tone(f, t + i * .07, .2, 'triangle', .18)); },
+  };
+  MARU.sfx = (n, a) => { if (!bgmOn && !MARU.sfxAlways) return; try { ensure(); SFX[n] && SFX[n](actx.currentTime + .01, a); } catch(e){} };
+  // music box BGM: C major pentatonic, generated once
+  const SC = [523.3, 587.3, 659.3, 784, 880, 1046.5, 1174.7];
+  let rs = 3; const rnd2 = () => (rs = (rs * 9301 + 49297) % 233280) / 233280;
+  let idx = 2; const MEL = Array.from({ length: 64 }, (_, i) => { if (i % 8 === 7 && rnd2() < .6) return 0; idx = Math.max(0, Math.min(6, idx + Math.round((rnd2() - .5) * 3))); return SC[idx]; });
+  const BASS = [130.8, 110, 87.3, 98];
+  function schedule(){ while (nextT < actx.currentTime + .25) { const night = document.documentElement.classList.contains('night'); const f = MEL[step % 64];
+      if (f) { tone(night ? f / 2 : f, nextT, .7, 'triangle', .07); tone((night ? f / 2 : f) * 2, nextT, .3, 'sine', .025); }
+      if (step % 8 === 0) tone(BASS[(step / 8 | 0) % 4], nextT, 1.6, 'sine', .09);
+      nextT += night ? .38 : .3; step++; } }
+  function setSound(on){ bgmOn = on; const b = $('#soundBtn'); b.setAttribute('aria-pressed', on); b.querySelector('span').textContent = on ? 'おと ON' : 'おと OFF';
+    if (on) { ensure(); nextT = actx.currentTime + .1; clearInterval(bgmTimer); bgmTimer = setInterval(schedule, 60); MARU.sfx('pop'); } else { clearInterval(bgmTimer); } }
+  $('#soundBtn').addEventListener('click', () => setSound(!bgmOn));
+
+  // ---------- sheets
+  let lastFocus = null, openId = null;
+  function openSheet(id){
+    closeSheet(true);
+    const el = $('#sheet-' + id); if (!el) return;
+    lastFocus = document.activeElement; openId = id;
+    el.hidden = false; if (el.getAttribute('aria-modal') === 'true') $('#scrim').hidden = false;
+    if (window.gsap && !MARU.reduced) gsap.fromTo(el, { y: 40, opacity: 0, rotation: -2 }, { y: 0, opacity: 1, rotation: 0, duration: .45, ease: 'back.out(1.8)', clearProps: 'transform' });
+    (el.querySelector('[data-close]') || el).focus();
+    el.dispatchEvent(new Event('open'));
+  }
+  function closeSheet(silent){
+    if (!openId) return; const el = $('#sheet-' + openId); el.hidden = true; $('#scrim').hidden = true; el.dispatchEvent(new Event('close'));
+    openId = null; if (!silent && lastFocus) lastFocus.focus();
+  }
+  MARU.openSheet = openSheet;
+  $$('.sheet [data-close]').forEach(b => b.addEventListener('click', () => closeSheet()));
+  $('#scrim').addEventListener('click', () => closeSheet());
+  addEventListener('keydown', e => { if (e.key === 'Escape' && openId) closeSheet(); });
+
+  // ---------- 住人図鑑
+  let met = new Set(store.get('marumasu-zukan', []));
+  function renderZukan(){
+    $('#zukanCount').textContent = met.size + ' / ' + RES.length;
+    $('#zgrid').innerHTML = RES.map(r => { const m = met.has(r.id); return `<div class="zcard ${m ? '' : 'unmet'}" style="--c:${r.bg}">
+      <img src="${MARU.portraits[r.id]}" alt="${m ? r.name : 'まだ会っていない住人'}"><small>${r.tile}</small><b>${m ? r.name : '？？？'}</b>
+      <p>${m ? r.text : 'ヒント：「' + r.tile + '」のあたりにいるみたい。'}</p>
+      <button type="button" data-greet="${r.id}">${m ? 'あいさつ' : 'よんでみる'}</button></div>`; }).join('');
+  }
+  $('#zgrid').addEventListener('click', e => { const b = e.target.closest('[data-greet]'); if (!b) return; const id = b.dataset.greet; MARU.town && MARU.town.greet(id); MARU.meet(id); MARU.sfx('pop'); });
+  MARU.meet = id => { if (met.has(id) || !byId[id]) return; met.add(id); store.set('marumasu-zukan', [...met]); renderZukan(); toast('図鑑に登録：' + byId[id].name + '（' + met.size + '/' + RES.length + '）'); MARU.sfx('meet'); if (met.size === RES.length) setTimeout(() => toast('住人図鑑コンプリート！'), 2300); };
+  renderZukan();
+
+  // ---------- きせかえ
+  MARU.COLORS = [ ['アプリコット', '#FBD3A6', '#F2B27C'], ['さくら', '#F9C6D3', '#EE9DB4'], ['ミント', '#C4EBD6', '#8FD3AE'], ['ソーダ', '#C9E6F7', '#93C9EA'], ['ラベンダー', '#E2CFF4', '#C3A3E6'], ['レモン', '#FBE7A1', '#F2C964'] ];
+  const HATS = [ ['none', 'なし', ''], ['beret', 'ベレー', '<path d="M5 18c0-8 20-8 20 0z" fill="#F2A58B" stroke="#7A4A2E" stroke-width="2"/><circle cx="15" cy="9" r="2" fill="#F2A58B" stroke="#7A4A2E" stroke-width="2"/>'],
+    ['ribbon', 'リボン', '<path d="M15 15L5 9v12zM15 15l10-6v12z" fill="#F49AB5" stroke="#7A4A2E" stroke-width="2" stroke-linejoin="round"/><circle cx="15" cy="15" r="3" fill="#F49AB5" stroke="#7A4A2E" stroke-width="2"/>'],
+    ['crown', 'おうかん', '<path d="M5 22V10l5 5 5-8 5 8 5-5v12z" fill="#F8D86E" stroke="#7A4A2E" stroke-width="2" stroke-linejoin="round"/>'],
+    ['leaf', 'はっぱ', '<path d="M6 22C6 10 16 6 25 6c0 10-6 17-19 16z" fill="#8FD18B" stroke="#7A4A2E" stroke-width="2"/><path d="M8 20L20 10" stroke="#7A4A2E" stroke-width="1.6"/>'],
+    ['straw', 'むぎわら', '<ellipse cx="15" cy="19" rx="12" ry="4" fill="#F6DFA6" stroke="#7A4A2E" stroke-width="2"/><path d="M8 18c0-9 14-9 14 0z" fill="#F6DFA6" stroke="#7A4A2E" stroke-width="2"/><path d="M8.5 16h13" stroke="#E57C73" stroke-width="2.4"/>'] ];
+  MARU.outfit = Object.assign({ color: 0, hat: 'none' }, store.get('marumasu-outfit', {}));
+  $('#optColor').innerHTML = MARU.COLORS.map((c, i) => `<label><input type="radio" name="kcol" value="${i}" ${MARU.outfit.color == i ? 'checked' : ''}><span class="chip" style="--c:${c[1]}"></span>${c[0]}</label>`).join('');
+  $('#optHat').innerHTML = HATS.map(h => `<label><input type="radio" name="khat" value="${h[0]}" ${MARU.outfit.hat === h[0] ? 'checked' : ''}><span class="chip" style="--c:#FFFDF8"><svg viewBox="0 0 30 30">${h[2] || '<path d="M8 8l14 14M22 8L8 22" stroke="#C9A98F" stroke-width="2.4" stroke-linecap="round"/>'}</svg></span>${h[1]}</label>`).join('');
+  $('#sheet-closet').addEventListener('change', e => {
+    if (e.target.name === 'kcol') MARU.outfit.color = +e.target.value;
+    if (e.target.name === 'khat') MARU.outfit.hat = e.target.value;
+    store.set('marumasu-outfit', MARU.outfit); MARU.town && MARU.town.setOutfit(MARU.outfit); MARU.sfx('pop');
+  });
+
+  // ---------- night
+  $('#nightBtn').addEventListener('click', e => {
+    const on = !document.documentElement.classList.contains('night');
+    document.documentElement.classList.toggle('night', on);
+    e.currentTarget.setAttribute('aria-pressed', on); e.currentTarget.querySelector('span').textContent = on ? 'ひる' : 'よる';
+    MARU.town && MARU.town.setNight(on); MARU.sfx(on ? 'ripple' : 'pop'); toast(on ? 'まるます町に夜がきた' : 'おはよう、まるます町');
+  });
+
+  // ---------- photo & doodle modes
+  function enterFree(mode){
+    if (!MARU.town) { toast('この遊びは3D表示が使えるときに楽しめます'); return; }
+    closeSheet(true);
+    document.documentElement.classList.add('free-mode');
+    $('#bar-' + mode).hidden = false; MARU.town.enterFree(mode);
+    $('#bar-' + mode).querySelector('button').focus();
+  }
+  function exitFree(){ document.documentElement.classList.remove('free-mode'); $('#bar-photo').hidden = $('#bar-doodle').hidden = true; MARU.town && MARU.town.exitFree(); }
+  $$('[data-exit]').forEach(b => b.addEventListener('click', exitFree));
+  $$('[data-rot]').forEach(b => b.addEventListener('click', () => MARU.town.nudge(+b.dataset.rot, 0)));
+  $$('[data-zoom]').forEach(b => b.addEventListener('click', () => MARU.town.nudge(0, +b.dataset.zoom)));
+  $$('[data-pen]').forEach(b => b.addEventListener('click', () => { $$('[data-pen]').forEach(x => x.setAttribute('aria-pressed', x === b)); MARU.town.setPen(b.dataset.pen); }));
+  $('#doodleClear').addEventListener('click', () => MARU.town.clearDoodles());
+  $('#shutter').addEventListener('click', async () => {
+    MARU.sfx('shutter');
+    if (window.gsap) gsap.fromTo('#flash', { opacity: .9 }, { opacity: 0, duration: .5 });
+    const src = await MARU.town.capture();
+    const im = new Image(); im.src = src; await im.decode();
+    const pad = Math.round(im.width * .035), band = Math.round(im.width * .09);
+    const c = document.createElement('canvas'); c.width = im.width + pad * 2; c.height = im.height + pad * 2 + band;
+    const g = c.getContext('2d'); g.fillStyle = '#FFFDF8'; g.fillRect(0, 0, c.width, c.height);
+    g.drawImage(im, pad, pad); g.strokeStyle = '#7A4A2E'; g.lineWidth = Math.max(3, pad * .18); g.strokeRect(pad, pad, im.width, im.height);
+    g.fillStyle = '#7A4A2E'; g.font = `${Math.round(band * .5)}px Yomogi, "Zen Maru Gothic", sans-serif`; g.textBaseline = 'middle';
+    g.fillText('まるます町  MARUMASU TOWN', pad, im.height + pad + band * .55);
+    const d = new Date(); g.textAlign = 'right'; g.font = `${Math.round(band * .32)}px "Zen Maru Gothic", sans-serif`;
+    g.fillText(`${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`, c.width - pad, im.height + pad + band * .55);
+    const url = c.toDataURL('image/png'); $('#photoImg').src = url; $('#photoSave').href = url;
+    openSheet('photo');
+  });
+  $$('.dock [data-open]').forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.open; if (k === 'photo' || k === 'doodle') enterFree(k); else openSheet(k);
+  }));
+
+  // ---------- goods (product art drawn from the residents)
+  const PRODUCTS = [
+    { id:'flake', name:'住人フレークシール（10種×2枚）', price:550, desc:'まるます町の住人をダイカットに。透明PET素材で手帳にもぴったり。', art:'sticker' },
+    { id:'stamp1', name:'クルンのはんこ', price:1320, desc:'木の持ち手のゴムはんこ。ノートのすみっこに案内役を。', art:'stamp' },
+    { id:'stamp3', name:'住人はんこ 3個セット', price:3300, desc:'ピピ・ポチャ・コロンのセット。おしたあとに色えんぴつで塗っても。', art:'stamps' },
+    { id:'tape', name:'方眼マスキングテープ', price:440, desc:'5mm方眼に住人がならぶ15mm幅のテープ。', art:'tape' },
+    { id:'note', name:'まるます方眼ノート A6', price:660, desc:'表紙のマス目にクルンがひょっこり。中は5mm方眼。', art:'note' },
+    { id:'letter', name:'ミニレターセット', price:770, desc:'便箋8枚・封筒4枚・シール1シート入り。', art:'letter' },
+  ];
+  const yen = n => '¥' + n.toLocaleString('ja-JP');
+  function drawArt(c, kind){
+    const g = c.getContext('2d'), W = c.width; g.clearRect(0, 0, W, W);
+    const P = id => img(id);
+    const ink = (id, x, y, s, col) => { const t = document.createElement('canvas'); t.width = t.height = s; const q = t.getContext('2d'); q.drawImage(P(id), 0, 0, s, s); q.globalCompositeOperation = 'source-in'; q.fillStyle = col; q.fillRect(0, 0, s, s); g.globalAlpha = .85; g.drawImage(t, x, y); g.globalAlpha = 1; };
+    g.fillStyle = '#FBF3EA'; g.fillRect(0, 0, W, W);
+    g.strokeStyle = '#E8DCCD'; g.lineWidth = 1; for (let i = 0; i < W; i += 20) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i, W); g.moveTo(0, i); g.lineTo(W, i); g.stroke(); }
+    g.lineJoin = 'round';
+    if (kind === 'sticker') {
+      g.fillStyle = '#fff'; g.strokeStyle = '#7A4A2E'; g.lineWidth = 4; rr(g, 34, 26, W - 68, W - 52, 18); g.fill(); g.stroke();
+      const ids = RES.map(r => r.id).slice(0, 9);
+      ids.forEach((id, i) => { const x = 62 + (i % 3) * 96, y = 50 + Math.floor(i / 3) * 104; g.save(); g.translate(x + 40, y + 40); g.rotate((i % 2 ? 1 : -1) * .08); g.shadowColor = 'rgba(122,74,46,.25)'; g.shadowBlur = 6; g.shadowOffsetY = 3; g.drawImage(P(id), -44, -44, 88, 88); g.restore(); });
+    } else if (kind === 'stamp' || kind === 'stamps') {
+      const ids = kind === 'stamp' ? ['kurun'] : ['pipi', 'pocha', 'koron'];
+      const cols = ['#C7535B', '#4F86B8', '#7A9A3E'];
+      ids.forEach((id, i) => { const n = ids.length, x = W / 2 + (i - (n - 1) / 2) * 120;
+        // print
+        ink(id, x - 52, 196, 104, cols[(i + (kind === 'stamp' ? 0 : 0)) % 3]);
+        // handle
+        g.fillStyle = '#E2B07F'; g.strokeStyle = '#7A4A2E'; g.lineWidth = 4; rr(g, x - 40, 70, 80, 70, 14); g.fill(); g.stroke();
+        g.beginPath(); g.ellipse(x, 66, 26, 22, 0, 0, 7); g.fill(); g.stroke();
+        g.fillStyle = '#FBF3EA'; rr(g, x - 46, 138, 92, 22, 6); g.fill(); g.stroke(); g.drawImage(P(id), x - 22, 76, 44, 44); });
+    } else if (kind === 'tape') {
+      g.save(); g.translate(W / 2, W / 2); g.rotate(-.35);
+      g.fillStyle = '#FFE1E8'; g.strokeStyle = '#7A4A2E'; g.lineWidth = 4; g.fillRect(-W, -46, W * 2, 92); g.strokeRect(-W, -46, W * 2, 92);
+      g.strokeStyle = '#F4BFCB'; g.lineWidth = 1.5; for (let x = -W; x < W; x += 16) { g.beginPath(); g.moveTo(x, -46); g.lineTo(x, 46); g.stroke(); } for (let y = -46; y < 46; y += 16) { g.beginPath(); g.moveTo(-W, y); g.lineTo(W, y); g.stroke(); }
+      RES.forEach((r, i) => g.drawImage(P(r.id), -W + 40 + i * 76, -34, 68, 68)); g.restore();
+      g.fillStyle = '#FFE1E8'; g.strokeStyle = '#7A4A2E'; g.lineWidth = 4; g.beginPath(); g.arc(W - 90, W - 90, 60, 0, 7); g.fill(); g.stroke(); g.fillStyle = '#FBF3EA'; g.beginPath(); g.arc(W - 90, W - 90, 30, 0, 7); g.fill(); g.stroke();
+    } else if (kind === 'note') {
+      g.save(); g.translate(W / 2, W / 2); g.rotate(-.06);
+      g.fillStyle = '#A8DDF4'; g.strokeStyle = '#7A4A2E'; g.lineWidth = 5; rr(g, -120, -160, 240, 320, 14); g.fill(); g.stroke();
+      g.fillStyle = '#FFFDF8'; rr(g, -90, -120, 180, 150, 10); g.fill(); g.stroke();
+      g.strokeStyle = '#D9E2EA'; g.lineWidth = 1.5; for (let i = -90; i < 90; i += 15) { g.beginPath(); g.moveTo(i, -120); g.lineTo(i, 30); g.stroke(); } for (let j = -120; j < 30; j += 15) { g.beginPath(); g.moveTo(-90, j); g.lineTo(90, j); g.stroke(); }
+      g.drawImage(P('kurun'), -50, -100, 100, 100);
+      g.fillStyle = '#7A4A2E'; g.font = '30px Yomogi, sans-serif'; g.textAlign = 'center'; g.fillText('まるます町', 0, 90); g.font = '14px "Zen Maru Gothic", sans-serif'; g.fillText('5mm GRID NOTE', 0, 118); g.restore();
+    } else if (kind === 'letter') {
+      g.save(); g.translate(W / 2 + 20, W / 2 - 10); g.rotate(.08);
+      g.fillStyle = '#FFFDF8'; g.strokeStyle = '#7A4A2E'; g.lineWidth = 4; rr(g, -110, -150, 220, 270, 8); g.fill(); g.stroke();
+      g.strokeStyle = '#F4BFCB'; g.lineWidth = 2; for (let j = -110; j < 100; j += 26) { g.beginPath(); g.moveTo(-90, j); g.lineTo(90, j); g.stroke(); }
+      g.drawImage(P('pipi'), 30, 50, 70, 70); g.restore();
+      g.save(); g.translate(W / 2 - 50, W / 2 + 90); g.rotate(-.1);
+      g.fillStyle = '#FBE29A'; g.strokeStyle = '#7A4A2E'; g.lineWidth = 4; g.fillRect(-110, -60, 220, 130); g.strokeRect(-110, -60, 220, 130);
+      g.beginPath(); g.moveTo(-110, -60); g.lineTo(0, 15); g.lineTo(110, -60); g.stroke(); g.drawImage(P('pocha'), -26, -6, 52, 52); g.restore();
+    }
+  }
+  function rr(g, x, y, w, h, r){ g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+  $('#goodsGrid').innerHTML = PRODUCTS.map(p => `<article class="good"><div class="pic"><canvas width="400" height="400" data-art="${p.art}" aria-label="${p.name}のイメージ" role="img"></canvas></div>
+    <h3>${p.name}</h3><p>${p.desc}</p><div class="price"><span><b>${yen(p.price)}</b><small>予定価格（税込）</small></span><button class="add" type="button" data-add="${p.id}">カートに入れる</button></div></article>`).join('');
+  const arts = () => $$('canvas[data-art]').forEach(c => drawArt(c, c.dataset.art));
+  function whenImgs(cb){ Promise.all(RES.map(r => img(r.id).decode().catch(() => {}))).then(cb); }
+  whenImgs(arts);
+  document.addEventListener('maru:portraits', () => { whenImgs(() => { arts(); renderZukan(); renderCart(); }); });
+
+  // ---------- cart
+  let cart = store.get('marumasu-cart', {});
+  function renderCart(){
+    const n = Object.values(cart).reduce((a, b) => a + b, 0); $('#cartCount').textContent = n;
+    let total = 0;
+    $('#cartList').innerHTML = Object.entries(cart).map(([id, q]) => { const p = PRODUCTS.find(x => x.id === id); if (!p) return ''; total += p.price * q;
+      return `<li><canvas width="104" height="104" data-mini="${p.art}"></canvas><span><b style="font-size:.9rem">${p.name}</b><br><small>${yen(p.price)} × ${q}</small></span>
+      <span class="qty"><button type="button" data-q="${id}" data-d="-1" aria-label="${p.name}を1つ減らす">－</button>${q}<button type="button" data-q="${id}" data-d="1" aria-label="${p.name}を1つ増やす">＋</button></span></li>`; }).join('') || '<li style="display:block">まだ何も入っていません。下のグッズから選んでね。</li>';
+    $('#cartTotal').textContent = yen(total);
+    $$('canvas[data-mini]').forEach(c => drawArt(c, c.dataset.mini));
+  }
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-add]'); if (a) { cart[a.dataset.add] = (cart[a.dataset.add] || 0) + 1; store.set('marumasu-cart', cart); renderCart(); toast('カートに入れました'); MARU.sfx('coin');
+      const b = $('#cartBtn'); b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump');
+      if (window.gsap && !MARU.reduced) { const r = a.getBoundingClientRect(), t = b.getBoundingClientRect(); const d = document.createElement('div'); d.style.cssText = `position:fixed;z-index:70;left:${r.left + r.width / 2 - 14}px;top:${r.top}px;width:28px;height:28px;border-radius:50%;background:#F49AB5;border:2.5px solid #7A4A2E;pointer-events:none`; document.body.appendChild(d);
+        gsap.to(d, { left: t.left + t.width / 2 - 14, top: t.top + 4, scale: .4, duration: .7, ease: 'power2.in', onComplete: () => d.remove() }); gsap.to(d, { top: '-=60', duration: .3, ease: 'power2.out', yoyo: true, repeat: 1, overwrite: false }); }
+      return; }
+    const q = e.target.closest('[data-q]'); if (q) { const id = q.dataset.q; cart[id] = Math.max(0, (cart[id] || 0) + +q.dataset.d); if (!cart[id]) delete cart[id]; store.set('marumasu-cart', cart); renderCart(); }
+  });
+  $('#cartBtn').addEventListener('click', () => { renderCart(); openSheet('cart'); });
+  $('#cartReserve').addEventListener('click', () => { if (!Object.keys(cart).length) { toast('先にグッズをカートに入れてね'); return; } store.set('marumasu-reserve', { at: Date.now(), cart }); $('#cartNote').textContent = '予約リストに保存しました。ストアのオープンをお楽しみに！'; MARU.sfx('stamp'); });
+  renderCart();
+
+  // ======================================================================
+  // GAMES
+  // ======================================================================
+  const cv = $('#gameCanvas'), gx = cv.getContext('2d'), GW = 480, GH = 560;
+  let game = 'run', raf = 0, lastT = 0, gameOpen = false;
+  const best = store.get('marumasu-best', { run: 0, link: 0 });
+  const help = { run: 'タップ / スペースでジャンプ。長押しで高く、空中でもう一回押すと二段ジャンプ。インクの鳥はジャンプせずにくぐろう。', link: '同じ住人を3つ以上なぞってつなげると、ぽこんと消えます（ななめもOK）。6つ以上つなぐとクルンボムが出現。60秒でどこまでいける？' };
+  function kurunCols(){ const c = MARU.COLORS[MARU.outfit.color] || MARU.COLORS[0]; return c; }
+  function paper(scroll = 0){ gx.fillStyle = '#FFFDF8'; gx.fillRect(0, 0, GW, GH); gx.strokeStyle = '#E3EAF0'; gx.lineWidth = 1.2; const o = scroll % 24;
+    for (let x = -o; x < GW; x += 24) { gx.beginPath(); gx.moveTo(x, 0); gx.lineTo(x, GH); gx.stroke(); } for (let y = 0; y < GH; y += 24) { gx.beginPath(); gx.moveTo(0, y); gx.lineTo(GW, y); gx.stroke(); } }
+  function txt(s, x, y, size = 28, col = '#7A4A2E', align = 'center'){ gx.fillStyle = col; gx.font = `${size}px Yomogi, "Zen Maru Gothic", sans-serif`; gx.textAlign = align; gx.textBaseline = 'middle'; gx.fillText(s, x, y); }
+  function panel(lines){ gx.fillStyle = 'rgba(255,253,248,.94)'; gx.strokeStyle = '#7A4A2E'; gx.lineWidth = 4; rr(gx, 60, 150, 360, 240, 26); gx.fill(); gx.stroke(); lines.forEach((l, i) => txt(l[0], GW / 2, 200 + i * 46, l[1] || 26, l[2])); }
+  function drawKurun(x, y, s, sq = 0, happy = false){
+    const [, body, ear] = kurunCols(); gx.save(); gx.translate(x, y); gx.scale(s * (1 + sq), s * (1 - sq)); gx.lineWidth = 3.5 / s; gx.strokeStyle = '#7A4A2E';
+    gx.fillStyle = '#F6A9BE'; gx.beginPath(); gx.arc(-30, -18, 9, 0, 7); gx.lineWidth = 5 / s; gx.strokeStyle = '#F6A9BE'; gx.stroke(); gx.strokeStyle = '#7A4A2E'; gx.lineWidth = 3.5 / s;
+    gx.fillStyle = ear; [-1, 1].forEach(d => { gx.beginPath(); gx.ellipse(d * 27, -18, 8, 15, d * .7, 0, 7); gx.fill(); gx.stroke(); });
+    gx.fillStyle = body; gx.beginPath(); gx.ellipse(0, -22, 30, 24, 0, 0, 7); gx.fill(); gx.stroke();
+    gx.fillStyle = '#FFF6E6'; [[-7, -46, 8], [6, -47, 8], [0, -52, 7]].forEach(([a, b, r]) => { gx.beginPath(); gx.arc(a, b, r, 0, 7); gx.fill(); gx.stroke(); });
+    gx.fillStyle = '#3B2A22';
+    if (happy) { gx.lineWidth = 3 / s; [-10, 10].forEach(d => { gx.beginPath(); gx.arc(d + 4, -20, 4, Math.PI, 0); gx.stroke(); }); }
+    else [-6, 14].forEach(d => { gx.beginPath(); gx.ellipse(d, -22, 3.2, 4, 0, 0, 7); gx.fill(); });
+    gx.fillStyle = '#F59EA8'; [-12, 22].forEach(d => { gx.beginPath(); gx.ellipse(d, -14, 5, 3, 0, 0, 7); gx.fill(); });
+    gx.restore();
+  }
+
+  // --- ぴょんぴょんラン (one-key action)
+  const GROUND = 440;
+  const R = { st: 'ready' };
+  function runReset(){ Object.assign(R, { st: 'ready', y: GROUND, vy: 0, on: true, jumps: 0, hold: false, holdT: 0, obs: [], items: [], sp: 260, dist: 0, stars: 0, next: 520, sq: 0, t: 0, parts: [] }); }
+  function runPress(){ if (R.st === 'ready' || R.st === 'over') { runReset(); R.st = 'play'; return; }
+    if (R.on) { R.vy = -690; R.on = false; R.jumps = 1; R.hold = true; R.holdT = 0; MARU.sfx('jump'); }
+    else if (R.jumps < 2) { R.vy = -560; R.jumps = 2; R.hold = true; R.holdT = 0; MARU.sfx('jump'); for (let i = 0; i < 6; i++) R.parts.push({ x: 110, y: R.y - 10, vx: (Math.random() - .5) * 200, vy: Math.random() * 120, life: .5, c: '#F8D86E' }); } }
+  function runRelease(){ R.hold = false; }
+  function runSpawn(){
+    const k = Math.random(), x = GW + 40; const lvl = Math.min(1, R.dist / 6000);
+    if (k < .34) R.obs.push({ t: 'blot', x, w: 34, h: 26 });
+    else if (k < .55) R.obs.push({ t: 'pencil', x, w: 22, h: 74 });
+    else if (k < .72 + lvl * .05) R.obs.push({ t: 'wide', x, w: 96, h: 24 });
+    else R.obs.push({ t: 'bird', x, w: 46, h: 28, fly: true });
+    if (Math.random() < .7) { const n = 4, base = R.obs[R.obs.length - 1].t === 'bird' ? GROUND - 24 : GROUND - 120; for (let i = 0; i < n; i++) R.items.push({ x: x - 60 + i * 34, y: base - Math.sin(i / (n - 1) * Math.PI) * (R.obs[R.obs.length - 1].t === 'bird' ? 0 : 40), got: false }); }
+    R.next = (260 + Math.random() * 200) * (R.sp / 300);
+  }
+  function runUpdate(dt){
+    if (R.st !== 'play') return; R.t += dt;
+    R.sp = Math.min(560, 260 + R.t * 7); const dx = R.sp * dt; R.dist += dx;
+    // physics
+    let gr = 2000; if (R.hold && R.vy < 0 && R.holdT < .22) { gr *= .42; R.holdT += dt; }
+    R.vy += gr * dt; R.y += R.vy * dt;
+    if (R.y >= GROUND) { if (!R.on) { R.sq = .25; } R.y = GROUND; R.vy = 0; R.on = true; R.jumps = 0; }
+    R.sq *= Math.pow(.001, dt);
+    R.next -= dx; if (R.next <= 0) runSpawn();
+    R.obs.forEach(o => o.x -= dx); R.items.forEach(o => o.x -= dx); R.obs = R.obs.filter(o => o.x > -120); R.items = R.items.filter(o => o.x > -40 && !o.got);
+    // collision: kurun circle at (110, y-24) r 22
+    const cx = 110, cy = R.y - 24, cr = 21;
+    for (const o of R.obs) { const top = o.fly ? GROUND - 58 - o.h : GROUND - o.h, bot = o.fly ? GROUND - 58 : GROUND;
+      const nx = Math.max(o.x, Math.min(cx, o.x + o.w)), ny = Math.max(top, Math.min(cy, bot));
+      if ((cx - nx) ** 2 + (cy - ny) ** 2 < cr * cr) { R.st = 'over'; MARU.sfx('hit'); const sc = score(); if (sc > best.run) { best.run = sc; store.set('marumasu-best', best); R.newBest = true; } else R.newBest = false; } }
+    R.items.forEach(it => { if ((it.x - cx) ** 2 + (it.y - cy) ** 2 < 30 * 30) { it.got = true; R.stars++; MARU.sfx('coin'); for (let i = 0; i < 5; i++) R.parts.push({ x: it.x, y: it.y, vx: (Math.random() - .5) * 220, vy: -Math.random() * 200, life: .45, c: '#F49AB5' }); } });
+    R.parts.forEach(p => { p.x += p.vx * dt - dx; p.y += p.vy * dt; p.vy += 600 * dt; p.life -= dt; }); R.parts = R.parts.filter(p => p.life > 0);
+  }
+  const score = () => Math.floor(R.dist / 10) + R.stars * 20;
+  function runDraw(){
+    paper(R.dist || 0);
+    // doodle hills in back
+    gx.strokeStyle = '#B9E8CF'; gx.lineWidth = 4; gx.beginPath(); for (let x = 0; x <= GW; x += 8) { const w = (x + (R.dist || 0) * .3); gx.lineTo(x, 330 + Math.sin(w / 70) * 18 + Math.sin(w / 31) * 6); } gx.stroke();
+    // ground
+    gx.strokeStyle = '#7A4A2E'; gx.lineWidth = 5; gx.beginPath(); for (let x = 0; x <= GW; x += 10) gx.lineTo(x, GROUND + 2 + Math.sin((x + (R.dist || 0)) / 23) * 1.5); gx.stroke();
+    gx.fillStyle = '#FBE29A'; gx.globalAlpha = .45; gx.fillRect(0, GROUND + 6, GW, GH - GROUND); gx.globalAlpha = 1;
+    // items
+    R.items.forEach(it => { star(it.x, it.y + Math.sin(R.t * 6 + it.x / 40) * 3, 11); });
+    // obstacles
+    R.obs.forEach(o => {
+      gx.lineWidth = 3.5; gx.strokeStyle = '#7A4A2E';
+      if (o.t === 'blot' || o.t === 'wide') { gx.fillStyle = '#5B6B8C'; const n = o.t === 'wide' ? 3 : 1; for (let i = 0; i < n; i++) { const bx = o.x + (i + .5) * o.w / n; gx.beginPath(); gx.ellipse(bx, GROUND - o.h / 2 + 2, o.w / n / 2 + 2, o.h / 2 + 1, 0, 0, 7); gx.fill(); gx.stroke(); gx.fillStyle = '#fff'; gx.beginPath(); gx.arc(bx - 5, GROUND - o.h + 8, 3, 0, 7); gx.fill(); gx.fillStyle = '#5B6B8C'; } }
+      if (o.t === 'pencil') { gx.fillStyle = '#F8D86E'; gx.fillRect(o.x, GROUND - o.h + 16, o.w, o.h - 16); gx.strokeRect(o.x, GROUND - o.h + 16, o.w, o.h - 16); gx.fillStyle = '#FBE7C6'; gx.beginPath(); gx.moveTo(o.x, GROUND - o.h + 16); gx.lineTo(o.x + o.w / 2, GROUND - o.h); gx.lineTo(o.x + o.w, GROUND - o.h + 16); gx.closePath(); gx.fill(); gx.stroke(); gx.fillStyle = '#F49AB5'; gx.fillRect(o.x, GROUND - 12, o.w, 12); gx.strokeRect(o.x, GROUND - 12, o.w, 12); }
+      if (o.t === 'bird') { const by = GROUND - 58 - o.h / 2 + Math.sin(R.t * 8) * 2; gx.fillStyle = '#5B6B8C'; gx.beginPath(); gx.ellipse(o.x + o.w / 2, by, o.w / 2, o.h / 2, 0, 0, 7); gx.fill(); gx.stroke();
+        gx.beginPath(); gx.moveTo(o.x + 14, by - 6); gx.quadraticCurveTo(o.x + 22, by - 26 - Math.sin(R.t * 16) * 8, o.x + 32, by - 6); gx.stroke(); gx.fillStyle = '#fff'; gx.beginPath(); gx.arc(o.x + 10, by - 2, 4, 0, 7); gx.fill(); }
+    });
+    // kurun
+    const run = R.st === 'play' && R.on; const bob = run ? Math.abs(Math.sin(R.t * 18)) * 4 : 0;
+    gx.fillStyle = 'rgba(122,74,46,.15)'; gx.beginPath(); gx.ellipse(110, GROUND + 2, 24 - Math.min(14, (GROUND - R.y) / 10), 5, 0, 0, 7); gx.fill();
+    drawKurun(110, (R.y || GROUND) - bob, 1, R.on ? R.sq : -.12, R.st === 'over');
+    R.parts.forEach(p => { gx.fillStyle = p.c; gx.globalAlpha = Math.max(0, p.life * 2); gx.beginPath(); gx.arc(p.x, p.y, 4, 0, 7); gx.fill(); }); gx.globalAlpha = 1;
+    // hud
+    txt('スコア ' + (R.dist ? score() : 0), 20, 32, 26, '#7A4A2E', 'left'); txt('ベスト ' + best.run, GW - 20, 32, 20, '#A9805F', 'right'); txt('★ ' + (R.stars || 0), 20, 64, 20, '#E9963C', 'left');
+    if (R.st === 'ready') panel([['ぴょんぴょんラン', 36], ['インクをよけて、星をあつめよう', 20], ['タップ / スペースでスタート', 22, '#EC8FA8']]);
+    if (R.st === 'over') panel([['おしまい！', 36], ['スコア ' + score() + (R.newBest ? '  ベスト更新！' : ''), 26, '#EC8FA8'], ['あつめた星 ' + R.stars, 22], ['タップでもう一回', 22]]);
+  }
+  function star(x, y, r){ gx.fillStyle = '#F8D86E'; gx.strokeStyle = '#7A4A2E'; gx.lineWidth = 3; gx.beginPath(); for (let i = 0; i < 10; i++) { const a = i / 10 * Math.PI * 2 - Math.PI / 2, q = i % 2 ? r * .45 : r; gx.lineTo(x + Math.cos(a) * q, y + Math.sin(a) * q); } gx.closePath(); gx.fill(); gx.stroke(); }
+
+  // --- つなげて ぽこん (link & pop puzzle)
+  const COLS = 6, ROWS = 7, CELL = 66, OX = (GW - COLS * CELL) / 2, OY = 84;
+  const TYPES = ['pipi', 'pocha', 'koron', 'moly', 'yume'], BOMB = 5;
+  const L = { st: 'ready' };
+  const cellC = (c, r) => [OX + c * CELL + CELL / 2, OY + r * CELL + CELL / 2];
+  function newPiece(c, r, fromY){ return { t: Math.floor(Math.random() * TYPES.length), y: fromY, vy: 0, c, r, pop: 0 }; }
+  function linkReset(){ Object.assign(L, { st: 'ready', grid: [], score: 0, time: 60, chain: [], combo: 0, lastClear: -9, t: 0, floats: [], drag: false });
+    for (let c = 0; c < COLS; c++) { L.grid[c] = []; for (let r = 0; r < ROWS; r++) L.grid[c][r] = newPiece(c, r, cellC(c, r)[1] - 500 - r * 40); }
+    ensureMoves(); }
+  function groups(){ const seen = {}, out = []; for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++) { const k = c + ',' + r; if (seen[k]) continue; const t = L.grid[c][r].t; if (t === BOMB) { out.push(9); continue; } let n = 0; const st = [[c, r]]; seen[k] = 1;
+      while (st.length) { const [a, b] = st.pop(); n++; for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) { const x = a + i, y = b + j, kk = x + ',' + y; if (x < 0 || y < 0 || x >= COLS || y >= ROWS || seen[kk] || L.grid[x][y].t !== t) continue; seen[kk] = 1; st.push([x, y]); } } out.push(n); } return out; }
+  function ensureMoves(){ let k = 0; while (!groups().some(n => n >= 3) && k++ < 20) L.grid.forEach(col => col.forEach(p => p.t = Math.floor(Math.random() * TYPES.length))); }
+  function pickCell(px, py, strict){ const c = Math.floor((px - OX) / CELL), r = Math.floor((py - OY) / CELL); if (c < 0 || r < 0 || c >= COLS || r >= ROWS) return null; const [x, y] = cellC(c, r); if (strict && Math.hypot(px - x, py - y) > CELL * .46) return null; return [c, r]; }
+  function collapse(){ for (let c = 0; c < COLS; c++) { const col = L.grid[c].filter(Boolean); let miss = ROWS - col.length; const fresh = []; for (let i = 0; i < miss; i++) fresh.push(newPiece(c, i, OY - (miss - i) * CELL - 20)); L.grid[c] = [...fresh, ...col]; L.grid[c].forEach((p, r) => { p.r = r; p.c = c; }); } ensureMoves(); }
+  function floatTxt(x, y, s, col = '#EC8FA8'){ L.floats.push({ x, y, s, col, life: 1 }); }
+  function clearChain(){
+    const ch = L.chain, n = ch.length; if (n < 3) { L.chain = []; return; }
+    if (L.t - L.lastClear < 2.2) L.combo++; else L.combo = 0; L.lastClear = L.t;
+    const pts = Math.round(n * n * 10 * (1 + L.combo * .25)); L.score += pts;
+    const [lc, lr] = ch[n - 1]; const [fx, fy] = cellC(lc, lr); floatTxt(fx, fy - 20, '+' + pts + (L.combo ? '  ' + (L.combo + 1) + 'コンボ' : ''));
+    ch.forEach(([c, r], i) => { const [x, y] = cellC(c, r); burstAt(x, y, TYPES[L.grid[c][r].t]); if (!(n >= 6 && i === n - 1)) L.grid[c][r] = null; });
+    if (n >= 6) { L.grid[lc][lr].t = BOMB; floatTxt(fx, fy + 20, 'クルンボム！', '#E9963C'); }
+    MARU.sfx('pop'); L.chain = []; collapse();
+  }
+  function explode(c0, r0){ let cnt = 0; const q = [[c0, r0]]; const hit = new Set();
+    while (q.length) { const [c, r] = q.pop(); for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) { const x = c + i, y = r + j, k = x + ',' + y; if (x < 0 || y < 0 || x >= COLS || y >= ROWS || hit.has(k) || !L.grid[x][y]) continue; hit.add(k); if (L.grid[x][y].t === BOMB && (x !== c || y !== r)) q.push([x, y]); } }
+    hit.forEach(k => { const [x, y] = k.split(',').map(Number); const [px, py] = cellC(x, y); burstAt(px, py, L.grid[x][y].t === BOMB ? 'kurun' : TYPES[L.grid[x][y].t]); L.grid[x][y] = null; cnt++; });
+    const pts = cnt * 50; L.score += pts; const [fx, fy] = cellC(c0, r0); floatTxt(fx, fy, 'ドカン +' + pts, '#E9963C'); MARU.sfx('bomb'); collapse(); }
+  const sparks = [];
+  function burstAt(x, y, id){ const col = (byId[id] || byId.kurun).col; for (let i = 0; i < 6; i++) { const a = Math.random() * 7; sparks.push({ x, y, vx: Math.cos(a) * 180, vy: Math.sin(a) * 180 - 80, life: .5, c: col }); } }
+  function linkPos(e){ const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * GW, (e.clientY - r.top) / r.height * GH]; }
+  function linkDown(e){ if (L.st !== 'play') { linkReset(); L.st = 'play'; return; } const [x, y] = linkPos(e); const p = pickCell(x, y, false); if (!p) return; const pc = L.grid[p[0]][p[1]]; if (!pc) return;
+    if (pc.t === BOMB) { explode(p[0], p[1]); return; } L.chain = [p]; L.drag = true; MARU.sfx('chain', 0); }
+  function linkMove(e){ if (!L.drag || L.st !== 'play') return; const [x, y] = linkPos(e); const p = pickCell(x, y, true); if (!p) return; const ch = L.chain, last = ch[ch.length - 1];
+    if (p[0] === last[0] && p[1] === last[1]) return;
+    if (ch.length > 1 && p[0] === ch[ch.length - 2][0] && p[1] === ch[ch.length - 2][1]) { ch.pop(); return; }
+    if (Math.max(Math.abs(p[0] - last[0]), Math.abs(p[1] - last[1])) !== 1) return;
+    if (ch.some(q => q[0] === p[0] && q[1] === p[1])) return;
+    const a = L.grid[p[0]][p[1]], b = L.grid[ch[0][0]][ch[0][1]]; if (!a || a.t !== b.t) return;
+    ch.push(p); MARU.sfx('chain', ch.length); }
+  function linkUp(){ if (L.drag) { L.drag = false; clearChain(); } }
+  function linkUpdate(dt){ if (L.st === 'play') { L.t += dt; L.time -= dt; if (L.time <= 0) { L.time = 0; L.st = 'over'; L.drag = false; L.chain = []; if (L.score > best.link) { best.link = L.score; store.set('marumasu-best', best); L.newBest = true; } else L.newBest = false; MARU.sfx('stamp'); } }
+    if (!L.grid.length) return;
+    L.grid.forEach(col => col.forEach(p => { if (!p) return; const ty = cellC(p.c, p.r)[1]; if (p.y < ty) { p.vy += 2600 * dt; p.y += p.vy * dt; if (p.y >= ty) { p.y = ty; p.vy = p.vy > 380 ? -p.vy * .22 : 0; } } else if (p.vy < 0) { p.vy += 2600 * dt; p.y += p.vy * dt; } else { p.y = ty; p.vy = 0; } }));
+    L.floats.forEach(f => { f.y -= 40 * dt; f.life -= dt * .8; }); L.floats = L.floats.filter(f => f.life > 0);
+    sparks.forEach(s => { s.x += s.vx * dt; s.y += s.vy * dt; s.vy += 500 * dt; s.life -= dt; }); for (let i = sparks.length - 1; i >= 0; i--) if (sparks[i].life <= 0) sparks.splice(i, 1); }
+  function linkDraw(){
+    paper(0);
+    if (!L.grid.length) linkReset();
+    gx.fillStyle = '#FFF1F4'; gx.strokeStyle = '#7A4A2E'; gx.lineWidth = 4; rr(gx, OX - 8, OY - 8, COLS * CELL + 16, ROWS * CELL + 16, 22); gx.fill(); gx.stroke();
+    gx.save(); gx.beginPath(); gx.rect(OX - 8, OY - 8, COLS * CELL + 16, ROWS * CELL + 16); gx.clip();
+    const sel = new Set(L.chain.map(p => p.join(',')));
+    L.grid.forEach(col => col.forEach(p => { if (!p) return; const [x] = cellC(p.c, p.r); const id = p.t === BOMB ? 'kurun' : TYPES[p.t]; const s = sel.has(p.c + ',' + p.r) ? 1.12 : 1;
+      const rad = CELL * .44 * s; gx.fillStyle = (byId[id]).bg; gx.beginPath(); gx.arc(x, p.y, rad, 0, 7); gx.fill();
+      if (p.t === BOMB) { gx.strokeStyle = '#F8D86E'; gx.lineWidth = 5 + Math.sin(L.t * 8) * 2; gx.stroke(); }
+      const im = img(id); if (im.complete) gx.drawImage(im, x - rad * 1.05, p.y - rad * 1.08, rad * 2.1, rad * 2.1); }));
+    gx.restore();
+    if (L.chain.length) { gx.strokeStyle = 'rgba(236,143,168,.85)'; gx.lineWidth = 12; gx.lineCap = 'round'; gx.lineJoin = 'round'; gx.beginPath(); L.chain.forEach(([c, r]) => { const [x, y] = cellC(c, r); gx.lineTo(x, y); }); gx.stroke(); txt(String(L.chain.length), cellC(...L.chain[L.chain.length - 1])[0], cellC(...L.chain[L.chain.length - 1])[1] - 40, 30, '#EC8FA8'); }
+    sparks.forEach(s => { gx.globalAlpha = Math.max(0, s.life * 2); gx.fillStyle = s.c; gx.strokeStyle = '#7A4A2E'; gx.lineWidth = 2; gx.beginPath(); gx.arc(s.x, s.y, 6, 0, 7); gx.fill(); gx.stroke(); }); gx.globalAlpha = 1;
+    L.floats.forEach(f => { gx.globalAlpha = Math.min(1, f.life * 2); txt(f.s, f.x, f.y, 24, f.col); }); gx.globalAlpha = 1;
+    txt('スコア ' + L.score, 22, 40, 26, '#7A4A2E', 'left'); txt('ベスト ' + best.link, GW - 22, 26, 18, '#A9805F', 'right');
+    gx.fillStyle = '#EDE3D8'; rr(gx, GW - 182, 42, 160, 16, 8); gx.fill(); gx.fillStyle = L.time < 10 ? '#EC8FA8' : '#9ED98A'; rr(gx, GW - 182, 42, Math.max(10, 160 * L.time / 60), 16, 8); gx.fill(); gx.strokeStyle = '#7A4A2E'; gx.lineWidth = 2.5; rr(gx, GW - 182, 42, 160, 16, 8); gx.stroke();
+    if (L.st === 'ready') panel([['つなげて ぽこん', 34], ['同じ住人を3つ以上なぞろう', 20], ['6つ以上でクルンボム', 20, '#E9963C'], ['タップでスタート', 22, '#EC8FA8']]);
+    if (L.st === 'over') panel([['タイムアップ！', 34], ['スコア ' + L.score + (L.newBest ? '  ベスト更新！' : ''), 26, '#EC8FA8'], ['タップでもう一回', 22]]);
+  }
+
+  // --- loop & input
+  function loop(t){ const dt = Math.min(.033, (t - lastT) / 1000 || 0); lastT = t; if (game === 'run') { runUpdate(dt); runDraw(); } else { linkUpdate(dt); linkDraw(); } if (gameOpen) raf = requestAnimationFrame(loop); }
+  function setGame(g){ game = g; $$('.tabs [data-game]').forEach(b => b.setAttribute('aria-selected', b.dataset.game === g)); $('#gameHelp').textContent = help[g]; if (g === 'run') runReset(); else linkReset(); }
+  $$('.tabs [data-game]').forEach(b => b.addEventListener('click', () => setGame(b.dataset.game)));
+  $('#sheet-game').addEventListener('open', () => { gameOpen = true; setGame(game); lastT = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(loop); });
+  $('#sheet-game').addEventListener('close', () => { gameOpen = false; cancelAnimationFrame(raf); });
+  cv.addEventListener('pointerdown', e => { e.preventDefault(); cv.setPointerCapture(e.pointerId); if (game === 'run') runPress(); else linkDown(e); });
+  cv.addEventListener('pointermove', e => { if (game === 'link') linkMove(e); });
+  cv.addEventListener('pointerup', () => { if (game === 'run') runRelease(); else linkUp(); });
+  cv.addEventListener('pointercancel', () => { runRelease(); linkUp(); });
+  addEventListener('keydown', e => { if (!gameOpen || game !== 'run') return; if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'Enter') { e.preventDefault(); if (!e.repeat) runPress(); } });
+  addEventListener('keyup', e => { if (gameOpen && game === 'run' && (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'Enter')) runRelease(); });
+  runReset();
 })();
 </script>
 
@@ -747,7 +1379,6 @@ const flowers = [];
     spin.userData.flower = flowers.length;
     flowers.push({ f, sway, spin, fu, phase: rnd(0, 6), busy: false });
   });
-  P.add(bush(-1.6, -1.55, .8, '#A8E0B4'));
 }
 // pond
 const stones = [], ripplesScroll = [];
@@ -768,7 +1399,7 @@ const stones = [], ripplesScroll = [];
     const r = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0, depthWrite: false }));
     r.rotation.x = -Math.PI / 2; r.position.set(s.position.x, .03, s.position.z); P.add(r); ripplesScroll.push(r);
   });
-  P.add(bush(1.55, 1.45, .85, '#A8E0B4')); P.add(tree(-1.5, -1.45, .8, '#9AD7C6'));
+  P.add(tree(-1.5, -1.45, .8, '#9AD7C6'));
 }
 // hill
 const flags = [];
@@ -806,7 +1437,7 @@ const flags = [];
     const seg = PATH_HILL[ci - 1]; // reached at end of segment leading to this corner
     flags.push({ g, hinge, fu: seg.t1 - 0.04, wave: 0, phase: rnd(0, 6) });
   });
-  P.add(tree(1.5, 1.4, .9, '#F6B94A')); P.add(bush(-1.5, 1.45, .8, '#F3C55A'));
+  P.add(tree(1.5, 1.4, .9, '#F6B94A'));
 }
 // side tiles
 {
@@ -972,8 +1603,149 @@ function camDesired(p, time) {
   if (mob) { desired.ox = 0; desired.oy = lerp(.2, -.16, heroMix) * (1 - zOut) + (-.24) * zOut; }
   else { desired.ox = lerp(.17, .2, heroMix) * (1 - zOut); desired.oy = -.2 * zOut; }
   if (reduced) { desired.ox = mob ? 0 : .17; desired.oy = mob ? .18 : 0; }
+  if (free.mode) { Object.assign(desired, { tx: 0, ty: .4, tz: .2, az: free.az, el: free.el, ox: 0, oy: .05, hh: Math.max(15 / 2, 19 / 2 / asp) * free.zoom }); }
 }
 const cam = { tx: 0, ty: .4, tz: 0, az: Math.PI / 4, el: .62, hh: 9, ox: .17, oy: 0 };
+
+// ---------- residents (original characters, one per square)
+const EYE_M = new THREE.MeshBasicMaterial({ color: C.eye }), WHITE_M = new THREE.MeshBasicMaterial({ color: '#ffffff' });
+const CHEEK_M = new THREE.MeshBasicMaterial({ color: C.cheek, transparent: true, opacity: .9 }), MOUTH_M = new THREE.MeshBasicMaterial({ color: LINE }), TONGUE_M = new THREE.MeshBasicMaterial({ color: '#E86F7E' });
+function darker(hex, k = .12) { const c = new THREE.Color(hex), h = {}; c.getHSL(h); c.setHSL(h.h, Math.min(1, h.s + .12), Math.max(0, h.l - k)); return '#' + c.getHexString(); }
+const ell = (x, y, a, b, c) => Math.sqrt(Math.max(0, 1 - (x / a) ** 2 - (y / b) ** 2)) * c;
+function addFace(parent, o) {
+  const front = o.flat ? (x, y) => o.flat : (x, y) => ell(x, y, .36 * 1.12, .36 * .9, .36);
+  const sx = o.eyeX ?? .12, ey = o.eyeY ?? .03;
+  [-1, 1].forEach(sd => {
+    const x = sd * sx;
+    if (o.eyes === 'sleepy') { const e = new THREE.Mesh(new THREE.TorusGeometry(.042, .013, 6, 10, Math.PI), EYE_M); e.rotation.z = Math.PI; e.position.set(x, ey + .02, front(x, ey) - .005); parent.add(e); }
+    else {
+      const big = o.eyes === 'sparkle' ? 1.25 : 1;
+      const e = new THREE.Mesh(new THREE.SphereGeometry(.043 * big, 10, 8), EYE_M); e.scale.set(1, 1.15, .55); e.position.set(x, ey, front(x, ey) - .01); parent.add(e);
+      const h = new THREE.Mesh(new THREE.SphereGeometry(.016 * big, 6, 5), WHITE_M); h.position.set(x + .014, ey + .02, front(x, ey) + .012); parent.add(h);
+      if (big > 1) { const h2 = new THREE.Mesh(new THREE.SphereGeometry(.008, 5, 4), WHITE_M); h2.position.set(x - .012, ey - .018, front(x, ey) + .012); parent.add(h2); }
+    }
+    const cx = sd * (sx + .115), cy = ey - .07;
+    const ck = new THREE.Mesh(new THREE.CircleGeometry(.058, 12), CHEEK_M); ck.position.set(cx, cy, front(cx, cy) + .004);
+    ck.lookAt(o.flat ? new THREE.Vector3(cx, cy, 5) : ck.position.clone().multiplyScalar(2)); ck.scale.set(1.25, .8, 1); parent.add(ck);
+  });
+  const my = ey - .075;
+  if (o.mouth === 'o') { const m = new THREE.Mesh(new THREE.SphereGeometry(.028, 8, 6), TONGUE_M); m.scale.set(1, 1.1, .5); m.position.set(0, my, front(0, my)); parent.add(m); }
+  else if (o.mouth === 'smile') { const m = new THREE.Mesh(new THREE.TorusGeometry(.035, .01, 5, 10, Math.PI), MOUTH_M); m.rotation.z = Math.PI; m.position.set(0, my + .015, front(0, my) + .002); parent.add(m); }
+  else [-.022, .022].forEach(x => { const m = new THREE.Mesh(new THREE.TorusGeometry(.022, .009, 5, 8, Math.PI), MOUTH_M); m.rotation.z = Math.PI; m.position.set(x, my + .01, front(x, my) + .002); parent.add(m); });
+}
+function starGeo(r = .12, d = .05) { const s = new THREE.Shape(); for (let i = 0; i < 10; i++) { const a = i / 10 * Math.PI * 2 + Math.PI / 2, q = i % 2 ? r * .45 : r; i ? s.lineTo(Math.cos(a) * q, Math.sin(a) * q) : s.moveTo(Math.cos(a) * q, Math.sin(a) * q); } const g = new THREE.ExtrudeGeometry(s, { depth: d, bevelEnabled: true, bevelSize: .015, bevelThickness: .015, bevelSegments: 1 }); g.center(); return g; }
+function makeResident(d) {
+  const root = new THREE.Group(), idle = new THREE.Group(), hopG = new THREE.Group(); root.add(idle); idle.add(hopG);
+  const col = d.col, dk = darker(col, d.id === 'masu' ? .18 : .1);
+  const B = (geo, c, ol = .03) => { const m = mk(geo, c, { ol }); hopG.add(m); return m; };
+  let body;
+  if (d.id === 'masu') { body = new THREE.Mesh(new RoundedBoxGeometry(.74, .62, .66, 3, .2), new THREE.MeshToonMaterial({ map: tileTex('#FFFDF8', '#CFDAE4'), gradientMap: grad })); body.castShadow = true; outline(body, .035); hopG.add(body); }
+  else { const g = new THREE.SphereGeometry(.36, 20, 14); g.scale(1.12, .9, 1); body = B(g, col, .035); }
+  body.position.y = .33;
+  [-1, 1].forEach(sd => { const g = new THREE.SphereGeometry(.1, 8, 6); g.scale(1, .6, 1.3); const f = B(g, dk, .02); f.position.set(sd * .16, .05, .12); });
+  const face = new THREE.Group(); face.position.y = .33; hopG.add(face);
+  const A = new THREE.Group(); hopG.add(A); // accessories
+  const add = (geo, c, x, y, z, ol = .025) => { const m = mk(geo, c, { ol }); m.position.set(x, y, z); A.add(m); return m; };
+  switch (d.id) {
+    case 'masu': {
+      addFace(face, { flat: .335, mouth: 'w' });
+      [-1, 1].forEach(sd => add(new RoundedBoxGeometry(.16, .16, .1, 2, .04), '#FFFDF8', sd * .24, .7, 0).rotation.z = sd * -.15);
+      const pen = new THREE.Group(); pen.position.set(.08, .74, -.04); pen.rotation.z = -.45; A.add(pen);
+      const b = mk(new THREE.CylinderGeometry(.04, .04, .3, 6), '#F8D86E', { ol: .015 }); b.position.y = .1; pen.add(b);
+      const tip = mk(new THREE.ConeGeometry(.04, .09, 6), '#FBE7C6', { ol: .015 }); tip.position.y = .3; pen.add(tip);
+      const er = mk(new THREE.CylinderGeometry(.042, .042, .06, 6), '#F49AB5', { ol: .015 }); er.position.y = -.07; pen.add(er);
+      break; }
+    case 'pipi': {
+      addFace(face, { eyes: 'sparkle', mouth: 'w' });
+      const crown = new THREE.Group(); crown.position.set(0, .62, 0); A.add(crown);
+      for (let i = 0; i < 6; i++) { const g = new THREE.Group(); g.rotation.y = i / 6 * Math.PI * 2; const pg = new THREE.SphereGeometry(.09, 8, 6); pg.scale(.8, .4, 1.4); const p = mk(pg, i % 2 ? '#FBE0E8' : '#FFFFFF', { ol: .018 }); p.position.set(0, .03, .13); p.rotation.x = -.55; g.add(p); crown.add(g); }
+      const c = mk(new THREE.SphereGeometry(.07, 10, 8), '#F8D86E', { ol: .018 }); c.position.y = .07; crown.add(c);
+      root.userData.crown = crown; break; }
+    case 'pocha': {
+      addFace(face, { mouth: 'o' });
+      add(new THREE.ConeGeometry(.2, .34, 14), col, 0, .71, 0, .03);
+      const bub = new THREE.Mesh(new THREE.SphereGeometry(.07, 10, 8), new THREE.MeshToonMaterial({ color: '#ffffff', gradientMap: grad, transparent: true, opacity: .75 })); bub.position.set(.3, .78, .08); A.add(bub); root.userData.bubble = bub;
+      break; }
+    case 'koron': {
+      addFace(face, { mouth: 'smile' });
+      add(new THREE.CylinderGeometry(.016, .016, .22, 5), LINE, 0, .74, 0, 0);
+      const st = add(starGeo(.11, .05), '#F8A23C', 0, .92, 0, .02); root.userData.star = st; break; }
+    case 'moly': {
+      addFace(face, { mouth: 'w' });
+      const g = new THREE.SphereGeometry(.3, 12, 8); g.scale(1.4, .22, 1.05); const l = add(g, '#6CC27A', 0, .63, .02, .025); l.rotation.z = .12; l.rotation.x = .08;
+      add(new THREE.CylinderGeometry(.02, .025, .14, 5), '#6CC27A', .02, .74, 0, .012).rotation.z = -.3; break; }
+    case 'yume': {
+      addFace(face, { eyes: 'sleepy', mouth: 'o' });
+      const m = add(new THREE.TorusGeometry(.12, .045, 8, 18, Math.PI * 1.25), '#FFE58A', .06, .76, 0, .02); m.rotation.z = .5;
+      [[-.2, .82, .1], [.32, .7, -.05]].forEach(([x, y, z]) => add(new THREE.OctahedronGeometry(.035, 0), '#FFF2A6', x, y, z, 0));
+      break; }
+    case 'mochimo': {
+      addFace(face, { mouth: 'w', eyeX: .11 });
+      [-1, 1].forEach(sd => { const g = new THREE.SphereGeometry(.1, 10, 8); g.scale(1, 1, .6); add(g, dk, sd * .22, .6, 0); });
+      const bow = new THREE.Group(); bow.position.set(.24, .7, .02); bow.rotation.z = -.3; A.add(bow);
+      [-1, 1].forEach(sd => { const c = mk(new THREE.ConeGeometry(.055, .1, 7), '#F49AB5', { ol: .012 }); c.rotation.z = sd * Math.PI / 2; c.position.x = sd * .05; bow.add(c); });
+      break; }
+    case 'sora': {
+      addFace(face, { eyes: 'sparkle', mouth: 'smile' });
+      const wings = [];
+      [-1, 1].forEach(sd => { const w = new THREE.Group(); w.position.set(sd * .4, .4, -.06); A.add(w); wings.push(w);
+        [[0, 0, 0, .1], [sd * .09, .04, -.02, .08], [sd * .05, -.06, .01, .075]].forEach(([x, y, z, r]) => { const m = mk(new THREE.SphereGeometry(r, 10, 8), '#FFFFFF', { ol: .018 }); m.position.set(x, y, z); w.add(m); }); });
+      root.userData.wings = wings;
+      [[-.05, .66, 0, .07], [.06, .67, .01, .065]].forEach(([x, y, z, r]) => add(new THREE.SphereGeometry(r, 10, 8), '#FFFFFF', x, y, z, .018));
+      break; }
+    case 'poko': {
+      addFace(face, { mouth: 'o', eyeY: .0 });
+      const cg = new THREE.SphereGeometry(.34, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2); cg.scale(1.15, .78, 1.15);
+      const cap = add(cg, '#F28B82', 0, .45, 0, .03); cap.rotation.z = .08;
+      [[.0, .26, .1], [.2, .17, .14], [-.2, .15, .16], [.08, .2, -.2], [-.18, .18, -.12]].forEach(([x, y, z]) => { const s = mk(new THREE.SphereGeometry(.045, 8, 6), '#FFFDF8', { ol: .01 }); s.scale.set(1, .5, 1); s.position.set(x, y, z); cap.add(s); });
+      break; }
+  }
+  root.traverse(o => { if (o.isMesh && o.material !== OUT) o.castShadow = true; });
+  return { d, root, idle, hop: hopG, near: false, phase: rnd(0, 6), busy: false };
+}
+const RESPOS = { masu: ['plaza', .55, -1.2], pipi: ['flower', -1.5, -1.45], pocha: ['pond', 1.45, 1.35], koron: ['hill', -1.45, 1.35], moly: ['nw', -.6, .2], yume: ['ne', .95, .3], mochimo: ['sw', -1.1, -.95], sora: ['s', -1.25, -1.15], poko: ['se', .95, 1.25] };
+const residents = [];
+MARU.RES.filter(d => d.id !== 'kurun').forEach((d, i) => {
+  const r = makeResident(d); const [tk, x, z] = RESPOS[d.id];
+  r.root.position.set(x, 0, z); r.home = Math.PI / 4 + rnd(-.35, .35); r.root.rotation.y = r.home; r.root.scale.setScalar(1.05);
+  T[tk].props.add(r.root);
+  r.root.traverse(o => { if (o.isMesh) { o.userData.kind = 'res'; o.userData.res = i; } });
+  residents.push(r);
+});
+function residentJump(r, h = .8, spin = true) {
+  if (r.busy) return; r.busy = true;
+  const tl = gsap.timeline({ onComplete: () => { r.busy = false; r.hop.rotation.y = 0; } })
+    .to(r.hop.scale, { y: .7, x: 1.18, z: 1.18, duration: .09 })
+    .to(r.hop.position, { y: h, duration: .28, ease: 'power2.out' })
+    .to(r.hop.scale, { y: 1.12, x: .92, z: .92, duration: .14 }, '<')
+    .to(r.hop.position, { y: 0, duration: .3, ease: 'bounce.out' })
+    .to(r.hop.scale, { y: 1, x: 1, z: 1, duration: .4, ease: 'elastic.out(1,.4)' }, '-=.1');
+  if (spin) tl.to(r.hop.rotation, { y: Math.PI * 2, duration: .55, ease: 'power2.inOut' }, .09);
+  if (r.root.userData.crown) gsap.fromTo(r.root.userData.crown.scale, { x: .6, z: .6 }, { x: 1, z: 1, duration: .8, ease: 'elastic.out(1,.3)' });
+}
+function residentTap(r) { residentJump(r, 1, true); r.root.getWorldPosition(v3); v3.y += .9; burst(v3, 6, [r.d.col, '#F8D86E', '#ffffff']); MARU.sfx('spin'); MARU.meet(r.d.id); }
+
+// ---------- Kurun: own materials + hats (きせかえ)
+const kBodyMat = new THREE.MeshToonMaterial({ color: C.body, gradientMap: grad }), kEarMat = new THREE.MeshToonMaterial({ color: C.ear, gradientMap: grad });
+kurun.traverse(o => { if (o.isMesh && o.material === mat(C.body)) o.material = kBodyMat; else if (o.isMesh && o.material === mat(C.ear)) o.material = kEarMat; });
+const tuftG = bodyG.children.find(c => c.isGroup && c.children.length === 3 && c.position.y > .8);
+const hats = {};
+{
+  const H = (name, build) => { const g = new THREE.Group(); g.visible = false; build(g); bodyG.add(g); g.traverse(o => { if (o.isMesh && o.material !== OUT) { o.userData.kind = 'kurun'; o.castShadow = true; } }); hats[name] = g; };
+  const m = (g, geo, c, x, y, z, ol = .025) => { const o = mk(geo, c, { ol }); o.position.set(x, y, z); g.add(o); return o; };
+  H('beret', g => { const s = new THREE.SphereGeometry(.34, 14, 8); s.scale(1, .33, 1); const b = m(g, s, C.coral, 0, 1, 0); b.rotation.z = .22; m(g, new THREE.SphereGeometry(.05, 6, 5), C.coral, -.04, 1.13, 0, .015); });
+  H('ribbon', g => { const r = new THREE.Group(); r.position.set(.18, .98, .05); r.rotation.z = -.35; g.add(r); [-1, 1].forEach(sd => { const c = mk(new THREE.ConeGeometry(.11, .2, 8), '#F49AB5', { ol: .02 }); c.rotation.z = sd * Math.PI / 2; c.position.x = sd * .1; r.add(c); }); r.add(mk(new THREE.SphereGeometry(.065, 8, 6), '#F49AB5', { ol: .02 })); });
+  H('crown', g => { const band = new THREE.Mesh(new THREE.CylinderGeometry(.21, .23, .13, 10, 1, true), new THREE.MeshToonMaterial({ color: '#F8D86E', gradientMap: grad, side: THREE.DoubleSide })); band.position.y = 1.02; g.add(band);
+    for (let i = 0; i < 5; i++) { const a = i / 5 * Math.PI * 2; m(g, new THREE.ConeGeometry(.05, .12, 5), '#F8D86E', Math.sin(a) * .21, 1.14, Math.cos(a) * .21, .012); m(g, new THREE.SphereGeometry(.03, 6, 5), i % 2 ? '#F49AB5' : '#A8DDF4', Math.sin(a) * .225, 1.02, Math.cos(a) * .225, 0); } });
+  H('leaf', g => { const s = new THREE.SphereGeometry(.2, 10, 6); s.scale(1.5, .2, .75); const l = m(g, s, '#6CC27A', .1, 1.05, 0); l.rotation.z = .55; m(g, new THREE.CylinderGeometry(.015, .02, .12, 5), '#6CC27A', -.08, .98, 0, .01); });
+  H('straw', g => { m(g, new THREE.CylinderGeometry(.46, .46, .03, 22), '#F6DFA6', 0, .92, 0, .02); const d = new THREE.SphereGeometry(.25, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2); m(g, d, '#F6DFA6', 0, .92, 0, .02); m(g, new THREE.CylinderGeometry(.252, .252, .06, 18), '#E57C73', 0, .96, 0, 0); });
+}
+function setOutfit(o) {
+  const c = MARU.COLORS[o.color] || MARU.COLORS[0]; kBodyMat.color.set(c[1]); kEarMat.color.set(c[2]);
+  for (const k in hats) hats[k].visible = k === o.hat;
+  if (tuftG) tuftG.visible = !(o.hat === 'straw' || o.hat === 'beret' || o.hat === 'crown');
+}
+setOutfit(MARU.outfit || { color: 0, hat: 'none' });
 
 // ---------- interaction
 const raycaster = new THREE.Raycaster();
@@ -999,8 +1771,8 @@ function kurunJump() {
     .to(hop.scale, { y: .8, x: 1.15, z: 1.15, duration: .08 }, '-=.12')
     .to(hop.scale, { y: 1, x: 1, z: 1, duration: .4, ease: 'elastic.out(1,.4)' })
     .set(hop.rotation, { y: 0 });
-  kurun.getWorldPosition(v3); v3.y += 1.2; burst(v3);
-  MARU.stamp('kurun');
+  kurun.getWorldPosition(v3); v3.y += 1.2; burst(v3); MARU.sfx('jump');
+  MARU.stamp('kurun'); MARU.meet('kurun');
 }
 function spinFlower(i, delay = 0) {
   const F = flowers[i]; if (F.busy) return; F.busy = true;
@@ -1008,6 +1780,7 @@ function spinFlower(i, delay = 0) {
     .to(F.spin.rotation, { y: Math.PI * 2, duration: .9, ease: 'back.out(1.4)' })
     .to(F.spin.position, { y: .25, duration: .25, ease: 'power2.out' }, 0)
     .to(F.spin.position, { y: 0, duration: .45, ease: 'bounce.out' }, .25);
+  if (!delay) MARU.sfx('spin');
   MARU.stamp('flower');
 }
 const tapRings = [];
@@ -1021,7 +1794,7 @@ function rippleStone(i, delay = 0) {
     gsap.to(r.scale, { x: 3.4, y: 3.4, duration: 1.3, delay: delay + k * .25, ease: 'power2.out' });
     gsap.to(r.material, { opacity: 0, duration: 1.3, delay: delay + k * .25, ease: 'power1.in', onComplete: () => { T.pond.props.remove(r); r.geometry.dispose(); } });
   }
-  MARU.stamp('ripple');
+  MARU.sfx('ripple'); MARU.stamp('ripple');
 }
 function waveFlags() { flags.forEach((f, i) => gsap.fromTo(f, { wave: 1 }, { wave: 0, duration: 1.6, delay: i * .12, ease: 'power2.out' })); MARU.stamp('flag'); }
 MARU.celebrate = () => { kurun.getWorldPosition(v3); v3.y += 1.5; burst(v3, 14); };
@@ -1030,7 +1803,8 @@ function pick(e) {
   const r = canvas.getBoundingClientRect();
   ndc.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1);
   raycaster.setFromCamera(ndc, camera);
-  const hit = raycaster.intersectObjects(clickables, false)[0];
+  const vis = o => { for (; o; o = o.parent) if (!o.visible) return false; return true; };
+  const hit = raycaster.intersectObjects(clickables, false).find(h => vis(h.object));
   return hit ? hit.object : null;
 }
 addEventListener('pointermove', e => {
@@ -1040,13 +1814,15 @@ addEventListener('pointermove', e => {
 }, { passive: true });
 addEventListener('pointerleave', () => { pointerIn = false; });
 addEventListener('click', e => {
-  if (e.target.closest && e.target.closest('button, a, .card, .stampbook, .notes, .site-head')) return;
+  if (e.target.closest && e.target.closest('button, a, .card, .stampbook, .notes, .site-head, .sheet, .toolbar, .band, .dock')) return;
+  if (free.mode === 'doodle' || (free.mode && free.moved > 8)) return;
   const o = pick(e); if (!o) return;
   const k = o.userData.kind;
-  if (k === 'kurun') kurunJump();
+  if (k === 'kurun') { kurunJump(); }
   else if (k === 'flower') { let f = o; while (f && f.userData.flower === undefined) f = f.parent; if (f) spinFlower(f.userData.flower); }
   else if (k === 'stone') rippleStone(o.userData.i);
-  else if (k === 'flag') waveFlags();
+  else if (k === 'flag') { waveFlags(); MARU.sfx('flag'); }
+  else if (k === 'res') residentTap(residents[o.userData.res]);
 });
 
 // HTML hint buttons (keyboard accessible)
@@ -1068,6 +1844,121 @@ function hintActive(k, p) {
   if (k === 'stone') return p > SC.pond[0] - .02 && p < SC.hill[0] + .02;
   if (k === 'flag') return p > SC.hill[0] && p < SC.pull[0] + .06;
 }
+
+// ---------- portraits for 図鑑 / goods / game (rendered once from the real models)
+function renderPortrait(obj, half, cy, size = 384) {
+  const sc = new THREE.Scene(); sc.add(new THREE.HemisphereLight('#ffffff', '#f2e3d3', 2.3)); const dl = new THREE.DirectionalLight('#fff7ea', 2.2); dl.position.set(3, 5, 6); sc.add(dl);
+  const c = obj.clone(true); c.position.set(0, 0, 0); c.rotation.set(0, -.42, 0); c.scale.setScalar(1); c.visible = true; c.traverse(o => o.visible = o.visible); sc.add(c);
+  const cm = new THREE.OrthographicCamera(-half, half, half, -half, .1, 30); cm.position.set(0, cy + 1.4, 6); cm.lookAt(0, cy, 0);
+  const rt = new THREE.WebGLRenderTarget(size, size); rt.texture.colorSpace = THREE.SRGBColorSpace;
+  const prevClear = renderer.getClearColor(new THREE.Color()), prevA = renderer.getClearAlpha();
+  renderer.setRenderTarget(rt); renderer.setClearColor(0x000000, 0); renderer.clear(); renderer.render(sc, cm);
+  const buf = new Uint8Array(size * size * 4); renderer.readRenderTargetPixels(rt, 0, 0, size, size, buf);
+  renderer.setRenderTarget(null); renderer.setClearColor(prevClear, prevA); rt.dispose();
+  const big = document.createElement('canvas'); big.width = big.height = size; const bg = big.getContext('2d'); const id = bg.createImageData(size, size);
+  for (let y = 0; y < size; y++) id.data.set(buf.subarray((size - 1 - y) * size * 4, (size - y) * size * 4), y * size * 4);
+  bg.putImageData(id, 0, 0);
+  const out = document.createElement('canvas'); out.width = out.height = size / 2; out.getContext('2d').drawImage(big, 0, 0, size / 2, size / 2);
+  return out.toDataURL('image/png');
+}
+function kurunPortrait() {
+  const saved = { p: kurun.position.clone(), r: kurun.rotation.y, fy: face.rotation.clone() }; face.rotation.set(0, 0, 0); hop.position.y = 0;
+  const url = renderPortrait(kurun, .8, .6); kurun.position.copy(saved.p); kurun.rotation.y = saved.r; face.rotation.copy(saved.fy); return url;
+}
+function refreshPortraits(all) {
+  try {
+    if (all) residents.forEach(r => { MARU.portraits[r.d.id] = renderPortrait(r.root, .62, .45); });
+    MARU.portraits.kurun = kurunPortrait();
+    document.dispatchEvent(new Event('maru:portraits'));
+  } catch (e) { console.warn('portrait', e); }
+}
+
+// ---------- night
+const hemi = scene.children.find(o => o.isHemisphereLight);
+const lampLight = new THREE.PointLight('#FFD27A', 0, 6, 1.4); lampLight.position.set(1.25, TT + 1.35, -1.2); scene.add(lampLight);
+const houseLight = new THREE.PointLight('#FFC56B', 0, 4, 1.4); houseLight.position.set(S - .1, TT + .7, -S + .5); scene.add(houseLight);
+const bulbMesh = T.plaza.props.children.find(c => c.isGroup && c.position.x === 1.25)?.children.find(m => m.isMesh && m.position.y > 1.2);
+const bulbMat = new THREE.MeshToonMaterial({ color: '#FFF3B8', gradientMap: grad, emissive: '#FFD66B', emissiveIntensity: 0 }); if (bulbMesh) bulbMesh.material = bulbMat;
+let winMesh = null; T.ne.props.traverse(o => { if (o.isMesh && o.geometry.type === 'CircleGeometry') winMesh = o; });
+const winMat = new THREE.MeshBasicMaterial({ color: '#A8DDF4' }); if (winMesh) winMesh.material = winMat;
+const fireflies = [];
+for (let i = 0; i < (MOBILE ? 18 : 30); i++) { const m = new THREE.Mesh(new THREE.SphereGeometry(.05, 6, 5), new THREE.MeshBasicMaterial({ color: '#FFF2A6' })); m.userData = { x: rnd(-6, 6), z: rnd(-6, 6), y: rnd(.8, 2.6), ph: rnd(0, 6) }; m.visible = false; scene.add(m); fireflies.push(m); }
+let nightT = 0, nightTarget = 0;
+const DAY_SKY = new THREE.Color('#ffffff'), NIGHT_SKY = new THREE.Color('#A9B6FF'), NIGHT_GROUND = new THREE.Color('#353C63'), DAY_SUN = new THREE.Color('#fff7ea'), NIGHT_SUN = new THREE.Color('#A7B8FF');
+const WIN_DAY = new THREE.Color('#A8DDF4'), WIN_NIGHT = new THREE.Color('#FFD66B');
+
+// ---------- free camera modes (photo / doodle)
+const free = { mode: null, az: Math.PI / 4, el: .62, zoom: 1, ptrs: new Map(), moved: 0, pinch: 0 };
+function freeEnter(mode) { free.mode = mode; free.az = cam.az; free.el = mode === 'doodle' ? 1.0 : .62; free.zoom = 1; }
+function freeExit() { free.mode = null; doodle.stroke = null; }
+canvas.addEventListener('pointerdown', e => {
+  if (!free.mode) return;
+  free.ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); free.moved = 0; canvas.setPointerCapture(e.pointerId);
+  if (free.ptrs.size === 2) { const [a, b] = [...free.ptrs.values()]; free.pinch = Math.hypot(a.x - b.x, a.y - b.y); doodle.stroke = null; return; }
+  if (free.mode === 'doodle') doodleStart(e);
+});
+canvas.addEventListener('pointermove', e => {
+  if (!free.mode || !free.ptrs.has(e.pointerId)) return;
+  const prev = free.ptrs.get(e.pointerId), dx = e.clientX - prev.x, dy = e.clientY - prev.y; free.ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); free.moved += Math.abs(dx) + Math.abs(dy);
+  if (free.ptrs.size === 2) { const [a, b] = [...free.ptrs.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y); if (free.pinch) free.zoom = clamp(free.zoom * free.pinch / d, .4, 1.5); free.pinch = d; return; }
+  if (free.mode === 'photo') { free.az -= dx * .008; free.el = clamp(free.el + dy * .005, .22, 1.3); }
+  else doodleMove(e);
+});
+const endPtr = e => { free.ptrs.delete(e.pointerId); if (free.ptrs.size < 2) free.pinch = 0; if (free.mode === 'doodle') doodle.stroke = null; };
+canvas.addEventListener('pointerup', endPtr); canvas.addEventListener('pointercancel', endPtr);
+addEventListener('wheel', e => { if (free.mode) { e.preventDefault(); free.zoom = clamp(free.zoom * Math.exp(e.deltaY * .0012), .4, 1.5); } }, { passive: false });
+
+// ---------- doodle mode: lines become paths, flowers, stars...
+const doodle = { pen: 'flower', stroke: null, group: new THREE.Group(), spinners: [] };
+scene.add(doodle.group);
+const PEN = { flower: '#F49AB5', bush: '#7FC97A', star: '#F2C94C', puddle: '#6EC3EA' };
+const doodleTargets = [ground, ...tiles.map(t => t.g.children[0]), ...T.hill.props.children.filter(c => c.isMesh && c.geometry.type === 'LatheGeometry')];
+function hitAt(e) { const r = canvas.getBoundingClientRect(); ndc.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1); raycaster.setFromCamera(ndc, camera); const h = raycaster.intersectObjects(doodleTargets, false)[0]; return h ? h.point.clone() : null; }
+function stripY(pts, width, color) {
+  const pos = [], idx = [];
+  for (let i = 0; i < pts.length; i++) { const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)]; let dx = b.x - a.x, dz = b.z - a.z; const l = Math.hypot(dx, dz) || 1; dx /= l; dz /= l; const w = width * (.85 + .3 * Math.sin(i * 1.3)) / 2;
+    pos.push(pts[i].x - dz * w, pts[i].y + .03, pts[i].z + dx * w, pts[i].x + dz * w, pts[i].y + .03, pts[i].z - dx * w); if (i) { const k = i * 2; idx.push(k - 2, k - 1, k, k - 1, k + 1, k); } }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx);
+  return new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -2 }));
+}
+function doodleStart(e) { const p = hitAt(e); if (!p) return; doodle.stroke = { pts: [p], mesh: null, acc: .5 }; }
+function doodleMove(e) {
+  const s = doodle.stroke; if (!s) return; const p = hitAt(e); if (!p) return; const last = s.pts[s.pts.length - 1]; const d = p.distanceTo(last); if (d < .07) return;
+  s.pts.push(p); s.acc += d;
+  if (s.mesh) { doodle.group.remove(s.mesh); s.mesh.geometry.dispose(); }
+  s.mesh = stripY(s.pts, .16, PEN[doodle.pen]); doodle.group.add(s.mesh);
+  if (s.acc > .65) { s.acc = 0; spawnItem(p); }
+}
+function spawnItem(p) {
+  let o; const pen = doodle.pen;
+  if (pen === 'flower') { o = new THREE.Group(); const st = mk(new THREE.CylinderGeometry(.025, .03, .32, 5), C.leaf, { ol: .012 }); st.position.y = .16; o.add(st);
+    const hd = new THREE.Group(); hd.position.y = .34; hd.rotation.x = .5; o.add(hd); const pc = ['#F7B5C8', '#F49AB5', '#FFFFFF', '#E8B8F3'][Math.floor(rnd(0, 4))];
+    for (let k = 0; k < 5; k++) { const a = k / 5 * Math.PI * 2; const pt = mk(new THREE.SphereGeometry(.07, 7, 5), pc, { ol: .014 }); pt.scale.set(1, .45, 1.15); pt.position.set(Math.cos(a) * .09, 0, Math.sin(a) * .09); hd.add(pt); }
+    const ct = mk(new THREE.SphereGeometry(.05, 7, 5), '#F8D86E', { ol: .014 }); ct.position.y = .02; hd.add(ct); }
+  else if (pen === 'bush') o = bush(0, 0, rnd(.5, .75), ['#9ED98A', '#A8E0B4', '#7FC97A'][Math.floor(rnd(0, 3))]);
+  else if (pen === 'star') { o = new THREE.Group(); const s = mk(starGeo(.16, .06), '#F8D86E', { ol: .02 }); s.position.y = .3; o.add(s); doodle.spinners.push(s); }
+  else { o = new THREE.Group(); const w = new THREE.Mesh(new THREE.CircleGeometry(.32, 12), mat(C.water)); w.rotation.x = -Math.PI / 2; w.scale.set(1.3, 1, 1); w.position.y = .035; o.add(w);
+    const rg = new THREE.Mesh(new THREE.RingGeometry(.3, .36, 20), new THREE.MeshBasicMaterial({ color: '#fff', transparent: true, depthWrite: false })); rg.rotation.x = -Math.PI / 2; rg.position.y = .04; o.add(rg);
+    gsap.fromTo(rg.scale, { x: .5, y: .5 }, { x: 2, y: 2, duration: 1.2, repeat: 2 }); gsap.fromTo(rg.material, { opacity: 1 }, { opacity: 0, duration: 1.2, repeat: 2 }); }
+  o.position.copy(p); o.rotation.y = rnd(0, 6); doodle.group.add(o);
+  gsap.fromTo(o.scale, { x: .01, y: .01, z: .01 }, { x: 1, y: 1, z: 1, duration: .6, ease: 'back.out(2.6)' });
+  MARU.sfx(pen === 'puddle' ? 'ripple' : 'pop');
+  while (doodle.group.children.length > 360) { const old = doodle.group.children[0]; doodle.group.remove(old); }
+}
+function clearDoodles() { doodle.group.children.slice().forEach(o => { gsap.to(o.scale, { x: .01, y: .01, z: .01, duration: .3, ease: 'back.in(2)', onComplete: () => doodle.group.remove(o) }); }); doodle.spinners = []; }
+
+// ---------- capture
+let captureReq = null;
+
+MARU.town = {
+  greet(id) { if (id === 'kurun') { kurunJump(); return; } const r = residents.find(r => r.d.id === id); if (r) residentTap(r); },
+  setOutfit(o) { setOutfit(o); MARU.portraits.kurun = kurunPortrait(); document.dispatchEvent(new Event('maru:portraits')); kurunJump(); },
+  setNight(on) { nightTarget = on ? 1 : 0; },
+  enterFree: freeEnter, exitFree: freeExit,
+  nudge(rot, zoom) { if (rot) free.az += rot * .5; if (zoom) free.zoom = clamp(free.zoom * (zoom > 0 ? .8 : 1.25), .4, 1.5); },
+  setPen(p) { doodle.pen = p; }, clearDoodles,
+  capture() { return new Promise(res => { captureReq = res; }); },
+};
 
 // ---------- resize
 function resize() {
@@ -1181,7 +2072,30 @@ function frame() {
   clouds.forEach(c => { c.g.position.y = c.base.y + (reduced ? 0 : Math.sin(time * .7 + c.ph) * .3); c.g.position.x = c.base.x + (reduced ? 0 : Math.sin(time * .2 + c.ph) * .6); });
 
   // background tint follows the scene
-  groundMat.color.copy(tintAt(p)); renderer.setClearColor(groundMat.color);
+  nightT += (nightTarget - nightT) * (1 - Math.exp(-dt * 2.5));
+  groundMat.color.copy(tintAt(p)).lerp(NIGHT_GROUND, nightT * .88); renderer.setClearColor(groundMat.color);
+  hemi.intensity = lerp(2.2, .8, nightT); hemi.color.copy(DAY_SKY).lerp(NIGHT_SKY, nightT);
+  sun.intensity = lerp(2.4, .5, nightT); sun.color.copy(DAY_SUN).lerp(NIGHT_SUN, nightT);
+  bulbMat.emissiveIntensity = nightT * 1.8; lampLight.intensity = nightT * 6; houseLight.intensity = nightT * 3.5; winMat.color.copy(WIN_DAY).lerp(WIN_NIGHT, nightT);
+  fireflies.forEach(f => { const u = f.userData; f.visible = nightT > .05; f.scale.setScalar(Math.max(.001, nightT * (.6 + .4 * Math.sin(time * 4 + u.ph)))); f.position.set(u.x + Math.sin(time * .5 + u.ph) * .6, TT + u.y + Math.sin(time * .9 + u.ph) * .3, u.z + Math.cos(time * .4 + u.ph) * .6); });
+
+  // residents: idle, notice Kurun passing by, look at it
+  residents.forEach(r => {
+    const sleepy = r.d.id === 'yume' ? (1 + nightT * 2) : 1;
+    r.idle.position.y = reduced ? 0 : Math.abs(Math.sin(time * 2 * sleepy + r.phase)) * .04 * sleepy;
+    r.idle.rotation.z = reduced ? 0 : Math.sin(time * 1.4 + r.phase) * .05;
+    if (r.root.userData.bubble) r.root.userData.bubble.position.y = .78 + Math.sin(time * 2 + r.phase) * .05;
+    if (r.root.userData.star) r.root.userData.star.rotation.y = time * (1.2 + nightT * 2);
+    if (r.root.userData.wings) r.root.userData.wings.forEach((w, i) => w.rotation.z = (i ? 1 : -1) * Math.sin(time * 6 + r.phase) * .2);
+    r.root.getWorldPosition(v3);
+    const dx = kurun.position.x - v3.x, dz = kurun.position.z - v3.z, dist = Math.hypot(dx, dz);
+    const landed = p > SC.land[1] || reduced;
+    if (landed && dist < 2.1 && !r.near) { r.near = true; if (!reduced) residentJump(r, .45, false); MARU.meet(r.d.id); }
+    else if (dist > 2.7) r.near = false;
+    const want = r.near ? Math.atan2(dx, dz) : r.home;
+    r.root.rotation.y = angLerp(r.root.rotation.y, want, 1 - Math.exp(-dt * 4));
+  });
+  doodle.spinners.forEach(s => s.rotation.y += dt * 1.5);
 
   // camera: computed from scroll, eased a little behind
   camDesired(p, time);
@@ -1199,6 +2113,7 @@ function frame() {
   sun.position.set(cam.tx + 7, 14, cam.tz + 9); sun.target.position.set(cam.tx, 0, cam.tz); sun.target.updateMatrixWorld();
 
   renderer.render(scene, camera);
+  if (captureReq) { const url = renderer.domElement.toDataURL('image/png'); captureReq(url); captureReq = null; }
 
   // hint buttons follow their objects (nudged apart when they collide)
   const placed = [];
@@ -1223,6 +2138,7 @@ function frame() {
   first = false;
   requestAnimationFrame(frame);
 }
+refreshPortraits(true);
 requestAnimationFrame(frame);
 </script>
 <script>
