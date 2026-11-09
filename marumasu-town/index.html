@@ -1,0 +1,1233 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>まるます町 MARUMASU TOWN</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="お絵かきから飛び出した、小さな遊びの街。方眼紙の1マスずつが公園の街区に立ち上がる、触って遊べる3Dミニチュアタウン。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<style>
+/* Layout: one fixed 3D sheet of graph paper behind a vertical tour; hand-drawn cards ride over it, notes close the page on plain paper. */
+:root{
+  --paper:#FFFDF8;      /* 紙の白 */
+  --grid:#DCE4EC;       /* 方眼の青グレー */
+  --ink:#7A4A2E;        /* 温かい茶色の輪郭 */
+  --ink-soft:#A9805F;
+  --pink:#F7C3CF; --pink-d:#EC8FA8;
+  --sky:#A8DDF4;  --sky-d:#5DB6E0;
+  --yellow:#F8D86E; --yellow-d:#E9B53C;
+  --mint:#B9E8CF; --lilac:#E3C6F2; --peach:#FBD3B0; --coral:#F2A58B;
+  --bg:#FBF8F1;
+  --hand:"Yomogi","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  --round:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Yu Gothic",system-ui,sans-serif;
+  --step--1:clamp(.82rem,.78rem + .2vw,.92rem);
+  --step-0:clamp(.98rem,.94rem + .2vw,1.06rem);
+  --step-1:clamp(1.2rem,1.05rem + .6vw,1.45rem);
+  --step-2:clamp(1.55rem,1.25rem + 1.3vw,2.1rem);
+  --step-3:clamp(2.1rem,1.5rem + 2.8vw,3.6rem);
+  --wobble:255px 18px 225px 18px / 18px 225px 18px 255px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--round);font-size:var(--step-0);line-height:1.8;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:34px 34px;overflow-x:hidden;transition:background-color .6s}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--paper)}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px dashed var(--pink-d);outline-offset:4px;border-radius:12px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* 3D stage */
+#stage{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0;touch-action:pan-y}
+.fallback-map{display:none}
+html.no-webgl #stage{display:none}
+html.no-webgl .fallback-map{display:block;position:fixed;inset:auto 0 0 auto;width:min(70vw,520px);right:max(16px,env(safe-area-inset-right,0px));bottom:12vh;z-index:0;opacity:.95;pointer-events:none}
+html.no-webgl .hint{display:none!important}
+
+/* floating doodles (HTML layer) */
+.doodles{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.doodle{position:absolute;width:var(--s,90px);opacity:.55}
+.doodle svg{width:100%;height:auto;display:block;animation:float var(--d,6s) ease-in-out infinite alternate}
+@keyframes float{from{transform:translateY(-6px) rotate(-4deg)}to{transform:translateY(8px) rotate(5deg)}}
+
+/* header */
+.site-head{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:30;display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding-block:12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));pointer-events:none}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;pointer-events:auto;background:var(--paper);border:2.5px solid var(--ink);border-radius:var(--wobble);padding:4px 14px 4px 6px;box-shadow:3px 3px 0 var(--ink)}
+.brand svg{width:46px;height:46px;transition:transform .4s cubic-bezier(.3,1.6,.5,1)}
+.brand:hover svg{transform:rotate(-12deg) scale(1.08)}
+.brand b{font-family:var(--hand);font-weight:400;font-size:1.25rem;line-height:1.1;display:block}
+.brand small{display:block;font-size:.66rem;letter-spacing:.18em;color:var(--ink-soft)}
+.stamp-btn{pointer-events:auto;display:flex;align-items:center;gap:8px;background:var(--paper);border:2.5px solid var(--ink);border-radius:var(--wobble);
+  padding:6px 14px 6px 10px;cursor:pointer;font-weight:700;font-size:.9rem;box-shadow:3px 3px 0 var(--ink);transition:transform .2s}
+.stamp-btn:hover{transform:translate(-1px,-2px) rotate(-2deg)}
+.stamp-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.stamp-btn .dots{display:flex;gap:3px}
+.stamp-btn .dots i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink);background:transparent}
+.stamp-btn .dots i.on{background:var(--pink-d)}
+.stamp-btn.bump{animation:bump .6s}
+@keyframes bump{30%{transform:scale(1.18) rotate(-6deg)}60%{transform:scale(.95) rotate(3deg)}}
+
+/* tour */
+#tour{position:relative;z-index:3;pointer-events:none}
+#tour .card,#tour .scene-inner>*{pointer-events:auto}
+.scene{min-height:100vh;min-height:100svh;display:flex;align-items:center;
+  padding-block:96px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.scene-inner{width:100%;max-width:1180px;margin-inline:auto}
+.card{position:relative;max-width:25rem;background:color-mix(in srgb,var(--paper) 93%,transparent);border:3px solid var(--ink);border-radius:var(--wobble);
+  padding:22px 24px 20px;box-shadow:5px 6px 0 color-mix(in srgb,var(--ink) 85%,transparent);transform:rotate(var(--r,-1deg))}
+.card .tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--hand);font-size:var(--step-0);letter-spacing:.06em;
+  background:var(--chip,var(--pink));border:2px solid var(--ink);border-radius:999px 999px 999px 999px/ 700px 800px 700px 900px;padding:0 12px;margin-bottom:6px}
+.card h2{font-family:var(--hand);font-weight:400;font-size:var(--step-2);line-height:1.35;margin:4px 0 8px;text-wrap:balance}
+.card p{margin:0;font-size:var(--step-0);font-weight:500}
+.card .touch{margin-top:12px;font-size:var(--step--1);color:var(--ink-soft);display:flex;gap:6px;align-items:center}
+.card .touch::before{content:"";width:18px;height:18px;flex:none;background:var(--chip,var(--pink));border:2px solid var(--ink);border-radius:50% 45% 55% 50%}
+
+/* hero */
+.hero .scene-inner{display:flex;flex-direction:column;gap:18px;align-items:flex-start}
+.eyebrow{font-size:var(--step--1);letter-spacing:.32em;font-weight:900;color:var(--ink-soft)}
+.hero h1{font-family:var(--hand);font-weight:400;font-size:var(--step-3);line-height:1.25;margin:0;max-width:11em;text-wrap:balance}
+.hero h1 .ch{display:inline-block;transform-origin:50% 90%}
+.hero h1 .mark{background:linear-gradient(transparent 62%,var(--yellow) 62%,var(--yellow) 90%,transparent 90%)}
+.hero p.lead{max-width:24rem;margin:0;font-weight:500;background:color-mix(in srgb,var(--paper) 80%,transparent);border-radius:12px}
+.scroll-cue{display:flex;align-items:center;gap:10px;font-family:var(--hand);font-size:var(--step-1)}
+.scroll-cue svg{width:28px;animation:cue 1.4s ease-in-out infinite}
+@keyframes cue{50%{transform:translateY(8px)}}
+
+/* ending */
+.ending .scene-inner{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;align-self:flex-start}
+.ending .big-logo{width:min(160px,34vw)}
+.ending h2{font-family:var(--hand);font-weight:400;font-size:var(--step-3);margin:0;line-height:1.2}
+.ending .copy{font-family:var(--hand);font-size:var(--step-1);margin:0;background:color-mix(in srgb,var(--paper) 85%,transparent);padding:0 10px;border-radius:10px}
+.again{margin-top:6px;cursor:pointer;font-family:var(--hand);font-size:var(--step-1);background:var(--yellow);border:3px solid var(--ink);border-radius:var(--wobble);
+  padding:8px 26px;box-shadow:4px 4px 0 var(--ink);transition:transform .25s cubic-bezier(.3,1.7,.5,1)}
+.again:hover{transform:rotate(-3deg) scale(1.05)}
+.again:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+
+/* hint buttons over 3D objects */
+.hints{position:fixed;inset:0;pointer-events:none;z-index:2}
+.hint{position:absolute;left:0;top:0;pointer-events:auto;cursor:pointer;white-space:nowrap;font-family:var(--hand);font-size:.95rem;line-height:1;
+  background:var(--paper);border:2.5px solid var(--ink);border-radius:999px 999px 999px 999px/700px 900px 700px 900px;padding:7px 12px 6px;
+  box-shadow:2px 3px 0 var(--ink);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;will-change:transform}
+.hint::after{content:"";position:absolute;left:50%;bottom:-9px;width:10px;height:10px;background:var(--paper);border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);transform:translateX(-50%) rotate(45deg)}
+.hint.show{opacity:1;visibility:visible}
+.hint:hover,.hint:focus-visible{background:var(--yellow)}
+.hint:hover::after,.hint:focus-visible::after{background:var(--yellow)}
+
+/* stamp book */
+.stampbook{position:fixed;z-index:35;right:max(16px,env(safe-area-inset-right,0px));top:calc(env(safe-area-inset-top,0px) + 70px);width:min(340px,calc(100vw - 32px));
+  background:var(--paper);border:3px solid var(--ink);border-radius:var(--wobble);box-shadow:5px 6px 0 var(--ink);padding:16px 18px;transform-origin:90% 0}
+.stampbook h3{margin:0 0 4px;font-family:var(--hand);font-weight:400;font-size:var(--step-1)}
+.stampbook p{margin:0 0 10px;font-size:var(--step--1);color:var(--ink-soft)}
+.stamps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.stamps li{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.68rem;text-align:center;line-height:1.3}
+.stamps .slot{width:52px;height:52px;border:2px dashed var(--ink-soft);border-radius:50%;display:grid;place-items:center}
+.stamps .slot svg{width:42px;height:42px;opacity:.12;filter:grayscale(1)}
+.stamps li.got .slot{border-style:solid;border-color:var(--ink)}
+.stamps li.got .slot svg{opacity:1;filter:none;animation:stampin .5s cubic-bezier(.3,1.7,.5,1)}
+@keyframes stampin{from{transform:scale(2) rotate(-30deg);opacity:0}}
+.stampbook .done{margin-top:10px;font-family:var(--hand);font-size:var(--step-0);color:var(--pink-d)}
+.close-book{position:absolute;right:10px;top:8px;border:0;background:none;font-size:1.4rem;cursor:pointer;line-height:1;padding:4px 8px}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);z-index:36;transform:translateX(-50%);background:var(--ink);color:var(--paper);
+  font-family:var(--hand);font-size:1.05rem;padding:8px 18px;border-radius:var(--wobble);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
+
+/* notes */
+.notes{position:relative;z-index:3;background:var(--paper);border-top:3px solid var(--ink);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:34px 34px;
+  padding-block:64px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.notes-inner{max-width:1080px;margin-inline:auto;display:grid;gap:36px}
+.notes h2{font-family:var(--hand);font-weight:400;font-size:var(--step-2);margin:0;text-wrap:balance}
+.notes h3{font-family:var(--hand);font-weight:400;font-size:var(--step-1);margin:0 0 4px}
+.notes p{margin:0;max-width:38rem}
+.traits{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:16px}
+.trait{background:var(--paper);border:2.5px solid var(--ink);border-radius:var(--wobble);padding:16px 18px;min-width:0}
+.trait:nth-child(odd){transform:rotate(-.6deg)}
+.trait:nth-child(even){transform:rotate(.7deg)}
+.trait .where{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.trait .where span{font-size:.72rem;letter-spacing:.06em;border:1.5px solid var(--ink);border-radius:999px;padding:0 8px;background:var(--c,var(--mint))}
+.palette{display:flex;flex-wrap:wrap;gap:12px}
+.sw{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.72rem}
+.sw i{width:56px;height:56px;border:2.5px solid var(--ink);border-radius:46% 54% 50% 50%/55% 48% 52% 45%;background:var(--c)}
+.kurun{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center}
+.kurun svg{width:140px}
+.credit{font-size:var(--step--1);color:var(--ink-soft);border-top:2px dashed var(--ink-soft);padding-top:16px}
+
+@media (max-width:760px){
+  .scene{align-items:flex-end;padding-block:90px 7vh}
+  .card{max-width:none;padding:16px 18px 14px;--r:-.6deg}
+  .card h2{font-size:var(--step-1)}
+  .hero{align-items:flex-start}
+  .hero .scene-inner{padding-top:4vh}
+  .ending{align-items:flex-start}
+  .kurun{grid-template-columns:1fr}
+  .brand b{font-size:1.05rem}
+  .brand svg{width:38px;height:38px}
+}
+@media (prefers-reduced-motion:reduce){
+  .doodle svg,.scroll-cue svg{animation:none}
+  *{transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<canvas id="stage" aria-hidden="true"></canvas>
+
+<!-- WebGLが使えない時の平面マップ -->
+<svg class="fallback-map" viewBox="0 0 300 300" aria-hidden="true">
+  <g stroke="#7A4A2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M12 14 L98 10 L100 96 L10 98Z" fill="#CDEFD9"/>
+    <path d="M106 12 L194 14 L192 98 L104 96Z" fill="#BFE6F7"/>
+    <path d="M202 10 L290 14 L288 98 L200 96Z" fill="#E7D3F3"/>
+    <path d="M10 106 L98 104 L96 194 L12 192Z" fill="#F9CAD6"/>
+    <path d="M104 104 L194 106 L192 192 L106 194Z" fill="#FFFDF8"/>
+    <path d="M200 104 L290 106 L288 194 L202 192Z" fill="#FBE29A"/>
+    <path d="M12 202 L96 200 L98 288 L10 290Z" fill="#FDDCC6"/>
+    <path d="M104 200 L192 202 L194 290 L106 288Z" fill="#D7EEF9"/>
+    <path d="M202 202 L290 200 L288 290 L200 288Z" fill="#D6F0C4"/>
+    <ellipse cx="150" cy="55" rx="32" ry="24" fill="#8FD3F2"/>
+    <path d="M54 150 m0 0 c6 -3 11 3 8 9 c-3 9 -17 10 -22 2 c-7 -11 3 -25 17 -25 c16 0 26 16 22 31" fill="none" stroke="#EC8FA8"/>
+    <path d="M226 180 L258 150 L236 146 L262 118" fill="none" stroke="#E9B53C"/>
+    <circle cx="150" cy="150" r="16" fill="#FBD3A6"/>
+  </g>
+</svg>
+
+<div class="doodles" aria-hidden="true">
+  <div class="doodle" data-depth="0.6" style="left:3%;top:14%;--s:110px;--d:5s"><svg viewBox="0 0 120 60"><path d="M4 40 L28 10 L44 44 L70 8 L88 42 L116 14" fill="none" stroke="#F6D86B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="doodle" data-depth="1.1" style="right:6%;top:22%;--s:90px;--d:7s"><svg viewBox="0 0 100 80"><path d="M22 60 C6 60 4 40 18 36 C14 20 34 12 44 24 C50 8 74 10 74 28 C92 26 96 50 80 58 C76 70 56 70 50 62 C42 72 26 70 22 60Z" fill="none" stroke="#A6D8F0" stroke-width="5" stroke-linejoin="round"/></svg></div>
+  <div class="doodle" data-depth="0.9" style="left:8%;bottom:16%;--s:120px;--d:6s"><svg viewBox="0 0 140 50"><path d="M6 36 C20 36 26 6 36 8 C46 10 34 40 46 40 C58 40 60 8 72 8 C84 8 70 40 84 40 C96 40 98 10 110 10 C122 10 112 40 134 36" fill="none" stroke="#9ED98A" stroke-width="5" stroke-linecap="round"/></svg></div>
+  <div class="doodle" data-depth="1.4" style="right:12%;bottom:10%;--s:84px;--d:8s"><svg viewBox="0 0 100 100"><path d="M50 8 L61 38 L94 39 L68 58 L78 90 L50 71 L22 90 L32 58 L6 39 L39 38Z" fill="none" stroke="#F6D86B" stroke-width="5" stroke-linejoin="round"/></svg></div>
+  <div class="doodle" data-depth="0.4" style="left:44%;top:6%;--s:70px;--d:5.5s"><svg viewBox="0 0 100 80"><path d="M22 60 C6 60 4 40 18 36 C14 20 34 12 44 24 C50 8 74 10 74 28 C92 26 96 50 80 58 C76 70 56 70 50 62 C42 72 26 70 22 60Z" fill="none" stroke="#F4A58A" stroke-width="5" stroke-linejoin="round"/></svg></div>
+  <div class="doodle" data-depth="1.2" style="left:56%;bottom:4%;--s:110px;--d:6.5s"><svg viewBox="0 0 140 50"><path d="M6 36 C20 36 26 6 36 8 C46 10 34 40 46 40 C58 40 60 8 72 8 C84 8 70 40 84 40 C96 40 98 10 110 10 C122 10 112 40 134 36" fill="none" stroke="#E57C73" stroke-width="5" stroke-linecap="round"/></svg></div>
+  <div class="doodle" data-depth="0.8" style="right:30%;top:12%;--s:26px;--d:4s"><svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="10" fill="none" stroke="#9ED98A" stroke-width="4"/></svg></div>
+  <div class="doodle" data-depth="1.6" style="left:30%;bottom:26%;--s:22px;--d:4.5s"><svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="10" fill="none" stroke="#F4A58A" stroke-width="4"/></svg></div>
+</div>
+
+<header class="site-head">
+  <a class="brand" href="#top" aria-label="まるます町 トップへ">
+    <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#logo-mark"/></svg>
+    <span><b>まるます町</b><small>MARUMASU TOWN</small></span>
+  </a>
+  <button class="stamp-btn" id="stampBtn" aria-expanded="false" aria-controls="stampbook">
+    <span>スタンプ帳</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="sr-only" id="stampCount">0/5</span>
+  </button>
+</header>
+
+<div class="stampbook" id="stampbook" hidden role="dialog" aria-label="あそびスタンプ帳">
+  <button class="close-book" id="closeBook" aria-label="スタンプ帳を閉じる">×</button>
+  <h3>あそびスタンプ帳</h3>
+  <p>街でさわって遊ぶと、スタンプが集まります。5つそろえてコレクション完成！</p>
+  <ul class="stamps" id="stamps">
+    <li data-id="kurun"><span class="slot"><svg viewBox="0 0 40 40"><circle cx="20" cy="22" r="13" fill="#FBD3A6" stroke="#7A4A2E" stroke-width="2.5"/><circle cx="15" cy="21" r="1.8" fill="#3B2A22"/><circle cx="25" cy="21" r="1.8" fill="#3B2A22"/><circle cx="12" cy="25" r="2.4" fill="#F59EA8"/><circle cx="28" cy="25" r="2.4" fill="#F59EA8"/><circle cx="17" cy="9" r="3.5" fill="#FFF6E6" stroke="#7A4A2E" stroke-width="2"/><circle cx="22" cy="8" r="3.5" fill="#FFF6E6" stroke="#7A4A2E" stroke-width="2"/></svg></span>クルン</li>
+    <li data-id="flower"><span class="slot"><svg viewBox="0 0 40 40"><g stroke="#7A4A2E" stroke-width="2"><circle cx="20" cy="11" r="6" fill="#F7B5C8"/><circle cx="29" cy="18" r="6" fill="#F7B5C8"/><circle cx="26" cy="28" r="6" fill="#F7B5C8"/><circle cx="14" cy="28" r="6" fill="#F7B5C8"/><circle cx="11" cy="18" r="6" fill="#F7B5C8"/><circle cx="20" cy="20" r="5" fill="#F8D86E"/></g></svg></span>お花</li>
+    <li data-id="ripple"><span class="slot"><svg viewBox="0 0 40 40"><g fill="none" stroke-width="2.6"><ellipse cx="20" cy="22" rx="15" ry="8" stroke="#5DB6E0"/><ellipse cx="20" cy="22" rx="8" ry="4" stroke="#A8DDF4"/></g><ellipse cx="20" cy="22" rx="4" ry="2" fill="#F3E9DA" stroke="#7A4A2E" stroke-width="2"/></svg></span>波紋</li>
+    <li data-id="flag"><span class="slot"><svg viewBox="0 0 40 40"><path d="M12 34 V6" stroke="#7A4A2E" stroke-width="2.6" stroke-linecap="round"/><path d="M13 7 L32 13 L13 20Z" fill="#F2A58B" stroke="#7A4A2E" stroke-width="2.2" stroke-linejoin="round"/></svg></span>旗</li>
+    <li data-id="tour"><span class="slot"><svg viewBox="0 0 40 40"><path d="M7 8 L33 7 L32 33 L8 32Z" fill="#FFFDF8" stroke="#7A4A2E" stroke-width="2.4" stroke-linejoin="round"/><path d="M20 20 c2 -1 4 1 3 3 c-1 3 -6 3 -7 0 c-2 -4 1 -8 5 -8 c5 0 8 5 7 10" fill="none" stroke="#EC8FA8" stroke-width="2.4" stroke-linecap="round"/></svg></span>ひとめぐり</li>
+  </ul>
+  <p class="done" id="bookDone" hidden>コンプリート！ まるます町の住人に認定です。</p>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="hints" id="hints">
+  <button class="hint" data-hint="kurun" type="button">さわってみる</button>
+  <button class="hint" data-hint="flower" type="button">お花をまわす</button>
+  <button class="hint" data-hint="stone" type="button">飛び石をたたく</button>
+  <button class="hint" data-hint="flag" type="button">旗をふる</button>
+</div>
+
+<main id="top">
+  <div id="tour">
+    <section class="scene hero" id="s-hero" aria-labelledby="h-hero">
+      <div class="scene-inner">
+        <span class="eyebrow">MARUMASU TOWN</span>
+        <h1 id="h-hero" class="split">ひとマスずつ、<br><span class="mark">あそびが</span>立ち上がる。</h1>
+        <p class="lead">お絵かきから飛び出した、小さな遊びの街「まるます町」。方眼紙の上の落書きを指でなぞるように、スクロールでめぐってみてね。</p>
+        <div class="scroll-cue" aria-hidden="true"><svg viewBox="0 0 30 40"><path d="M15 4 C13 14 17 22 15 34 M6 26 L15 35 L24 25" fill="none" stroke="#7A4A2E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>スクロールしてね</div>
+      </div>
+    </section>
+
+    <section class="scene" id="s-plaza" aria-labelledby="h-plaza">
+      <div class="scene-inner"><article class="card" style="--chip:var(--paper);--r:-1.2deg">
+        <span class="tag">入口・方眼広場</span>
+        <h2 id="h-plaza">マス目が、ぽこっと立ち上がる。</h2>
+        <p>紙の白、茶色の輪郭、パステルの色。散らばった色のかけらが集まって、9つのマスが公園になります。案内役のクルンが広場にぽんと着地。</p>
+        <p class="touch">クルンにさわるとジャンプします</p>
+      </article></div>
+    </section>
+
+    <section class="scene" id="s-flower" aria-labelledby="h-flower">
+      <div class="scene-inner"><article class="card" style="--chip:var(--pink);--r:1deg">
+        <span class="tag">渦巻き花壇</span>
+        <h2 id="h-flower">ピンクの渦を、くるくる小走り。</h2>
+        <p>渦巻きの落書きが遊歩道になりました。クルンが通りすぎると、お花が順番にゆれます。</p>
+        <p class="touch">お花にさわると一回転</p>
+      </article></div>
+    </section>
+
+    <section class="scene" id="s-pond" aria-labelledby="h-pond">
+      <div class="scene-inner"><article class="card" style="--chip:var(--sky);--r:-.8deg">
+        <span class="tag">水色の池</span>
+        <h2 id="h-pond">飛び石を、ぴょん・ぴょん・ぴょん。</h2>
+        <p>まんまるの池に、飛び石が3つ。クルンが着地するたび、水面に小さな輪っかが広がります。</p>
+        <p class="touch">飛び石をたたくと波紋が広がる</p>
+      </article></div>
+    </section>
+
+    <section class="scene" id="s-hill" aria-labelledby="h-hill">
+      <div class="scene-inner"><article class="card" style="--chip:var(--yellow);--r:1.2deg">
+        <span class="tag">稲妻の丘</span>
+        <h2 id="h-hill">ジグザグ道を、いきおいよく。</h2>
+        <p>黄色い稲妻の落書きは、丘をのぼる道。曲がり角を越えるごとに、小さな旗がひらいていきます。</p>
+        <p class="touch">旗にさわるとパタパタ</p>
+      </article></div>
+    </section>
+
+    <section class="scene ending" id="s-end" aria-labelledby="h-end">
+      <div class="scene-inner">
+        <svg class="big-logo" viewBox="0 0 100 100" aria-hidden="true"><use href="#logo-mark"/></svg>
+        <h2 id="h-end">まるます町</h2>
+        <p class="copy">ひとマスずつ、あそびが立ち上がる。</p>
+        <button class="again" id="again" type="button">もう一度めぐる</button>
+      </div>
+    </section>
+  </div>
+
+  <section class="notes" aria-labelledby="h-notes">
+    <div class="notes-inner">
+      <div>
+        <span class="eyebrow">DESIGN NOTE</span>
+        <h2 id="h-notes">お絵かきの「くせ」を、そのまま街のルールに。</h2>
+      </div>
+      <div class="traits">
+        <div class="trait"><h3>方眼の1マス</h3><p>3×3に並ぶ絵の配置を、9つの街区に。紙の方眼は地面にも残しています。</p><div class="where"><span style="--c:var(--mint)">3D地形</span><span style="--c:var(--sky)">背景</span><span style="--c:var(--pink)">ロゴ</span></div></div>
+        <div class="trait"><h3>茶色の太い輪郭</h3><p>どの遊具にも、少し太めの茶色いふちどり。カードやボタンの線も同じ茶色です。</p><div class="where"><span style="--c:var(--peach)">素材</span><span style="--c:var(--yellow)">UI</span></div></div>
+        <div class="trait"><h3>まるいシルエットと頬</h3><p>つぶれたお餅のような体と、ピンクの頬。案内役クルンの比率の元になっています。</p><div class="where"><span style="--c:var(--pink)">造形</span><span style="--c:var(--lilac)">動き</span></div></div>
+        <div class="trait"><h3>渦巻き・稲妻・ループの落書き</h3><p>余白の落書きを、花壇の遊歩道と丘のジグザグ道に。紙の上にも浮かんでいます。</p><div class="where"><span style="--c:var(--mint)">3D地形</span><span style="--c:var(--lilac)">動き</span></div></div>
+        <div class="trait"><h3>ゆがみと不揃い</h3><p>線はまっすぐ引かず、遊具は少し傾け、大きさもばらばらに。整えすぎないのがルールです。</p><div class="where"><span style="--c:var(--peach)">造形</span><span style="--c:var(--yellow)">UI</span></div></div>
+      </div>
+      <div class="palette" aria-label="カラーパレット">
+        <div class="sw"><i style="--c:#FFFDF8"></i>紙</div>
+        <div class="sw"><i style="--c:#7A4A2E"></i>輪郭</div>
+        <div class="sw"><i style="--c:#F7C3CF"></i>花壇</div>
+        <div class="sw"><i style="--c:#A8DDF4"></i>池</div>
+        <div class="sw"><i style="--c:#F8D86E"></i>丘</div>
+        <div class="sw"><i style="--c:#B9E8CF"></i>芝</div>
+        <div class="sw"><i style="--c:#E3C6F2"></i>ラベンダー</div>
+        <div class="sw"><i style="--c:#FBD3A6"></i>クルン</div>
+      </div>
+      <div class="kurun">
+        <svg viewBox="0 0 140 130" aria-hidden="true">
+          <g stroke="#7A4A2E" stroke-width="4" stroke-linejoin="round">
+            <path d="M104 92 c14 -2 18 -16 8 -20 c-8 -3 -12 8 -4 10" fill="none" stroke="#F6A9BE" stroke-width="6" stroke-linecap="round"/>
+            <ellipse cx="22" cy="78" rx="11" ry="20" transform="rotate(35 22 78)" fill="#F2B27C"/>
+            <ellipse cx="118" cy="78" rx="11" ry="20" transform="rotate(-35 118 78)" fill="#F2B27C"/>
+            <ellipse cx="70" cy="80" rx="52" ry="40" fill="#FBD3A6"/>
+            <circle cx="60" cy="34" r="11" fill="#FFF6E6"/><circle cx="76" cy="31" r="12" fill="#FFF6E6"/><circle cx="68" cy="24" r="10" fill="#FFF6E6"/>
+          </g>
+          <circle cx="54" cy="78" r="5" fill="#3B2A22"/><circle cx="86" cy="78" r="5" fill="#3B2A22"/>
+          <circle cx="56" cy="76" r="1.8" fill="#fff"/><circle cx="88" cy="76" r="1.8" fill="#fff"/>
+          <ellipse cx="40" cy="90" rx="9" ry="6" fill="#F59EA8"/><ellipse cx="100" cy="90" rx="9" ry="6" fill="#F59EA8"/>
+          <path d="M64 89 q3 4 6 0 q3 4 6 0" fill="none" stroke="#7A4A2E" stroke-width="2.6" stroke-linecap="round"/>
+        </svg>
+        <div><h3>案内役「クルン」</h3><p>雲のかたちの前髪と、両側にたれた耳、ばねのようにくるんと巻いたしっぽ。お餅みたいにつぶれた丸い体で、まるます町をはねまわります。絵の丸い比率と頬、線のタッチから新しく描き起こしたオリジナルキャラクターです。</p></div>
+      </div>
+      <p class="credit">着想元：添付イラスト（作者表記 @catsouldraws）。配色・線・方眼の構成を参考にした架空ブランドのコンセプトサイトです。キャラクター・ロゴ・街並みはすべて本サイトのための新規デザインです。</p>
+    </div>
+  </section>
+</main>
+
+<!-- ロゴマーク：方眼の1マス＋渦巻き＋稲妻の落書き -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo-mark" viewBox="0 0 100 100">
+    <path d="M14 18 C30 15 58 13 84 16 C87 38 86 62 85 84 C62 87 36 86 15 85 C12 62 13 40 14 18Z" fill="#FFFDF8" stroke="#7A4A2E" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M14 51 C36 49 62 52 85 50 M49 16 C51 40 48 62 50 85" stroke="#DCE4EC" stroke-width="2.5" fill="none"/>
+    <path d="M50 52 c4 -2 8 2 6 7 c-2 6 -12 7 -15 1 c-4 -8 2 -17 12 -17 c11 0 19 10 16 22 c-3 12 -18 17 -29 11" fill="none" stroke="#EC8FA8" stroke-width="6" stroke-linecap="round"/>
+    <path d="M78 4 L70 16 L80 17 L72 30" fill="none" stroke="#E9B53C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="25" cy="29" r="4.5" fill="#A8DDF4"/>
+  </symbol>
+</svg>
+
+<noscript><style>.hint,.doodles{display:none}</style></noscript>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+
+<!-- HTML側：ロード演出・落書き・スタンプ帳 -->
+<script>
+(function(){
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasGsap = !!(window.gsap && window.ScrollTrigger);
+  if (hasGsap) gsap.registerPlugin(ScrollTrigger);
+  const MARU = window.MARU = { reduced, hasGsap, scroll: { p: 0 } };
+
+  // --- title split into letters
+  document.querySelectorAll('.split').forEach(h => {
+    const walk = node => {
+      [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          [...n.textContent].forEach(c => { const s = document.createElement('span'); s.className = 'ch'; s.textContent = c; frag.appendChild(s); });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1 && n.tagName !== 'BR') walk(n);
+      });
+    };
+    walk(h);
+  });
+
+  // --- stamp collection
+  const IDS = ['kurun','flower','ripple','flag','tour'];
+  const NAMES = {kurun:'クルン',flower:'お花',ripple:'波紋',flag:'旗',tour:'ひとめぐり'};
+  let got = new Set();
+  try { JSON.parse(localStorage.getItem('marumasu-stamps') || '[]').forEach(i => IDS.includes(i) && got.add(i)); } catch(e) {}
+  const btn = document.getElementById('stampBtn'), book = document.getElementById('stampbook');
+  const toast = document.getElementById('toast');
+  let toastT;
+  function showToast(msg){ toast.textContent = msg; toast.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(()=>toast.classList.remove('show'), 2200); }
+  function render(){
+    btn.querySelectorAll('.dots i').forEach((d,i) => d.classList.toggle('on', i < got.size));
+    document.getElementById('stampCount').textContent = got.size + '/5';
+    document.querySelectorAll('#stamps li').forEach(li => li.classList.toggle('got', got.has(li.dataset.id)));
+    document.getElementById('bookDone').hidden = got.size < 5;
+  }
+  MARU.stamp = function(id){
+    if (got.has(id)) return;
+    got.add(id);
+    try { localStorage.setItem('marumasu-stamps', JSON.stringify([...got])); } catch(e) {}
+    render();
+    btn.classList.remove('bump'); void btn.offsetWidth; btn.classList.add('bump');
+    showToast(got.size === 5 ? 'スタンプ帳コンプリート！' : 'スタンプゲット！「' + NAMES[id] + '」 ' + got.size + '/5');
+    if (got.size === 5 && MARU.celebrate) MARU.celebrate();
+  };
+  function toggleBook(open){
+    book.hidden = !open; btn.setAttribute('aria-expanded', open);
+    if (open && hasGsap && !reduced) gsap.fromTo(book, {scale:.6, rotation:-6, opacity:0}, {scale:1, rotation:0, opacity:1, duration:.5, ease:'back.out(2)'});
+    if (open) document.getElementById('closeBook').focus(); else btn.focus();
+  }
+  btn.addEventListener('click', () => toggleBook(book.hidden));
+  document.getElementById('closeBook').addEventListener('click', () => toggleBook(false));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !book.hidden) toggleBook(false); });
+  render();
+
+  // --- "もう一度めぐる"
+  document.getElementById('again').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+    setTimeout(() => document.getElementById('h-hero').setAttribute('tabindex','-1') || document.getElementById('h-hero').focus({preventScroll:true}), reduced ? 0 : 900);
+  });
+
+  // --- scroll progress (GSAP ScrollTrigger, fallback to native)
+  if (hasGsap) {
+    gsap.to(MARU.scroll, { p: 1, ease: 'none', scrollTrigger: { trigger: '#tour', start: 'top top', end: 'bottom bottom', scrub: reduced ? true : 0.8 } });
+  } else {
+    const upd = () => { const t = document.getElementById('tour'); const max = t.offsetHeight - innerHeight; MARU.scroll.p = Math.min(1, Math.max(0, scrollY / max)); };
+    addEventListener('scroll', upd, {passive:true}); upd();
+  }
+
+  // --- background tint per scene (CSS side)
+  const tints = ['#FBF8F1','#FBF8F1','#FFF1F4','#EEF8FC','#FFF8E0','#FBF8F1'];
+  if (hasGsap) {
+    document.querySelectorAll('.scene').forEach((s,i) => {
+      ScrollTrigger.create({ trigger: s, start: 'top 55%', end: 'bottom 45%', onToggle: self => { if (self.isActive) document.body.style.setProperty('--bg', tints[i]); } });
+    });
+  }
+
+  if (!hasGsap || reduced) return;
+
+  // --- page-load sequence
+  window.addEventListener('DOMContentLoaded', () => {}, {once:true});
+  const tl = gsap.timeline({ delay: .15 });
+  tl.from('.site-head', { y: -40, opacity: 0, duration: .6, ease: 'back.out(2)' })
+    .from('.hero .eyebrow', { y: 20, opacity: 0, duration: .4 }, '-=.2')
+    .from('.hero h1 .ch', { y: -70, rotation: () => gsap.utils.random(-40, 40), opacity: 0, duration: .7, ease: 'bounce.out', stagger: .045 }, '-=.1')
+    .from('.hero .lead', { y: 24, opacity: 0, duration: .5 }, '-=.4')
+    .from('.scroll-cue', { scale: 0, rotation: -20, duration: .5, ease: 'back.out(3)' }, '-=.2')
+    .from('.doodle', { scale: 0, rotation: () => gsap.utils.random(-90, 90), duration: .7, ease: 'back.out(2)', stagger: .06 }, 0.3);
+
+  // letters hop on hover
+  document.querySelectorAll('.hero h1 .ch').forEach(ch => ch.addEventListener('mouseenter', () => {
+    gsap.fromTo(ch, { y: 0 }, { y: -14, rotation: gsap.utils.random(-15, 15), duration: .18, yoyo: true, repeat: 1, ease: 'power2.out' });
+  }));
+
+  // cards enter
+  gsap.utils.toArray('.card').forEach(c => {
+    gsap.from(c, { y: 60, rotation: '+=4', scale: .92, duration: .7, ease: 'back.out(1.8)', scrollTrigger: { trigger: c, start: 'top 88%', toggleActions: 'play none none reverse' } });
+  });
+  gsap.from('.ending .big-logo', { scale: 0, rotation: -200, duration: 1, ease: 'back.out(1.6)', scrollTrigger: { trigger: '#s-end', start: 'top 45%', toggleActions: 'play none none reverse' } });
+  gsap.from(['.ending h2', '.ending .copy', '.again'], { y: 30, opacity: 0, stagger: .12, duration: .6, ease: 'back.out(2)', scrollTrigger: { trigger: '#s-end', start: 'top 40%', toggleActions: 'play none none reverse' } });
+
+  // doodles: parallax rise + rotation with scroll, nudge with pointer
+  gsap.utils.toArray('.doodle').forEach(d => {
+    const k = parseFloat(d.dataset.depth);
+    gsap.to(d, { y: -260 * k, rotation: 120 * k * (k > 1 ? -1 : 1), ease: 'none', scrollTrigger: { trigger: '#tour', start: 'top top', end: 'bottom bottom', scrub: 1 } });
+  });
+  const svgs = gsap.utils.toArray('.doodle svg');
+  addEventListener('pointermove', e => {
+    const nx = e.clientX / innerWidth - .5, ny = e.clientY / innerHeight - .5;
+    svgs.forEach((s, i) => gsap.to(s.parentNode, { x: nx * (14 + i * 4), duration: .8, overwrite: 'auto' }));
+  }, { passive: true });
+})();
+</script>
+
+<!-- 3D：箱庭のミニチュアタウン -->
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+
+const MARU = window.MARU;
+const canvas = document.getElementById('stage');
+
+let renderer;
+try {
+  if (!MARU || !MARU.hasGsap) throw new Error('gsap missing');
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+} catch (e) {
+  document.documentElement.classList.add('no-webgl');
+  throw e;
+}
+window.__townOK = true;
+
+const reduced = MARU.reduced;
+const isMobile = () => innerWidth < 760 || matchMedia('(pointer: coarse)').matches;
+const MOBILE = isMobile();
+renderer.setPixelRatio(Math.min(devicePixelRatio, MOBILE ? 1.5 : 2));
+renderer.shadowMap.enabled = !MOBILE;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const scene = new THREE.Scene();
+const PAPER = new THREE.Color('#FBF8F1');
+renderer.setClearColor(PAPER);
+const camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 0.1, 200);
+
+// ---------- helpers
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = t => t * t * (3 - 2 * t);
+const range = (p, a, b) => clamp((p - a) / (b - a));
+const backOut = (t, s = 1.8) => { const c = s + 1; return 1 + c * Math.pow(t - 1, 3) + s * Math.pow(t - 1, 2); };
+const bounceOut = t => { const n = 7.5625, d = 2.75; if (t < 1 / d) return n * t * t; if (t < 2 / d) return n * (t -= 1.5 / d) * t + .75; if (t < 2.5 / d) return n * (t -= 2.25 / d) * t + .9375; return n * (t -= 2.625 / d) * t + .984375; };
+const angLerp = (a, b, t) => { let d = ((b - a + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI; return a + d * t; };
+let seed = 7; const rnd = (a = 0, b = 1) => { seed = (seed * 16807) % 2147483647; return a + (b - a) * (seed / 2147483647); };
+
+const grad = new THREE.DataTexture(new Uint8Array([155, 215, 255]), 3, 1, THREE.RedFormat);
+grad.minFilter = grad.magFilter = THREE.NearestFilter; grad.needsUpdate = true;
+const matCache = {};
+const mat = (hex, o = {}) => { const k = hex + JSON.stringify(o); return matCache[k] ||= new THREE.MeshToonMaterial({ color: hex, gradientMap: grad, ...o }); };
+const LINE = '#7A4A2E';
+const OUT = new THREE.MeshBasicMaterial({ color: LINE, side: THREE.BackSide });
+
+function outline(mesh, t = 0.05) {
+  const g = mesh.geometry; g.computeBoundingBox();
+  const s = new THREE.Vector3(); g.boundingBox.getSize(s);
+  const f = v => 1 + Math.min(2 * t / Math.max(v, 0.001), 0.6);
+  const o = new THREE.Mesh(g, OUT); o.scale.set(f(s.x), f(s.y), f(s.z)); o.raycast = () => {};
+  mesh.add(o); return mesh;
+}
+function mk(geo, color, { ol = 0.05, cast = true, recv = false, m } = {}) {
+  const mesh = new THREE.Mesh(geo, m || mat(color));
+  mesh.castShadow = cast; mesh.receiveShadow = recv;
+  if (ol) outline(mesh, ol);
+  return mesh;
+}
+// flat ribbon from 2D points (x,z), lying at height y
+function strip(pts, width, color, y = 0.01, closed = false) {
+  const P = closed ? [...pts, pts[0], pts[1]] : pts;
+  const pos = [], idx = [];
+  for (let i = 0; i < P.length; i++) {
+    const a = P[Math.max(0, i - 1)], b = P[Math.min(P.length - 1, i + 1)];
+    let dx = b[0] - a[0], dz = b[1] - a[1]; const l = Math.hypot(dx, dz) || 1; dx /= l; dz /= l;
+    const w = width * (0.8 + 0.4 * Math.sin(i * 1.7)) / 2; // hand-drawn pressure
+    pos.push(P[i][0] - dz * w, y, P[i][1] + dx * w, P[i][0] + dz * w, y, P[i][1] - dx * w);
+    if (i) { const k = i * 2; idx.push(k - 2, k - 1, k, k - 1, k + 1, k); }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
+  const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide, transparent: true, opacity: .9 }));
+  return m;
+}
+const wob = (pts, a = 0.06) => pts.map(([x, z]) => [x + rnd(-a, a), z + rnd(-a, a)]);
+
+// ---------- palette
+const C = {
+  paper: '#FFFDF8', pink: '#F9CAD6', pinkD: '#EC8FA8', sky: '#BFE6F7', water: '#8FD3F2', yellow: '#FBE29A', mound: '#F9D46A',
+  mint: '#CDEFD9', lilac: '#E7D3F3', peach: '#FDDCC6', skyL: '#D7EEF9', green: '#D6F0C4', leaf: '#8FD18B', trunk: '#C98F5F',
+  body: '#FBD3A6', ear: '#F2B27C', tuft: '#FFF6E6', cheek: '#F59EA8', eye: '#3B2A22', coral: '#F2A58B', cream: '#F3E9DA', lav: '#D9B8EF'
+};
+
+// ---------- lights
+scene.add(new THREE.HemisphereLight('#ffffff', '#f2e3d3', 2.2));
+const sun = new THREE.DirectionalLight('#fff7ea', 2.4);
+sun.position.set(7, 14, 9);
+sun.castShadow = !MOBILE;
+sun.shadow.mapSize.set(1536, 1536);
+Object.assign(sun.shadow.camera, { left: -11, right: 11, top: 11, bottom: -11, near: 1, far: 40 });
+sun.shadow.bias = -0.0015; sun.shadow.radius = 3;
+scene.add(sun);
+
+// ---------- ground paper (grid)
+function gridTex() {
+  const c = document.createElement('canvas'); c.width = c.height = 128;
+  const g = c.getContext('2d'); g.fillStyle = '#ffffff'; g.fillRect(0, 0, 128, 128);
+  g.strokeStyle = '#D9E2EA'; g.lineWidth = 3; g.strokeRect(0, 0, 128, 128);
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = 4; return t;
+}
+const gt = gridTex(); gt.repeat.set(140, 140);
+const groundMat = new THREE.MeshLambertMaterial({ map: gt, color: '#FBF8F1' });
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(140, 140), groundMat);
+ground.rotation.x = -Math.PI / 2; ground.position.y = -0.31; ground.receiveShadow = true;
+scene.add(ground);
+
+// doodles on the paper margin
+const doodles = new THREE.Group(); doodles.position.y = -0.3; scene.add(doodles);
+function zig(x, z, n, w, h, col, rot = 0) { const p = []; for (let i = 0; i <= n; i++) p.push([i * w, i % 2 ? -h : h]); const m = strip(wob(p, .08), .22, col); m.position.set(x, 0, z); m.rotation.y = rot; doodles.add(m); }
+function loops(x, z, n, col, rot = 0) { const p = []; for (let i = 0; i <= n * 24; i++) { const t = i / 24 * Math.PI * 2; p.push([t * .32 - Math.sin(t) * .55, -Math.cos(t) * .7]); } const m = strip(p, .18, col); m.position.set(x, .001, z); m.rotation.y = rot; doodles.add(m); }
+function cloudLine(x, z, r, col) { const p = []; for (let i = 0; i < 60; i++) { const a = i / 60 * Math.PI * 2; const rr = r * (0.82 + 0.22 * Math.abs(Math.sin(a * 2.5))); p.push([Math.cos(a) * rr, Math.sin(a) * rr * .8]); } const m = strip(wob(p, .03), .2, col, .002, true); m.position.set(x, 0, z); doodles.add(m); }
+function star(x, z, r, col) { const p = []; for (let i = 0; i < 10; i++) { const a = i / 10 * Math.PI * 2 - Math.PI / 2; const rr = i % 2 ? r * .45 : r; p.push([Math.cos(a) * rr, Math.sin(a) * rr]); } const m = strip(wob(p, .05), .2, col, .003, true); m.position.set(x, 0, z); doodles.add(m); }
+function ring(x, z, r, col) { const p = []; for (let i = 0; i < 24; i++) { const a = i / 24 * Math.PI * 2; p.push([Math.cos(a) * r, Math.sin(a) * r]); } const m = strip(p, .14, col, .004, true); m.position.set(x, 0, z); doodles.add(m); }
+zig(-12, -9, 5, 1.1, .8, '#F6D86B', .3); zig(8.5, 9.5, 4, 1, .7, '#F6D86B', -.4);
+loops(-13, 4, 3, '#9ED98A', -.2); loops(7, -10.5, 3, '#A6D8F0', .5); loops(-6, 10.5, 3, '#F4A58A', 0); loops(10, 2, 2, '#E57C73', 1.2);
+cloudLine(-9, -12, 1.6, '#F4A58A'); cloudLine(12.5, -4, 1.4, '#A6D8F0'); cloudLine(-11.5, 10, 1.3, '#F7C3CF'); cloudLine(1, 11.5, 1.2, '#9ED98A');
+star(12, 7, 1.4, '#F6D86B'); star(-3, -12, 1, '#F6D86B');
+ring(-8, 7.6, .35, '#9ED98A'); ring(4.6, -11, .3, '#F4A58A'); ring(9.5, -7.5, .25, '#9ED98A'); ring(-12, -2, .3, '#A6D8F0');
+
+// ---------- the 3x3 board
+const S = 4.2, TT = 0.3;
+const board = new THREE.Group(); scene.add(board);
+function tileTex(color, gridCol) {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const g = c.getContext('2d'); g.fillStyle = color; g.fillRect(0, 0, 256, 256);
+  g.strokeStyle = gridCol; g.lineWidth = 2;
+  for (let i = 1; i < 6; i++) { const v = i * 256 / 6; g.beginPath(); g.moveTo(v + rnd(-2, 2), 6); g.lineTo(v + rnd(-2, 2), 250); g.moveTo(6, v + rnd(-2, 2)); g.lineTo(250, v + rnd(-2, 2)); g.stroke(); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+const tileGeo = new RoundedBoxGeometry(3.9, 0.6, 3.9, 3, 0.2);
+const tiles = [];
+const TDEF = [
+  { k: 'plaza', x: 0, z: 0, col: C.paper, grid: '#D9E2EA' },
+  { k: 'flower', x: -S, z: 0, col: C.pink, grid: '#F4B4C4' },
+  { k: 'pond', x: 0, z: -S, col: C.sky, grid: '#A5D8EE' },
+  { k: 'hill', x: S, z: 0, col: C.yellow, grid: '#F2CF72' },
+  { k: 'nw', x: -S, z: -S, col: C.mint, grid: '#B4E2C6' },
+  { k: 'ne', x: S, z: -S, col: C.lilac, grid: '#D9C0EA' },
+  { k: 'sw', x: -S, z: S, col: C.peach, grid: '#F6C7AA' },
+  { k: 's', x: 0, z: S, col: C.skyL, grid: '#BFE0F2' },
+  { k: 'se', x: S, z: S, col: C.green, grid: '#BFE3A8' },
+];
+TDEF.forEach((d, i) => {
+  const g = new THREE.Group(); g.position.set(d.x, -0.3, d.z);
+  const m = new THREE.Mesh(tileGeo, new THREE.MeshToonMaterial({ color: '#ffffff', map: tileTex(d.col, d.grid), gradientMap: grad }));
+  m.position.y = 0.3; m.receiveShadow = true; m.castShadow = true; outline(m, 0.07);
+  m.rotation.y = rnd(-0.03, 0.03);
+  g.add(m);
+  const props = new THREE.Group(); props.position.set(d.x, TT, d.z); board.add(props);
+  board.add(g);
+  const order = Math.hypot(d.x, d.z) < 1 ? 0 : (Math.abs(d.x) + Math.abs(d.z) > S + 1 ? 2 + i * .08 : 1 + i * .1);
+  tiles.push({ ...d, g, props, order });
+});
+const T = Object.fromEntries(tiles.map(t => [t.k, t]));
+
+// ---------- terrain height
+const HILL = { x: S, z: 0, R: 1.75, H: 1.35 };
+const STONES = [[-1.15, -S - 0.3], [0.1, -S + 0.3], [1.25, -S - 0.25]];
+function groundY(x, z) {
+  let y = TT;
+  const r = Math.hypot(x - HILL.x, z - HILL.z);
+  if (r < HILL.R) y += HILL.H * Math.cos(r / HILL.R * Math.PI / 2);
+  for (const s of STONES) if (Math.hypot(x - s[0], z - s[1]) < 0.42) y = TT + 0.12;
+  return y;
+}
+
+// ---------- paths
+function makePath(list) {
+  let tot = 0, d = 0;
+  list.forEach(s => { s.len = Math.hypot(s.b[0] - s.a[0], s.b[1] - s.a[1]); s.w = s.w ?? s.len; s.t0 = tot; tot += s.w; s.d0 = d; d += s.len; });
+  list.forEach(s => { s.t0 /= tot; s.t1 = s.t0 + s.w / tot; });
+  return list;
+}
+function evalPath(path, t) {
+  t = clamp(t);
+  const s = path.find(s => t <= s.t1) || path[path.length - 1];
+  const u = clamp((t - s.t0) / (s.t1 - s.t0 || 1));
+  const x = lerp(s.a[0], s.b[0], u), z = lerp(s.a[1], s.b[1], u);
+  let y = groundY(x, z);
+  if (s.hop) y = lerp(groundY(...s.a), groundY(...s.b), u) + Math.sin(Math.PI * u) * s.hop;
+  return { x, y, z, dx: s.b[0] - s.a[0], dz: s.b[1] - s.a[1], hop: !!s.hop, u, dist: s.d0 + s.len * u };
+}
+const polyToSegs = pts => pts.slice(1).map((b, i) => ({ a: pts[i], b }));
+
+// flower spiral
+const spiral = [];
+for (let i = 0; i <= 14; i++) { const a = i / 14 * Math.PI * 1.6, r = 1.55 - 0.5 * (i / 14); spiral.push([-S + r * Math.cos(a), r * Math.sin(a)]); }
+const flowerCurve = new THREE.CatmullRomCurve3([[0, 0.25], [-1.45, 0.45], ...spiral, [-3.65, -2.3], [-3.35, -3.55]].map(([x, z]) => new THREE.Vector3(x, 0, z)), false, 'catmullrom', 0.4);
+const flowerPts = flowerCurve.getSpacedPoints(90).map(v => [v.x, v.z]);
+const PATH_FLOWER = makePath(polyToSegs(flowerPts));
+const bankA = [-2.25, -S + 0.2], bankB = [2.3, -S + 0.2];
+const PATH_POND = makePath([
+  { a: [-3.35, -3.55], b: bankA, w: 1.1 },
+  { a: bankA, b: STONES[0], w: 1, hop: 0.75 },
+  { a: STONES[0], b: STONES[1], w: 1, hop: 0.8 },
+  { a: STONES[1], b: STONES[2], w: 1, hop: 0.8 },
+  { a: STONES[2], b: bankB, w: 0.9, hop: 0.6 },
+  { a: bankB, b: [3.25, -3.0], w: 1.1 },
+]);
+const HZ = [[3.25, -3.0], [S + 0.15, -2.05], [S - 1.3, -0.95], [S + 0.95, -0.7], [S - 0.55, -0.2], [S, 0]];
+const PATH_HILL = makePath(polyToSegs(HZ));
+PATH_HILL[0].w *= 0.7; makePath(PATH_HILL);
+
+// scroll timeline (fractions of total scroll)
+const SC = { build: [0.015, 0.16], land: [0.15, 0.2], flower: [0.21, 0.4], pond: [0.41, 0.6], hill: [0.61, 0.8], turn: [0.8, 0.86], pull: [0.81, 0.97] };
+
+// ---------- decorations per tile
+function tree(x, z, s = 1, col = C.leaf) {
+  const g = new THREE.Group(); g.position.set(x, 0, z); g.scale.setScalar(s); g.rotation.set(rnd(-.08, .08), rnd(0, 6), rnd(-.08, .08));
+  const tr = mk(new THREE.CylinderGeometry(.09, .12, .6, 6), C.trunk, { ol: .03 }); tr.position.y = .3; g.add(tr);
+  const top = mk(new THREE.IcosahedronGeometry(.42, 0), col, { ol: .05 }); top.position.y = .8; top.scale.set(1, .9, 1); g.add(top);
+  return g;
+}
+function bush(x, z, s = 1, col = C.leaf) {
+  const g = new THREE.Group(); g.position.set(x, 0, z); g.scale.setScalar(s);
+  [[0, .18, 0, .24], [.22, .14, .05, .18], [-.2, .13, .04, .17]].forEach(([a, b, c, r]) => { const m = mk(new THREE.SphereGeometry(r, 10, 8), col, { ol: .03 }); m.position.set(a, b, c); g.add(m); });
+  return g;
+}
+// plaza
+{
+  const P = T.plaza.props;
+  const swirlPts = []; for (let i = 0; i < 40; i++) { const a = i / 40 * Math.PI * 3.2, r = .12 + i / 40 * .5; swirlPts.push([Math.cos(a) * r, Math.sin(a) * r]); }
+  const sw = strip(swirlPts, .09, '#EC8FA8', .02); sw.position.set(0, 0, .25); P.add(sw);
+  const lamp = new THREE.Group(); lamp.position.set(1.25, 0, -1.2); lamp.rotation.z = .07;
+  const pole = mk(new THREE.CylinderGeometry(.05, .06, 1.2, 6), C.lav, { ol: .025 }); pole.position.y = .6; lamp.add(pole);
+  const bulb = mk(new THREE.SphereGeometry(.18, 10, 8), '#FFF3B8', { ol: .03 }); bulb.position.y = 1.3; lamp.add(bulb); P.add(lamp);
+  const bench = new THREE.Group(); bench.position.set(-1.1, 0, 1.25); bench.rotation.y = .4;
+  const seat = mk(new RoundedBoxGeometry(.9, .1, .32, 2, .04), C.coral, { ol: .03 }); seat.position.y = .3; bench.add(seat);
+  [-.32, .32].forEach(x => { const l = mk(new THREE.BoxGeometry(.08, .28, .26), C.trunk, { ol: .02 }); l.position.set(x, .14, 0); bench.add(l); });
+  P.add(bench);
+  P.add(bush(1.35, 1.3, .9, '#A8E0B4'));
+}
+// flowerbed
+const flowers = [];
+{
+  const P = T.flower.props;
+  const sp = new THREE.CatmullRomCurve3(spiral.map(([x, z]) => new THREE.Vector3(x + S, 0, z)));
+  const ribbonPts = sp.getSpacedPoints(70).map(v => [v.x, v.z]);
+  const r1 = strip(ribbonPts, .62, '#E98FAA', .015); P.add(r1);
+  const r2 = strip(ribbonPts, .44, '#FBE0E8', .025); P.add(r2);
+  const cols = ['#F7B5C8', '#F49AB5', '#FFFFFF', '#F9C6A8', '#E8B8F3'];
+  const spots = [];
+  for (let i = 0; i < 9; i++) { const a = i / 9 * Math.PI * 1.75 + .25, r = 1.62 - .45 * (i / 9) + .62; spots.push([r * Math.cos(a), r * Math.sin(a)]); }
+  spots.push([0, 0], [.42, -.18], [-1.5, 1.45], [1.55, 1.45]);
+  spots.forEach(([x, z], i) => {
+    const s = (i === 9 ? 1.6 : rnd(.8, 1.25));
+    const f = new THREE.Group(); f.position.set(x, 0, z);
+    const sway = new THREE.Group(); f.add(sway);
+    const spin = new THREE.Group(); sway.add(spin);
+    spin.scale.setScalar(s);
+    const stem = mk(new THREE.CylinderGeometry(.03, .035, .42, 5), C.leaf, { ol: .015 }); stem.position.y = .21; spin.add(stem);
+    const leaf = mk(new THREE.SphereGeometry(.08, 6, 4), C.leaf, { ol: .015 }); leaf.scale.set(1.6, .4, .8); leaf.position.set(.08, .14, 0); leaf.rotation.z = .5; spin.add(leaf);
+    const head = new THREE.Group(); head.position.y = .46; head.rotation.x = .5; spin.add(head);
+    const pc = cols[i % cols.length];
+    for (let k = 0; k < 5; k++) { const a = k / 5 * Math.PI * 2; const pt = mk(new THREE.SphereGeometry(.085, 8, 6), pc, { ol: .018 }); pt.scale.set(1, .45, 1.15); pt.position.set(Math.cos(a) * .11, 0, Math.sin(a) * .11); head.add(pt); }
+    const ctr = mk(new THREE.SphereGeometry(.065, 8, 6), '#F8D86E', { ol: .018 }); ctr.position.y = .03; head.add(ctr);
+    f.rotation.y = rnd(0, 6);
+    P.add(f);
+    // when does Kurun pass it?
+    let best = 1e9, bi = 0; const wx = x - S, wz = z;
+    flowerPts.forEach((p, j) => { const d = Math.hypot(p[0] - wx, p[1] - wz); if (d < best) { best = d; bi = j; } });
+    const fu = PATH_FLOWER[Math.min(bi, PATH_FLOWER.length - 1)].t0;
+    spin.children.forEach(c => c.traverse(o => { if (o.isMesh) o.userData.kind = 'flower'; }));
+    spin.userData.flower = flowers.length;
+    flowers.push({ f, sway, spin, fu, phase: rnd(0, 6), busy: false });
+  });
+  P.add(bush(-1.6, -1.55, .8, '#A8E0B4'));
+}
+// pond
+const stones = [], ripplesScroll = [];
+{
+  const P = T.pond.props;
+  const pondShape = new THREE.Shape(); const N = 11;
+  for (let i = 0; i <= N; i++) { const a = i / N * Math.PI * 2; const r = (i % 2 ? 1.72 : 1.62) * (1 + .06 * Math.sin(a * 2)); const x = Math.cos(a) * r * 1.02, y = Math.sin(a) * r * .86; i ? pondShape.lineTo(x, y) : pondShape.moveTo(x, y); }
+  const rim = new THREE.Mesh(new THREE.ShapeGeometry(pondShape), new THREE.MeshBasicMaterial({ color: LINE })); rim.rotation.x = -Math.PI / 2; rim.scale.setScalar(1.06); rim.position.y = .006; P.add(rim);
+  const rim2 = new THREE.Mesh(new THREE.ShapeGeometry(pondShape), new THREE.MeshBasicMaterial({ color: '#EAF8FE' })); rim2.rotation.x = -Math.PI / 2; rim2.scale.setScalar(1.02); rim2.position.y = .01; P.add(rim2);
+  const water = new THREE.Mesh(new THREE.ShapeGeometry(pondShape), mat(C.water)); water.rotation.x = -Math.PI / 2; water.position.y = .016; water.receiveShadow = true; P.add(water);
+  [[-.75, .55, .35], [.85, -.55, .22]].forEach(([x, z, r]) => { const h = new THREE.Mesh(new THREE.CircleGeometry(r, 10), new THREE.MeshBasicMaterial({ color: '#ffffff' })); h.rotation.x = -Math.PI / 2; h.scale.set(1.6, 0.7, 1); h.position.set(x, .022, z); P.add(h); });
+  const pad = mk(new THREE.CylinderGeometry(.28, .28, .03, 9, 1, false, .4, 5.6), '#9ED98A', { ol: .02 }); pad.position.set(-.3, .03, .95); P.add(pad);
+  const ringGeo = new THREE.RingGeometry(.38, .46, 24);
+  STONES.forEach(([x, z], i) => {
+    const s = mk(new THREE.CylinderGeometry(.36, .42, .14, 7), C.cream, { ol: .04 }); s.rotation.y = rnd(0, 3); s.userData.kind = 'stone'; s.userData.i = i;
+    s.position.set(x - T.pond.x, .07, z - T.pond.z);
+    P.add(s); stones.push(s);
+    const r = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0, depthWrite: false }));
+    r.rotation.x = -Math.PI / 2; r.position.set(s.position.x, .03, s.position.z); P.add(r); ripplesScroll.push(r);
+  });
+  P.add(bush(1.55, 1.45, .85, '#A8E0B4')); P.add(tree(-1.5, -1.45, .8, '#9AD7C6'));
+}
+// hill
+const flags = [];
+{
+  const P = T.hill.props;
+  const prof = []; for (let i = 0; i <= 6; i++) { const r = HILL.R * (1 - i / 6); prof.push(new THREE.Vector2(Math.max(r, .001), HILL.H * Math.cos(r / HILL.R * Math.PI / 2))); }
+  const mound = new THREE.Mesh(new THREE.LatheGeometry(prof, 10), mat(C.mound, { side: THREE.DoubleSide }));
+  mound.castShadow = mound.receiveShadow = true; P.add(mound);
+  const base = strip(Array.from({ length: 30 }, (_, i) => { const a = i / 30 * Math.PI * 2; return [Math.cos(a) * HILL.R, Math.sin(a) * HILL.R]; }), .12, LINE, .01, true); P.add(base);
+  // zigzag dashes
+  for (let i = 1; i < HZ.length - 1; i++) {
+    const a = HZ[i], b = HZ[i + 1], len = Math.hypot(b[0] - a[0], b[1] - a[1]); const n = Math.max(2, Math.round(len / .32));
+    for (let k = 0; k < n; k++) {
+      const u = (k + .5) / n, x = lerp(a[0], b[0], u), z = lerp(a[1], b[1], u);
+      const d = new THREE.Mesh(new THREE.BoxGeometry(.2, .03, .1), new THREE.MeshBasicMaterial({ color: '#E9963C' }));
+      d.position.set(x - S, groundY(x, z) - TT + .02, z); d.rotation.y = -Math.atan2(b[1] - a[1], b[0] - a[0]);
+      P.add(d);
+    }
+  }
+  const fcol = ['#F2A58B', '#A8DDF4', '#F49AB5', '#F8A23C'];
+  [2, 3, 4, 5].forEach((ci, i) => {
+    const [x, z] = HZ[ci]; const big = ci === 5;
+    const off = big ? [0.32, -0.15] : [ci % 2 ? .38 : -.38, .1];
+    const fx = x + off[0], fz = z + off[1];
+    const g = new THREE.Group(); g.position.set(fx - S, groundY(fx, fz) - TT, fz); g.rotation.y = rnd(-.4, .4) + .6; g.rotation.z = rnd(-.08, .08);
+    const h = big ? 1.5 : 1;
+    const pole = mk(new THREE.CylinderGeometry(.03, .035, h, 5), LINE, { ol: 0 }); pole.position.y = h / 2; g.add(pole);
+    const knob = mk(new THREE.SphereGeometry(.06, 6, 5), '#F8D86E', { ol: .015 }); knob.position.y = h; g.add(knob);
+    const sh = new THREE.Shape(); sh.moveTo(0, 0); sh.lineTo(big ? .8 : .58, -.15); sh.lineTo(0, big ? -.44 : -.34); sh.lineTo(0, 0);
+    const flagM = mk(new THREE.ExtrudeGeometry(sh, { depth: .02, bevelEnabled: false }), fcol[i], { ol: .015 });
+    flagM.geometry.translate(0, 0, -.01);
+    const hinge = new THREE.Group(); hinge.position.y = h - .04; hinge.add(flagM); g.add(hinge);
+    g.traverse(o => { if (o.isMesh) o.userData.kind = 'flag'; });
+    P.add(g);
+    const seg = PATH_HILL[ci - 1]; // reached at end of segment leading to this corner
+    flags.push({ g, hinge, fu: seg.t1 - 0.04, wave: 0, phase: rnd(0, 6) });
+  });
+  P.add(tree(1.5, 1.4, .9, '#F6B94A')); P.add(bush(-1.5, 1.45, .8, '#F3C55A'));
+}
+// side tiles
+{
+  T.nw.props.add(tree(-.9, -.8, 1.1), tree(.6, -1.2, .8, '#A8E0B4'), bush(-1.2, 1.1, 1), tree(1.3, .9, .7));
+  // house
+  const H = new THREE.Group(); H.position.set(-.2, 0, -.4); H.rotation.set(0, .5, .06);
+  const hb = mk(new RoundedBoxGeometry(1.1, .9, .9, 2, .08), '#FFF1E0', { ol: .04 }); hb.position.y = .45; H.add(hb);
+  const roof = mk(new THREE.ConeGeometry(.92, .7, 4), C.coral, { ol: .04 }); roof.position.y = 1.22; roof.rotation.y = Math.PI / 4; H.add(roof);
+  const door = mk(new THREE.BoxGeometry(.28, .42, .04), C.trunk, { ol: 0 }); door.position.set(0, .22, .46); H.add(door);
+  const win = mk(new THREE.CircleGeometry(.12, 10), '#A8DDF4', { ol: 0, cast: false }); win.position.set(.32, .55, .456); H.add(win);
+  T.ne.props.add(H, bush(1.1, 1.0, .9, '#D9B8EF'), tree(1.2, -1.1, .75, '#C9A5EA'));
+  // seesaw
+  const SW = new THREE.Group(); SW.position.set(.2, 0, -.1); SW.rotation.y = -.6;
+  const pv = mk(new THREE.ConeGeometry(.22, .34, 3), C.lav, { ol: .03 }); pv.position.y = .17; SW.add(pv);
+  const plank = mk(new RoundedBoxGeometry(1.9, .08, .28, 2, .03), C.yellow, { ol: .03 }); plank.position.y = .38; plank.rotation.z = .18; SW.add(plank);
+  [-.85, .85].forEach(x => { const s = mk(new THREE.SphereGeometry(.1, 8, 6), C.pinkD, { ol: .02 }); s.position.set(x, .38 - x * .18 + .1, 0); SW.add(s); });
+  T.sw.props.add(SW, tree(-1.2, 1.2, .9, '#F4A58A'), bush(1.3, 1.2, .8));
+  // slide
+  const SL = new THREE.Group(); SL.position.set(-.3, 0, .1); SL.rotation.y = .5;
+  const tw = mk(new RoundedBoxGeometry(.6, .9, .6, 2, .06), '#F7C3CF', { ol: .04 }); tw.position.y = .45; SL.add(tw);
+  const sl = mk(new RoundedBoxGeometry(1.5, .07, .44, 2, .03), C.water, { ol: .03 }); sl.position.set(.85, .5, 0); sl.rotation.z = -.55; SL.add(sl);
+  T.s.props.add(SL, bush(1.3, -1.1, .8), tree(-1.3, 1.2, .8, '#9AD7C6'), tree(1.35, 1.2, .65));
+  // mushrooms
+  const mush = (x, z, s, c) => { const g = new THREE.Group(); g.position.set(x, 0, z); g.scale.setScalar(s); g.rotation.z = rnd(-.1, .1);
+    const st = mk(new THREE.CylinderGeometry(.14, .18, .4, 7), '#FFF1E0', { ol: .025 }); st.position.y = .2; g.add(st);
+    const cap = mk(new THREE.SphereGeometry(.38, 9, 6, 0, Math.PI * 2, 0, Math.PI / 2), c, { ol: .035 }); cap.position.y = .36; g.add(cap); return g; };
+  T.se.props.add(mush(-.4, -.3, 1.2, C.coral), mush(.6, .4, .8, C.lav), tree(1.2, -1.1, .9), bush(-1.2, 1.1, .9), tree(-1.3, -1.3, .7, '#F6B94A'));
+}
+// route dots ("落書きの道")
+const routeDots = new THREE.Group(); board.add(routeDots);
+{
+  const all = [...flowerPts, ...PATH_POND.flatMap(s => s.hop ? [] : [s.a, s.b]), [3.25, -3.0], [S + 0.15, -2.05]];
+  const dense = [];
+  for (let i = 1; i < all.length; i++) { const a = all[i - 1], b = all[i]; const l = Math.hypot(b[0] - a[0], b[1] - a[1]); if (l > 3) continue; for (let k = 0; k < Math.ceil(l / .05); k++) { const u = k / Math.ceil(l / .05); dense.push([lerp(a[0], b[0], u), lerp(a[1], b[1], u)]); } }
+  let acc = 0;
+  const dotGeo = new THREE.CircleGeometry(.075, 8), dotMat = new THREE.MeshBasicMaterial({ color: '#C79A7A' });
+  for (let i = 1; i < dense.length; i++) {
+    acc += Math.hypot(dense[i][0] - dense[i - 1][0], dense[i][1] - dense[i - 1][1]);
+    if (acc < .4) continue; acc = 0;
+    const [x, z] = dense[i];
+    if (Math.hypot(x + S, z) < 2.1 || Math.hypot(x, z + S) < 2.0 || Math.hypot(x - S, z) < 1.8) continue;
+    const d = new THREE.Mesh(dotGeo, dotMat); d.rotation.x = -Math.PI / 2; d.position.set(x, TT + .012, z); routeDots.add(d);
+  }
+}
+
+// ---------- gathering color pieces ("材料が集まる")
+const bits = [];
+{
+  const geos = [new THREE.IcosahedronGeometry(.16, 0), new THREE.BoxGeometry(.24, .24, .24), new THREE.TetrahedronGeometry(.2), new THREE.SphereGeometry(.15, 8, 6)];
+  tiles.forEach(t => {
+    for (let i = 0; i < (MOBILE ? 3 : 5); i++) {
+      const m = mk(geos[i % 4], t.col === C.paper ? '#F8D86E' : t.col, { ol: .03, cast: false });
+      const a = rnd(0, Math.PI * 2), r = rnd(7, 12);
+      const from = new THREE.Vector3(Math.cos(a) * r, rnd(1.5, 5), Math.sin(a) * r);
+      scene.add(m); bits.push({ m, from, t, spin: new THREE.Vector3(rnd(-2, 2), rnd(-2, 2), rnd(-2, 2)), ph: rnd(0, 6), k: rnd(0, .25) });
+    }
+  });
+}
+
+// ---------- floating clouds
+const clouds = [];
+[[-7, 5.2, -6, 1.1], [7.5, 6, -5, .9], [-2, 6.6, 8, .8], [9, 5, 6, .7]].forEach(([x, y, z, s], i) => {
+  const g = new THREE.Group(); g.position.set(x, y, z); g.scale.setScalar(s);
+  [[0, 0, 0, .7], [.7, -.1, .1, .5], [-.7, -.12, 0, .5], [.3, .35, -.1, .45]].forEach(([a, b, c, r]) => { const m = mk(new THREE.SphereGeometry(r, 12, 8), '#ffffff', { ol: .05, cast: false }); m.position.set(a, b, c); g.add(m); });
+  scene.add(g); clouds.push({ g, base: g.position.clone(), ph: i * 1.7 });
+});
+
+// ---------- Kurun (案内役)
+const kurun = new THREE.Group(); scene.add(kurun);
+const hop = new THREE.Group(); kurun.add(hop);
+const bodyG = new THREE.Group(); hop.add(bodyG);
+const kParts = [];
+{
+  const bg = new THREE.SphereGeometry(.5, 22, 16); bg.scale(1.12, .9, 1.02);
+  const body = mk(bg, C.body, { ol: .045 }); body.position.y = .47; bodyG.add(body); kParts.push(body);
+  [-1, 1].forEach(sd => {
+    const eg = new THREE.SphereGeometry(.2, 12, 8); eg.scale(.62, 1.3, .48);
+    const ear = mk(eg, C.ear, { ol: .03 }); ear.position.set(sd * .54, .62, -.02); ear.rotation.z = sd * -.95 + sd * -.25; ear.userData.side = sd; bodyG.add(ear); kParts.push(ear);
+  });
+  const tuft = new THREE.Group(); tuft.position.set(0, .9, .02); bodyG.add(tuft);
+  [[-.13, 0, 0, .14], [.12, .02, -.02, .15], [0, .1, .05, .13]].forEach(([x, y, z, r]) => { const m = mk(new THREE.SphereGeometry(r, 12, 8), C.tuft, { ol: .03 }); m.position.set(x, y, z); tuft.add(m); kParts.push(m); });
+  // curly tail
+  const pts = []; for (let i = 0; i <= 40; i++) { const t = i / 40, a = t * Math.PI * 3.2; pts.push(new THREE.Vector3(Math.sin(a) * .1 * (1 - t * .3), .3 + t * .25 + Math.cos(a) * .1, -.5 - t * .28)); }
+  const tail = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 50, .045, 6), mat('#F6A9BE')); tail.castShadow = true; bodyG.add(tail);
+  const tailO = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 50, .07, 6), OUT); bodyG.add(tailO);
+  bodyG.userData.tail = [tail, tailO];
+}
+const feet = [-1, 1].map(sd => { const g = new THREE.SphereGeometry(.15, 10, 6); g.scale(1, .6, 1.3); const f = mk(g, C.ear, { ol: .03 }); f.position.set(sd * .24, .07, .1); hop.add(f); kParts.push(f); return f; });
+const face = new THREE.Group(); face.position.y = .47; bodyG.add(face);
+const faceN = new THREE.Group(), faceH = new THREE.Group(); face.add(faceN, faceH); faceH.visible = false;
+{
+  const eyeMat = new THREE.MeshBasicMaterial({ color: C.eye }), white = new THREE.MeshBasicMaterial({ color: '#ffffff' });
+  [-1, 1].forEach(sd => {
+    const e = new THREE.Mesh(new THREE.SphereGeometry(.06, 10, 8), eyeMat); e.scale.set(1, 1.15, .6); e.position.set(sd * .17, .06, .455); faceN.add(e);
+    const h = new THREE.Mesh(new THREE.SphereGeometry(.022, 6, 5), white); h.position.set(sd * .17 + .02, .09, .49); faceN.add(h);
+    const he = new THREE.Mesh(new THREE.TorusGeometry(.06, .016, 6, 12, Math.PI), eyeMat); he.position.set(sd * .17, .04, .46); faceH.add(he);
+    const ck = new THREE.Mesh(new THREE.CircleGeometry(.085, 14), new THREE.MeshBasicMaterial({ color: C.cheek, transparent: true, opacity: .9 }));
+    ck.position.set(sd * .33, -.04, .4); ck.lookAt(ck.position.clone().multiplyScalar(2)); ck.scale.set(1.25, .85, 1); face.add(ck);
+  });
+  const mouth = new THREE.Mesh(new THREE.TorusGeometry(.03, .011, 5, 10, Math.PI), new THREE.MeshBasicMaterial({ color: LINE }));
+  mouth.rotation.z = Math.PI; [-.03, .03].forEach(x => { const m = mouth.clone(); m.position.set(x, -.03, .48); faceN.add(m); });
+  const om = new THREE.Mesh(new THREE.SphereGeometry(.07, 10, 8, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#E86F7E' }));
+  om.position.set(0, -.02, .47); om.scale.set(1, 1.1, .5); faceH.add(om);
+}
+kParts.forEach(m => m.userData.kind = 'kurun');
+const blob = new THREE.Mesh(new THREE.CircleGeometry(.5, 20), new THREE.MeshBasicMaterial({ color: '#7A4A2E', transparent: true, opacity: .16, depthWrite: false }));
+blob.rotation.x = -Math.PI / 2; scene.add(blob);
+
+// sparkles for celebration / tap
+const sparkGeo = new THREE.OctahedronGeometry(.09, 0);
+function burst(pos, n = 7, cols = ['#F8D86E', '#F49AB5', '#A8DDF4', '#9ED98A']) {
+  for (let i = 0; i < n; i++) {
+    const m = new THREE.Mesh(sparkGeo, mat(cols[i % cols.length])); m.position.copy(pos); scene.add(m);
+    const a = i / n * Math.PI * 2;
+    gsap.to(m.position, { x: pos.x + Math.cos(a) * .9, y: pos.y + 1 + rnd(0, .6), z: pos.z + Math.sin(a) * .9, duration: .8, ease: 'power2.out' });
+    gsap.to(m.rotation, { x: 4, y: 6, duration: .9 });
+    gsap.to(m.scale, { x: 0, y: 0, z: 0, duration: .5, delay: .45, ease: 'power2.in', onComplete: () => scene.remove(m) });
+  }
+}
+
+// ---------- state from scroll
+const v3 = new THREE.Vector3();
+function charState(p, time) {
+  const st = { x: 0, y: TT, z: 0.25, yaw: null, dist: 0, hop: false, moving: false, hover: false };
+  if (reduced) { st.yaw = Math.PI / 4; return st; }
+  if (p < SC.land[0]) { st.y = TT + 4.4 + Math.sin(time * 1.6) * .25; st.hover = true; st.yaw = Math.PI / 4; return st; }
+  if (p < SC.flower[0]) { const t = range(p, ...SC.land); st.y = TT + (1 - bounceOut(t)) * 4.4; st.yaw = Math.PI / 4; return st; }
+  let r;
+  if (p < SC.pond[0]) r = evalPath(PATH_FLOWER, range(p, ...SC.flower));
+  else if (p < SC.hill[0]) r = evalPath(PATH_POND, range(p, ...SC.pond));
+  else r = evalPath(PATH_HILL, range(p, ...SC.hill));
+  Object.assign(st, { x: r.x, y: r.y, z: r.z, dist: r.dist, hop: r.hop, moving: p < SC.hill[1] });
+  st.yaw = Math.atan2(r.dx, r.dz);
+  if (p >= SC.hill[1]) { const tt = smooth(range(p, ...SC.turn)); st.yaw = angLerp(Math.atan2(HZ[5][0] - HZ[4][0], HZ[5][1] - HZ[4][1]), camAz(p) , tt); st.moving = false; }
+  return st;
+}
+function camAz(p) {
+  let az = Math.PI / 4;
+  az += .5 * Math.sin(Math.PI * range(p, ...SC.flower));
+  az -= .3 * Math.sin(Math.PI * range(p, ...SC.pond));
+  az += .22 * Math.sin(Math.PI * range(p, SC.hill[0], SC.turn[0]));
+  return az;
+}
+const desired = { tx: 0, ty: 0, tz: 0, az: Math.PI / 4, el: .62, hw: 10, ox: 0, oy: 0 };
+function camDesired(p, time) {
+  const asp = innerWidth / innerHeight, mob = asp < .85;
+  const OV = mob ? [17, 13] : [21, 15.5], FO = mob ? [10, 8.5] : [15.5, 10.5], END = mob ? [18, 15] : [21, 19];
+  let zIn = smooth(range(p, .05, .19)), zOut = smooth(range(p, ...SC.pull));
+  if (reduced) { zIn = 0; zOut = 0; }
+  let needW = lerp(lerp(OV[0], FO[0], zIn), END[0], zOut), needH = lerp(lerp(OV[1], FO[1], zIn), END[1], zOut);
+  const lag = charState(Math.max(0, p - 0.012), time);
+  const follow = p >= SC.land[0] ? 1 : 0;
+  let tx = lerp(0, lag.x * follow, zIn), tz = lerp(0, lag.z * follow, zIn), ty = lerp(.4, (follow ? lag.y : TT) + .4, zIn);
+  // hill: gaze lifts slightly
+  const hl = smooth(range(p, SC.hill[0], SC.hill[1])) * (1 - zOut);
+  ty += hl * .9;
+  tx = lerp(tx, 0, zOut); tz = lerp(tz, .4, zOut); ty = lerp(ty, .4, zOut);
+  desired.tx = tx; desired.ty = ty; desired.tz = tz;
+  desired.az = reduced ? Math.PI / 4 : lerp(camAz(p), Math.PI / 4, zOut);
+  desired.el = .62 - hl * .14 + zOut * .05;
+  desired.hh = Math.max(needH / 2, needW / 2 / asp);
+  const heroMix = 1 - zIn;
+  if (mob) { desired.ox = 0; desired.oy = lerp(.2, -.16, heroMix) * (1 - zOut) + (-.24) * zOut; }
+  else { desired.ox = lerp(.17, .2, heroMix) * (1 - zOut); desired.oy = -.2 * zOut; }
+  if (reduced) { desired.ox = mob ? 0 : .17; desired.oy = mob ? .18 : 0; }
+}
+const cam = { tx: 0, ty: .4, tz: 0, az: Math.PI / 4, el: .62, hh: 9, ox: .17, oy: 0 };
+
+// ---------- interaction
+const raycaster = new THREE.Raycaster();
+const ndc = new THREE.Vector2(9, 9);
+let pointerIn = false;
+const look = { yaw: 0, pitch: 0 };
+let expressionT = 0;
+const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+const clickables = [];
+scene.traverse(o => { if (o.isMesh && o.userData.kind) clickables.push(o); });
+
+function kurunJump() {
+  if (hop.userData.busy) return;
+  hop.userData.busy = true;
+  faceN.visible = false; faceH.visible = true; expressionT = 1.4;
+  const h = reduced ? .4 : 1.1;
+  gsap.timeline({ onComplete: () => { hop.userData.busy = false; } })
+    .to(hop.scale, { y: .7, x: 1.2, z: 1.2, duration: .1, ease: 'power2.out' })
+    .to(hop.position, { y: h, duration: .32, ease: 'power2.out' }, '>')
+    .to(hop.scale, { y: 1.15, x: .9, z: .9, duration: .16 }, '<')
+    .to(hop.rotation, { y: Math.PI * 2, duration: .6, ease: 'power2.inOut' }, '<')
+    .to(hop.position, { y: 0, duration: .3, ease: 'bounce.out' })
+    .to(hop.scale, { y: .8, x: 1.15, z: 1.15, duration: .08 }, '-=.12')
+    .to(hop.scale, { y: 1, x: 1, z: 1, duration: .4, ease: 'elastic.out(1,.4)' })
+    .set(hop.rotation, { y: 0 });
+  kurun.getWorldPosition(v3); v3.y += 1.2; burst(v3);
+  MARU.stamp('kurun');
+}
+function spinFlower(i, delay = 0) {
+  const F = flowers[i]; if (F.busy) return; F.busy = true;
+  gsap.timeline({ delay, onComplete: () => { F.spin.rotation.y = 0; F.busy = false; } })
+    .to(F.spin.rotation, { y: Math.PI * 2, duration: .9, ease: 'back.out(1.4)' })
+    .to(F.spin.position, { y: .25, duration: .25, ease: 'power2.out' }, 0)
+    .to(F.spin.position, { y: 0, duration: .45, ease: 'bounce.out' }, .25);
+  MARU.stamp('flower');
+}
+const tapRings = [];
+function rippleStone(i, delay = 0) {
+  const s = stones[i];
+  gsap.timeline({ delay })
+    .to(s.position, { y: .02, duration: .08 }).to(s.position, { y: .07, duration: .4, ease: 'elastic.out(1,.3)' });
+  for (let k = 0; k < 2; k++) {
+    const r = new THREE.Mesh(new THREE.RingGeometry(.4, .47, 28), new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: .95, depthWrite: false }));
+    r.rotation.x = -Math.PI / 2; r.position.set(s.position.x, .03, s.position.z); T.pond.props.add(r);
+    gsap.to(r.scale, { x: 3.4, y: 3.4, duration: 1.3, delay: delay + k * .25, ease: 'power2.out' });
+    gsap.to(r.material, { opacity: 0, duration: 1.3, delay: delay + k * .25, ease: 'power1.in', onComplete: () => { T.pond.props.remove(r); r.geometry.dispose(); } });
+  }
+  MARU.stamp('ripple');
+}
+function waveFlags() { flags.forEach((f, i) => gsap.fromTo(f, { wave: 1 }, { wave: 0, duration: 1.6, delay: i * .12, ease: 'power2.out' })); MARU.stamp('flag'); }
+MARU.celebrate = () => { kurun.getWorldPosition(v3); v3.y += 1.5; burst(v3, 14); };
+
+function pick(e) {
+  const r = canvas.getBoundingClientRect();
+  ndc.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1);
+  raycaster.setFromCamera(ndc, camera);
+  const hit = raycaster.intersectObjects(clickables, false)[0];
+  return hit ? hit.object : null;
+}
+addEventListener('pointermove', e => {
+  if (e.target.closest && e.target.closest('button, a, .card, .stampbook, .notes')) { canvas.style.cursor = ''; pointerIn = false; return; }
+  pointerIn = true;
+  const o = pick(e); document.body.style.cursor = o ? 'pointer' : '';
+}, { passive: true });
+addEventListener('pointerleave', () => { pointerIn = false; });
+addEventListener('click', e => {
+  if (e.target.closest && e.target.closest('button, a, .card, .stampbook, .notes, .site-head')) return;
+  const o = pick(e); if (!o) return;
+  const k = o.userData.kind;
+  if (k === 'kurun') kurunJump();
+  else if (k === 'flower') { let f = o; while (f && f.userData.flower === undefined) f = f.parent; if (f) spinFlower(f.userData.flower); }
+  else if (k === 'stone') rippleStone(o.userData.i);
+  else if (k === 'flag') waveFlags();
+});
+
+// HTML hint buttons (keyboard accessible)
+const hintEls = Object.fromEntries([...document.querySelectorAll('.hint')].map(b => [b.dataset.hint, b]));
+hintEls.kurun.addEventListener('click', kurunJump);
+hintEls.flower.addEventListener('click', () => flowers.forEach((f, i) => { f.busy = false; spinFlower(i, i * .06); }));
+hintEls.stone.addEventListener('click', () => stones.forEach((s, i) => rippleStone(i, i * .18)));
+hintEls.flag.addEventListener('click', waveFlags);
+const hintAnchor = {
+  kurun: () => kurun.localToWorld(v3.set(0, 1.45, 0)),
+  flower: () => v3.set(-S - .9, TT + 1, 1.5),
+  stone: () => v3.set(.3, TT + .45, -S + 1.75),
+  flag: () => v3.set(S + 1.2, TT + .9, -1.2),
+};
+function hintActive(k, p) {
+  if (reduced) return true;
+  if (k === 'kurun') return p > SC.land[1] - .01;
+  if (k === 'flower') return p > SC.flower[0] - .03 && p < SC.pond[0] + .02;
+  if (k === 'stone') return p > SC.pond[0] - .02 && p < SC.hill[0] + .02;
+  if (k === 'flag') return p > SC.hill[0] && p < SC.pull[0] + .06;
+}
+
+// ---------- resize
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false);
+}
+addEventListener('resize', resize); resize();
+
+// ---------- frame loop
+const clock = new THREE.Clock();
+const tints = [[0, '#FBF8F1'], [.2, '#FBF8F1'], [.27, '#FFF0F3'], [.36, '#FFF0F3'], [.45, '#EDF7FC'], [.56, '#EDF7FC'], [.65, '#FFF7DE'], [.77, '#FFF7DE'], [.88, '#FBF8F1']];
+const ca = new THREE.Color(), cb = new THREE.Color();
+function tintAt(p) {
+  for (let i = 1; i < tints.length; i++) if (p <= tints[i][0]) { const [a, A] = tints[i - 1], [b, B] = tints[i]; return ca.set(A).lerp(cb.set(B), smooth((p - a) / (b - a))); }
+  return ca.set(tints[tints.length - 1][1]);
+}
+let toured = false, first = true;
+let yawCur = Math.PI / 4;
+
+function frame() {
+  const dt = Math.min(clock.getDelta(), .05), time = clock.elapsedTime;
+  const p = MARU.scroll.p;
+
+  // build: tiles rise one by one, color pieces fly in
+  const bt = reduced ? 1 : range(p, ...SC.build);
+  tiles.forEach(t => {
+    const tt = clamp(bt * 3.2 - t.order * .55);
+    t.g.scale.y = .04 + .96 * backOut(tt, 2.2);
+    const pt = clamp((tt - .45) / .55);
+    t.props.scale.setScalar(Math.max(.0001, backOut(pt, 2.4)));
+    t.props.visible = pt > 0;
+  });
+  routeDots.visible = bt > .85;
+  bits.forEach(b => {
+    const tt = clamp(bt * 3.2 - b.t.order * .55 + .35 - b.k);
+    const g = smooth(clamp(tt / .7));
+    const fx = b.from.x, fy = b.from.y + (reduced ? 0 : Math.sin(time * 1.3 + b.ph) * .35), fz = b.from.z;
+    b.m.position.set(lerp(fx, b.t.x, g), lerp(fy, TT + .2, g) + Math.sin(g * Math.PI) * 1.5, lerp(fz, b.t.z, g));
+    if (!reduced) b.m.rotation.set(time * b.spin.x, time * b.spin.y, time * b.spin.z);
+    b.m.scale.setScalar(Math.max(.0001, 1 - g));
+    b.m.visible = g < .99 && !reduced;
+  });
+
+  // Kurun
+  const cs = charState(p, time);
+  kurun.position.set(cs.x, cs.y, cs.z);
+  if (cs.yaw !== null) yawCur = angLerp(yawCur, cs.yaw, first ? 1 : 1 - Math.exp(-dt * 12));
+  kurun.rotation.y = yawCur;
+  const step = cs.dist * 7.5;
+  const running = cs.moving && !cs.hop && !reduced;
+  bodyG.position.y = running ? Math.abs(Math.sin(step)) * .1 : 0;
+  bodyG.rotation.z = running ? Math.sin(step) * .06 : 0;
+  bodyG.rotation.x = running ? .12 : (cs.hop ? -.1 : 0);
+  feet.forEach((f, i) => { f.rotation.x = running ? Math.sin(step + i * Math.PI) * .7 : 0; f.position.z = .1 + (running ? Math.sin(step + i * Math.PI) * .08 : 0); });
+  const breathe = reduced ? 0 : Math.sin(time * 2.4) * .025;
+  bodyG.scale.set(1 + breathe, 1 - breathe, 1 + breathe);
+  if (cs.hover && !reduced) { bodyG.rotation.z = Math.sin(time * 1.6) * .12; kurun.rotation.y += Math.sin(time * .8) * .3; }
+  bodyG.children.forEach(c => { if (c.userData.side) c.rotation.x = running ? Math.sin(step * 2) * .25 : Math.sin(time * 2 + c.userData.side) * .06; });
+  blob.position.set(cs.x, groundY(cs.x, cs.z) + .015, cs.z);
+  const air = Math.max(0, cs.y + hop.position.y - groundY(cs.x, cs.z));
+  blob.scale.setScalar(clamp(1 - air * .12, .35, 1));
+  blob.visible = p >= SC.land[0] - .02 || reduced;
+
+  // expression timer
+  if (expressionT > 0) { expressionT -= dt; if (expressionT <= 0) { faceN.visible = true; faceH.visible = false; } }
+  if (p > SC.turn[1] && !reduced) { faceN.visible = false; faceH.visible = true; } // smiles back at the end
+  else if (expressionT <= 0) { faceN.visible = true; faceH.visible = false; }
+
+  // look toward cursor (local face group, does not touch path transform)
+  let ty = 0, tp = 0;
+  if (pointerIn && !MOBILE) {
+    raycaster.setFromCamera(ndc, camera);
+    plane.constant = -(cs.y + .6);
+    if (raycaster.ray.intersectPlane(plane, v3)) {
+      kurun.worldToLocal(v3);
+      const d = Math.hypot(v3.x, v3.z);
+      if (d < 4.5) { ty = clamp(Math.atan2(v3.x, v3.z), -.8, .8); tp = clamp(-.15 + d * .04, -.2, .15); }
+    }
+  }
+  look.yaw = lerp(look.yaw, ty, 1 - Math.exp(-dt * 8)); look.pitch = lerp(look.pitch, tp, 1 - Math.exp(-dt * 8));
+  face.rotation.set(look.pitch, look.yaw, 0);
+
+  // flowers sway in order as Kurun passes
+  const ft = range(p, ...SC.flower);
+  flowers.forEach(F => {
+    const near = reduced ? 0 : Math.exp(-Math.pow((ft - F.fu) / .07, 2)) * (p > SC.flower[0] - .01 && p < SC.pond[0] + .02 ? 1 : 0);
+    F.sway.rotation.z = (reduced ? 0 : Math.sin(time * 1.5 + F.phase) * .05) + near * Math.sin(time * 11 + F.phase) * .45;
+    F.sway.rotation.x = near * Math.cos(time * 9 + F.phase) * .2;
+  });
+
+  // pond ripples on landing (scroll-derived)
+  const pt = range(p, ...SC.pond);
+  ripplesScroll.forEach((r, i) => {
+    const land = PATH_POND[i + 1].t1;
+    const k = (pt - land) / .1;
+    const on = k > 0 && k < 1 && !reduced && p < SC.hill[0];
+    r.visible = on;
+    if (on) { r.scale.setScalar(.7 + k * 2.6); r.material.opacity = (1 - k) * .95; }
+  });
+
+  // flags open in order
+  const ht = reduced ? 1 : range(p, ...SC.hill);
+  flags.forEach(f => {
+    const o = reduced ? 1 : clamp((ht - f.fu) / .1);
+    const s = Math.max(.0001, backOut(o, 2.5));
+    f.hinge.scale.set(s, Math.max(.0001, Math.min(1, o * 2)), 1);
+    f.hinge.rotation.y = (reduced ? 0 : Math.sin(time * 3 + f.phase) * .15) + f.wave * Math.sin(time * 18) * .6;
+  });
+
+  // clouds float
+  clouds.forEach(c => { c.g.position.y = c.base.y + (reduced ? 0 : Math.sin(time * .7 + c.ph) * .3); c.g.position.x = c.base.x + (reduced ? 0 : Math.sin(time * .2 + c.ph) * .6); });
+
+  // background tint follows the scene
+  groundMat.color.copy(tintAt(p)); renderer.setClearColor(groundMat.color);
+
+  // camera: computed from scroll, eased a little behind
+  camDesired(p, time);
+  const k = first ? 1 : 1 - Math.exp(-dt * (reduced ? 30 : 4.5));
+  cam.tx = lerp(cam.tx, desired.tx, k); cam.ty = lerp(cam.ty, desired.ty, k); cam.tz = lerp(cam.tz, desired.tz, k);
+  cam.az = angLerp(cam.az, desired.az, k); cam.el = lerp(cam.el, desired.el, k); cam.hh = lerp(cam.hh, desired.hh, k);
+  cam.ox = lerp(cam.ox, desired.ox, k); cam.oy = lerp(cam.oy, desired.oy, k);
+  const R = 40;
+  camera.position.set(cam.tx + R * Math.cos(cam.el) * Math.sin(cam.az), cam.ty + R * Math.sin(cam.el), cam.tz + R * Math.cos(cam.el) * Math.cos(cam.az));
+  camera.lookAt(cam.tx, cam.ty, cam.tz);
+  const asp = innerWidth / innerHeight, hh = cam.hh, hw = hh * asp;
+  camera.left = -hw - 2 * cam.ox * hw; camera.right = hw - 2 * cam.ox * hw;
+  camera.top = hh - 2 * cam.oy * hh; camera.bottom = -hh - 2 * cam.oy * hh;
+  camera.updateProjectionMatrix();
+  sun.position.set(cam.tx + 7, 14, cam.tz + 9); sun.target.position.set(cam.tx, 0, cam.tz); sun.target.updateMatrixWorld();
+
+  renderer.render(scene, camera);
+
+  // hint buttons follow their objects (nudged apart when they collide)
+  const placed = [];
+  for (const key in hintEls) {
+    const el = hintEls[key];
+    const on = hintActive(key, p);
+    if (on) {
+      hintAnchor[key]().project(camera);
+      const x = (v3.x * .5 + .5) * innerWidth, y = (-v3.y * .5 + .5) * innerHeight;
+      const vis = v3.z < 1 && x > 20 && x < innerWidth - 20 && y > 70 && y < innerHeight - 20;
+      el.classList.toggle('show', vis);
+      if (vis) {
+        let hx = x - el.offsetWidth / 2, hy = y - el.offsetHeight - 10;
+        for (const q of placed) if (Math.abs(q.x - hx) < el.offsetWidth && Math.abs(q.y - hy) < q.h + 6) hy = q.y + q.h + 14;
+        placed.push({ x: hx, y: hy, h: el.offsetHeight });
+        el.style.transform = `translate(${hx}px, ${hy}px)`;
+      }
+    } else el.classList.remove('show');
+  }
+
+  if (!toured && p > .97) { toured = true; MARU.stamp('tour'); }
+  first = false;
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+<script>
+  // module failed (offline CDN, no WebGL): keep content readable
+  setTimeout(() => { if (!window.__townOK) document.documentElement.classList.add('no-webgl'); }, 6000);
+</script>
+</body>
+</html>
