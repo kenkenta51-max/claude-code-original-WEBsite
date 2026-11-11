@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ショップ｜HYRULE MARKET</title>
+<meta name="description" content="コキリのショップ、ハイラルショップ、ゴーストショップ。店員に話しかけて、実在のドリンク・お菓子・ギフトを選ぼう。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/main.css">
+<link rel="stylesheet" href="assets/css/lower.css">
+</head>
+<body>
+<script>(function(){var s=new URLSearchParams(location.search).get('s');document.body.dataset.page=['kokiri','hyrule','ghost'].indexOf(s)>-1?s:'kokiri';})();</script>
+<header id="hdr"></header>
+<main>
+  <section class="stage" aria-labelledby="shop-ttl">
+    <div class="stage__bg"></div>
+    <div class="stage__fx" id="fx"></div>
+    <div class="stage__head">
+      <span class="latin" id="shop-en"></span>
+      <h1 class="band" id="shop-ttl"></h1>
+      <p id="shop-lead"></p>
+    </div>
+    <div class="shopfloor">
+      <div class="shelf shelf--l" id="shelf-l"></div>
+      <div class="clerk" id="clerk"></div>
+      <div class="shelf shelf--r" id="shelf-r"></div>
+      <div class="counter" aria-hidden="true"></div>
+    </div>
+    <div class="talkbox">
+      <div class="dialog" id="talk" aria-live="polite"><span class="dialog__name" id="talk-name"></span><span class="dialog__text"></span><i class="dialog__next"></i></div>
+      <div class="talkbox__acts" id="acts" hidden></div>
+    </div>
+  </section>
+
+  <section class="lineup" aria-labelledby="lineup-ttl">
+    <div class="wrap">
+      <div class="sec-head rv"><span class="latin">LINE UP</span><h2 class="band" id="lineup-ttl">品ぞろえ</h2><p>価格は参考価格（税込・目安）。1ルピー＝1円で表示しています。</p></div>
+      <div class="tabs" role="group" aria-label="カテゴリで絞り込む">
+        <button type="button" data-cat="all" aria-pressed="true">すべて</button>
+        <button type="button" data-cat="drink" aria-pressed="false">ドリンク</button>
+        <button type="button" data-cat="sweets" aria-pressed="false">お菓子</button>
+        <button type="button" data-cat="goods" aria-pressed="false">ゼルダグッズ</button>
+      </div>
+      <div class="goods" id="lineup"></div>
+    </div>
+  </section>
+
+  <section class="mini" id="mini" aria-label="ミニ体験"><div class="wrap"></div></section>
+
+  <section class="others" aria-labelledby="others-ttl">
+    <div class="wrap">
+      <div class="sec-head rv"><span class="latin">OTHER SHOPS</span><h2 class="band" id="others-ttl">ほかの店へ</h2></div>
+      <div class="others__grid" id="others"></div>
+    </div>
+  </section>
+</main>
+<footer id="ftr"></footer>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/navi.js"></script>
+<script src="assets/js/shop.js"></script>
+</body>
+</html>
