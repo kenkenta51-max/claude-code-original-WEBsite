@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ふくろ（カート）｜HYRULE MARKET</title>
+<meta name="description" content="ふくろに入れた品を確かめて、宝箱をひらいて注文完了。（デモ）">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/main.css">
+<link rel="stylesheet" href="assets/css/lower.css">
+</head>
+<body data-page="bag">
+<header id="hdr"></header>
+<main>
+  <section class="phero">
+    <p class="crumb"><a href="index.html">TOP</a> ／ ふくろ</p>
+    <h1>ふくろ</h1>
+    <p>三つの店で選んだ品を、まとめてお会計。</p>
+  </section>
+  <div class="wrap">
+    <ol class="steps" id="steps"><li class="on">ふくろ</li><li>お届け先</li><li>確認</li><li>完了</li></ol>
+
+    <!-- 1. ふくろ -->
+    <div class="panel" id="p-bag">
+      <div class="bagwrap">
+        <div id="lines"></div>
+        <aside class="plank sum" id="sum" aria-label="お会計"></aside>
+      </div>
+    </div>
+
+    <!-- 2. お届け先 -->
+    <div class="panel" id="p-form" hidden>
+      <div class="bagwrap">
+        <form id="form" novalidate>
+          <div class="field"><label for="f-name">お名前</label><input id="f-name" name="name" autocomplete="name" required placeholder="リンク"></div>
+          <div class="field"><label for="f-zip">郵便番号</label><input id="f-zip" name="zip" inputmode="numeric" autocomplete="postal-code" required placeholder="123-4567"></div>
+          <div class="field"><label for="f-addr">住所</label><input id="f-addr" name="addr" autocomplete="street-address" required placeholder="ハイラル城下町 1-1"></div>
+          <div class="field"><label for="f-mail">メールアドレス</label><input id="f-mail" name="mail" type="email" autocomplete="email" required placeholder="link@example.com"></div>
+          <div class="field"><label for="f-pay">お支払い</label><select id="f-pay" name="pay"><option>ルピー払い（デモ）</option><option>代金引換（デモ）</option><option>クレジットカード（デモ）</option></select></div>
+          <p class="note">※ デモのため、入力内容はどこにも送信・保存されません。</p>
+          <p class="note" id="form-err" role="alert" style="color:#ff8a8a"></p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="rbtn rbtn--ghost rbtn--sm" type="button" data-go="bag">もどる</button>
+            <button class="rbtn rbtn--blue" type="submit"><span class="gem"></span>確認へすすむ</button>
+          </div>
+        </form>
+        <aside class="plank sum" data-sum2 aria-label="お会計"></aside>
+      </div>
+    </div>
+
+    <!-- 3. 確認 -->
+    <div class="panel" id="p-confirm" hidden>
+      <div class="bagwrap">
+        <div>
+          <h2 class="serif" style="margin-top:0">ご注文内容</h2>
+          <ul class="confirm-list" id="clist"></ul>
+          <h2 class="serif">お届け先</h2>
+          <p id="caddr"></p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px">
+            <button class="rbtn rbtn--ghost rbtn--sm" type="button" data-go="form">もどる</button>
+            <button class="rbtn rbtn--red" type="button" id="order"><span class="gem"></span>宝箱をひらいて注文する</button>
+          </div>
+        </div>
+        <aside class="plank sum" data-sum2 aria-label="お会計"></aside>
+      </div>
+    </div>
+
+    <!-- 4. 完了 -->
+    <div class="panel finish" id="p-done" hidden>
+      <div class="chest" id="chest">
+        <div class="chest__rays"></div><div class="chest__light"></div>
+        <img class="chest__pop" src="assets/img/items/heart-container.webp" alt="">
+        <svg viewBox="0 0 240 200" aria-hidden="true">
+          <defs><linearGradient id="cw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a4a22"/><stop offset="1" stop-color="#4a2a10"/></linearGradient>
+          <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9a0"/><stop offset="1" stop-color="#a77e2c"/></linearGradient></defs>
+          <g class="chest__body"><rect x="20" y="96" width="200" height="96" rx="6" fill="url(#cw)" stroke="#2b170a" stroke-width="4"/>
+            <rect x="20" y="96" width="200" height="16" fill="url(#cg)"/><rect x="40" y="96" width="14" height="96" fill="#2f5bd0"/><rect x="186" y="96" width="14" height="96" fill="#2f5bd0"/>
+            <rect x="104" y="104" width="32" height="36" rx="4" fill="url(#cg)" stroke="#5a3c0c" stroke-width="3"/><circle cx="120" cy="120" r="5" fill="#2b170a"/></g>
+          <g class="chest__lid"><path d="M20 96V64c0-30 44-52 100-52s100 22 100 52v32z" fill="url(#cw)" stroke="#2b170a" stroke-width="4"/>
+            <path d="M40 96V40M200 96V40" stroke="#2f5bd0" stroke-width="14"/><path d="M20 84h200" stroke="url(#cg)" stroke-width="14"/></g>
+        </svg>
+      </div>
+      <h2>注文を受けつけた！</h2>
+      <p class="orderno" id="orderno"></p>
+      <p>品物の旅立ちを、時の神殿でお祈りしています。<br><span class="note">（これはデモです。実際の注文・発送・決済は行われません）</span></p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+        <a class="rbtn" href="index.html#hub"><span class="gem"></span>十字路にもどる</a>
+        <a class="rbtn rbtn--gold rbtn--sm" href="game.html">射的屋で遊ぶ</a>
+      </div>
+    </div>
+  </div>
+</main>
+<footer id="ftr"></footer>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/navi.js"></script>
+<script src="assets/js/bag.js"></script>
+</body>
+</html>
