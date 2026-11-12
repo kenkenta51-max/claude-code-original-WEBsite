@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>城下町の射的屋｜HYRULE MARKET</title>
+<meta name="description" content="パチンコのタネは10発。動く的とルピーを撃ちぬいて、ふくろで使える割引をもらおう。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/main.css">
+<link rel="stylesheet" href="assets/css/lower.css">
+</head>
+<body data-page="game" style="--accent:#e8a040">
+<header id="hdr"></header>
+<main>
+  <section class="gallery" aria-labelledby="g-ttl">
+    <div class="sec-head" style="margin-bottom:24px"><span class="latin">SHOOTING GALLERY</span><h1 class="band" id="g-ttl">城下町の射的屋</h1></div>
+    <div class="gframe" id="gframe">
+      <canvas id="gc" aria-label="射的ゲームの画面。クリックかタップでパチンコのタネを撃ちます。" role="img"></canvas>
+      <div class="ghud" aria-hidden="true">
+        <div class="hearts"><img src="assets/img/items/heart-full.webp" alt=""><img src="assets/img/items/heart-full.webp" alt=""><img src="assets/img/items/heart-full.webp" alt=""></div>
+        <div class="seeds"><img src="assets/img/items/slingshot.webp" alt=""><span id="seeds">10</span>/10</div>
+        <div class="score">SCORE <span id="score">0</span></div>
+      </div>
+      <p class="sr" aria-live="polite" id="g-live"></p>
+      <div class="goverlay" id="g-start">
+        <div class="goverlay__box">
+          <img src="assets/img/chara/oyaji-point.webp" alt="射的屋の親父" style="width:170px">
+          <div class="dialog done"><span class="dialog__name">射的屋の親父</span><span class="dialog__text">いらっしゃい！ パチンコのタネは10発だ。動く的、飛び出すルピー、ときどき下りてくる黄金のスタルチュラを撃ちぬいてくれ！</span><i class="dialog__next"></i></div>
+          <button class="rbtn rbtn--gold" type="button" id="g-go"><span class="gem"></span>はじめる</button>
+          <p class="note" style="margin:0">クリック／タップで発射。キーボードは矢印キーでねらい、スペースで発射。</p>
+        </div>
+      </div>
+      <div class="goverlay" id="g-end" hidden>
+        <div class="goverlay__box">
+          <img id="r-face" src="assets/img/chara/oyaji-normal.webp" alt="射的屋の親父" style="width:150px;margin-bottom:-14px">
+          <h2>結果</h2>
+          <div class="result-score" id="r-score">0</div>
+          <p class="note" id="r-best" style="margin:0"></p>
+          <div class="dialog done"><span class="dialog__name">射的屋の親父</span><span class="dialog__text" id="r-say"></span><i class="dialog__next"></i></div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+            <button class="rbtn rbtn--gold" type="button" id="g-again"><span class="gem"></span>もう一回</button>
+            <a class="rbtn rbtn--red rbtn--sm" href="bag.html">ふくろを見る</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ginfo">
+      <div><b>的（まと）</b>まん中ほど高得点。ど真ん中は100点。</div>
+      <div><b>ルピー</b>カウンターから飛び出す。緑30・青50・赤100点。</div>
+      <div><b>おまけ</b>300点で5%、600点で10%、900点で15%引き。ふくろで自動で使えます。</div>
+    </div>
+  </section>
+</main>
+<footer id="ftr"></footer>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/navi.js"></script>
+<script src="assets/js/game.js"></script>
+</body>
+</html>

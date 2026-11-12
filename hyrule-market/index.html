@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HYRULE MARKET｜時のオカリナ 三つの店（非公式ファンサイト）</title>
+<meta name="description" content="時の神殿でマスターソードを抜くと、時空の渦の先に三つの店。ゼルダの伝説 時のオカリナを記念した個人用ファンメイドショップ。">
+<meta property="og:title" content="HYRULE MARKET｜時のオカリナ 三つの店">
+<meta property="og:image" content="assets/img/ogp.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/main.css">
+<link rel="stylesheet" href="assets/css/top.css">
+</head>
+<body data-page="top">
+<header id="hdr"></header>
+
+<main>
+  <!-- ============ FV：時の神殿 ============ -->
+  <section class="fv" id="fv" aria-label="時の神殿">
+    <div class="fv-sticky">
+      <canvas id="fv-canvas" aria-hidden="true"></canvas>
+      <div class="fv-vignette"></div>
+      <div class="fv-ui">
+        <div class="fv-a" data-stage="a">
+          <img class="fv-logo" src="assets/img/logo.webp" alt="ゼルダの伝説 時のオカリナ" width="787" height="397">
+          <h1 class="fv-title" data-split>時を越えて、三つの店へ。</h1>
+          <p class="fv-sub">HYRULE MARKET — FAN MADE SHOP</p>
+          <div class="fv-btns">
+            <button class="rbtn rbtn--blue" type="button" id="fv-auto"><span class="gem"></span>剣を抜く</button>
+            <a class="rbtn rbtn--ghost rbtn--sm" href="#hub" data-skip>店へ直行する</a>
+          </div>
+        </div>
+        <div class="fv-b" data-stage="b" style="opacity:0;visibility:hidden">
+          <div class="dialog fv-say done" aria-live="polite"><span class="dialog__name">時の神殿</span><span class="dialog__text"></span><i class="dialog__next"></i></div>
+        </div>
+        <div class="fv-meter" data-stage-meter aria-hidden="true"><i></i></div>
+        <div class="fv-c" data-stage="c" style="opacity:0;visibility:hidden" aria-hidden="true">時空の渦に、のみこまれる――</div>
+        <div class="fv-hint" aria-hidden="true"><svg width="18" height="44" viewBox="0 0 18 44"><path d="M9 2v30" stroke="#3b3466" stroke-width="2"/><path d="M2 8h14" stroke="#3b3466" stroke-width="3"/><path d="M9 42 4 32h10z" fill="#3b3466"/></svg>SCROLL</div>
+        <a class="fv-skip" href="#hub" data-skip>スキップ ›</a>
+      </div>
+      <div class="fv-flash"></div>
+    </div>
+  </section>
+
+  <!-- ============ 十字路ハブ ============ -->
+  <section class="hub" id="hub" aria-labelledby="hub-ttl">
+    <svg class="hub__castle" viewBox="0 0 900 260" aria-hidden="true"><path fill="#0b0d22" d="M0 260V200h80v-40h20v-30l14-20 14 20v30h40v-60l18-30 18 30v60h50V90l26-50 26 50v40h40V60l30-60 30 60v70h40V90l26-50 26 50v70h50v-60l18-30 18 30v60h40v-30l14-20 14 20v30h20v40h80v60z"/></svg>
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="latin">CROSSROADS</span>
+        <h2 class="band" id="hub-ttl">どの店に入る？</h2>
+        <p>渦をぬけると、そこは見知らぬ十字路。北に森の店、西に城下町の店、東に霧の店が待っている。</p>
+      </div>
+      <div class="cross" id="cross">
+        <svg class="cross__paths" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M50 50V16"/><path d="M50 50H16"/><path d="M50 50H84"/><path d="M50 50V86"/>
+        </svg>
+
+        <a class="door rise" data-area="kokiri" href="shop.html?s=kokiri" style="--c:#5fae4a;--d:#14301a">
+          <span class="door__arch"><span class="door__scene"></span>
+            <span class="door__goods"><img src="assets/img/goods/mint-lime.webp" alt=""><img src="assets/img/goods/fairy-bottle.webp" alt=""><img src="assets/img/items/deku-nut.webp" alt=""></span>
+            <img class="door__clerk" src="assets/img/chara/link-normal.webp" alt="店員 リンク" data-who="link" data-hover="smile"></span>
+          <span class="door__light"></span>
+          <span class="rbtn rbtn--sm door__label"><span><small>NORTH</small>コキリのショップ</span></span>
+        </a>
+
+        <a class="door rise" data-area="hyrule" href="shop.html?s=hyrule" style="--c:#c8623f;--d:#2c120b">
+          <span class="door__arch"><span class="door__scene"></span>
+            <span class="door__goods"><img src="assets/img/goods/sapphire.webp" alt=""><img src="assets/img/goods/ruby.webp" alt=""><img src="assets/img/goods/giftcan.webp" alt=""></span>
+            <img class="door__clerk duo" src="assets/img/chara/oyaji-normal.webp" alt="店主の親父" data-who="oyaji" data-hover="laugh"></span>
+          <span class="door__light"></span>
+          <span class="rbtn rbtn--sm rbtn--red door__label"><span><small>WEST</small>ハイラルショップ</span></span>
+        </a>
+
+        <div class="cross__c rv">
+          <div class="compass"><svg viewBox="0 0 100 87" aria-hidden="true"><g fill="#e3c06a"><path d="M50 0 75 43.5H25z"/><path d="M25 43.5 50 87H0z"/><path d="M75 43.5 100 87H50z"/></g></svg></div>
+          <p><small>YOU ARE HERE</small>時のはざまの<br>十字路</p>
+        </div>
+
+        <a class="door rise" data-area="ghost" href="shop.html?s=ghost" style="--c:#9a6bff;--d:#120a24">
+          <span class="door__arch"><span class="door__scene"></span>
+            <span class="door__goods"><img src="assets/img/goods/poe-soul.webp" alt=""><img src="assets/img/items/bottle-blue.webp" alt=""><img src="assets/img/goods/choco.webp" alt=""></span>
+            <img class="door__clerk" src="assets/img/chara/poe-normal.webp" alt="ゴースト商人" data-who="poe" data-hover="laugh"></span>
+          <span class="door__light"></span>
+          <span class="rbtn rbtn--sm rbtn--purple door__label"><span><small>EAST</small>ゴーストショップ</span></span>
+        </a>
+
+        <div class="cross__e rv">
+          <img src="assets/img/chara/link-duo.webp" alt="" width="110" height="168" loading="lazy">
+          <span>入口（いまここ）</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ おすすめ ============ -->
+  <section class="pick" aria-labelledby="pick-ttl">
+    <div class="wrap">
+      <div class="sec-head rv"><span class="latin">TODAY'S PICK</span><h2 class="band" id="pick-ttl">きょうの おすすめ</h2><p>三つの店から、店員たちのイチオシを集めました。</p></div>
+      <div class="goods" id="pick"></div>
+    </div>
+  </section>
+
+  <!-- ============ 射的屋 ============ -->
+  <section class="gamebn" aria-labelledby="game-ttl">
+    <div class="wrap">
+      <div class="plank gamebn__card rv">
+        <div>
+          <span class="latin" style="color:var(--gold);font-size:.75rem">SHOOTING GALLERY</span>
+          <h2 id="game-ttl">城下町の射的屋</h2>
+          <p>パチンコのタネは10発。動く的とルピーを撃ちぬけ！<br>高得点を出すと、ふくろで使える割引のおまけがもらえる。</p>
+          <a class="rbtn rbtn--gold" href="game.html"><span class="gem"></span>射的屋で遊ぶ</a>
+        </div>
+        <div class="gamebn__art" aria-hidden="true">
+          <span class="target t1"></span><span class="target t2"></span>
+          <img class="gamebn__rupee" src="assets/img/items/rupee-red.webp" alt="" style="left:58%;top:6%">
+          <img class="gamebn__rupee" src="assets/img/items/rupee-blue.webp" alt="" style="left:30%;top:56%;animation-delay:-1s">
+          <img class="gamebn__sling" src="assets/img/items/slingshot.webp" alt="">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 買いものの流れ ============ -->
+  <section class="flow" aria-labelledby="flow-ttl">
+    <div class="wrap">
+      <div class="sec-head rv"><span class="latin">HOW TO SHOP</span><h2 class="band" id="flow-ttl">買いものの流れ</h2></div>
+      <ol>
+        <li class="rv-rise"><img src="assets/img/items/map.webp" alt=""><h3>店をえらぶ</h3><p>十字路から、気になる店の扉をくぐろう。店員が出むかえてくれる。</p></li>
+        <li class="rv-rise" style="transition-delay:.12s"><img src="assets/img/items/sack.webp" alt=""><h3>ふくろに入れる</h3><p>ほしい品を手にとって、ふくろへ。三つの店の品をまとめて買える。</p></li>
+        <li class="rv-rise" style="transition-delay:.24s"><img src="assets/img/items/boss-key.webp" alt=""><h3>宝箱をひらく</h3><p>注文を確かめたら、宝箱をあけて完了。（このサイトの注文はデモです）</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ このサイトについて ============ -->
+  <section class="about" aria-labelledby="about-ttl">
+    <div class="wrap about__in">
+      <div class="about__img rv"><img src="assets/img/key-forest.webp" alt="森の小道を歩くリンク" loading="lazy" width="1200" height="676"></div>
+      <div class="rv">
+        <span class="latin" style="color:var(--gold);font-size:.75rem">ABOUT</span>
+        <h2 id="about-ttl">あの冒険の記念に、<br>小さな市場をひらきました。</h2>
+        <p>「時のオカリナ」の世界に入りこんで、現実のドリンクやお菓子を選ぶ――そんな遊びを形にした、個人用のファンサイトです。並んでいる品はすべて実在の商品。気に入ったら、各商品ページから公式の販売先をさがせます。</p>
+        <a class="rbtn rbtn--ghost rbtn--sm" href="guide.html">ご利用ガイド</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="ftr"></footer>
+
+<script src="assets/vendor/three.min.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/navi.js"></script>
+<script src="assets/js/fv.js"></script>
+<script src="assets/js/top.js"></script>
+</body>
+</html>
