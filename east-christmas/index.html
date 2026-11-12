@@ -1,0 +1,1857 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dining &amp; Bar East｜Christmas 2026</title>
+<meta name="description" content="Dining & Bar East のクリスマス特設サイト。クリスマスオードブルとケーキのご予約受付中。オーブンでチキンを焼いたり、ケーキを飾ったり、遊びながら選べます。">
+<meta name="theme-color" content="#4a040a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Shippori+Mincho+B1:wght@600;800&family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<style>
+/* =========================================================
+   Tokens
+   ========================================================= */
+:root{
+  --red:#B5121B; --red-d:#7a0a12; --red-dd:#4a040a;
+  --green:#1F5E46; --green-d:#0f3a2b; --green-dd:#0a2a1f;
+  --gold:#d8b25a; --gold-l:#f6e3a6; --gold-d:#9a7228;
+  --cream:#fff7e8; --ink:#2b120c;
+  --hdr:64px;
+  --ease-pop:cubic-bezier(.3,1.5,.5,1);
+  --ease-out:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--red-dd);color:var(--cream);font-family:"Zen Maru Gothic",system-ui,sans-serif;line-height:1.75;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+body.locked{overflow:hidden;height:100svh}
+img{max-width:100%;display:block;-webkit-user-drag:none;user-select:none;-webkit-user-select:none}
+button{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold-l);outline-offset:3px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* paper backgrounds: the real texture (if present) sits over a gradient fallback */
+.paper-red{background:url(assets/tex_red_paper.png) center/640px repeat,radial-gradient(120% 80% at 50% 0%,#c41a24 0%,#9c0f18 50%,#6e0710 100%)}
+.paper-green{background:url(assets/tex_green_paper.png) center/640px repeat,radial-gradient(120% 80% at 50% 0%,#24704f 0%,#1a5540 50%,#0e3427 100%)}
+.gold-text{background:linear-gradient(180deg,#fff6cf 0%,#f3d27e 32%,#b98a2e 58%,#f7e09a 78%,#c99a3d 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 0 rgba(60,20,0,.55)) drop-shadow(0 0 18px rgba(255,210,120,.25))}
+.script{font-family:"Great Vibes",cursive;font-weight:400}
+.mincho{font-family:"Shippori Mincho B1",serif}
+
+/* fx canvas (snow + sparkles) */
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:55}
+
+/* =========================================================
+   Buttons / small UI
+   ========================================================= */
+.btn{appearance:none;border:0;cursor:pointer;font:700 1rem/1.2 "Zen Maru Gothic",sans-serif;color:#3a1a05;background:linear-gradient(180deg,#fff0bf,#e2bb5e 45%,#b8892f);padding:14px 22px;border-radius:999px;box-shadow:0 4px 0 #7a5418,0 10px 24px rgba(0,0,0,.35);position:relative;overflow:hidden;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,box-shadow .15s;min-height:48px;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #7a5418,0 6px 14px rgba(0,0,0,.3)}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.75) 45%,transparent 60%);transform:translateX(-120%);animation:shine 3.8s infinite}
+.btn.ghost{background:rgba(255,255,255,.07);color:var(--gold-l);box-shadow:inset 0 0 0 2px var(--gold)}
+.btn.ghost::after{display:none}
+.btn.small{padding:9px 16px;min-height:40px;font-size:.9rem}
+.btn[disabled]{opacity:.45;pointer-events:none}
+@keyframes shine{0%,70%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{appearance:none;cursor:pointer;border:1.5px solid rgba(216,178,90,.6);background:rgba(0,0,0,.18);color:var(--cream);padding:8px 14px;border-radius:999px;font-weight:700;font-size:.9rem;min-height:40px;transition:background .2s,color .2s,transform .2s}
+.seg button small{display:block;font-size:.68rem;font-weight:500;opacity:.85;line-height:1.2}
+.seg button[aria-pressed="true"]{background:linear-gradient(180deg,#fff0bf,#e2bb5e 50%,#c39436);color:#3a1a05;border-color:transparent;transform:translateY(-1px)}
+.seg button[disabled]{opacity:.35;pointer-events:none}
+
+.toast{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom));transform:translate(-50%,140%);z-index:90;background:rgba(20,6,4,.92);border:1.5px solid var(--gold);color:var(--cream);padding:12px 20px;border-radius:16px;font-weight:700;max-width:min(92vw,520px);text-align:center;transition:transform .45s var(--ease-pop),visibility .45s;pointer-events:none;font-size:.92rem;visibility:hidden}
+.toast.on{transform:translate(-50%,0);visibility:visible}
+
+/* =========================================================
+   Header
+   ========================================================= */
+.hdr{position:fixed;inset:0 0 auto;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:12px;padding:0 max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left));background:linear-gradient(180deg,rgba(40,4,8,.9),rgba(40,4,8,.6));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid rgba(216,178,90,.35);transform:translateY(-100%);transition:transform .6s var(--ease-out)}
+body.ready .hdr{transform:none}
+.logo{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.08rem;color:var(--gold-l);text-decoration:none;line-height:1.05;white-space:nowrap}
+.logo small{display:block;font-family:"Great Vibes",cursive;font-weight:400;font-size:1rem;color:var(--gold)}
+.nav{margin-left:auto;display:flex;gap:2px}
+.nav a{color:var(--cream);text-decoration:none;font-size:.82rem;padding:6px 10px;border-radius:99px;font-weight:700;white-space:nowrap}
+.nav a:hover{background:rgba(216,178,90,.18)}
+.count-chip{flex:none;font-size:.78rem;font-weight:700;background:var(--green);border:1.5px solid var(--gold);padding:4px 12px;border-radius:99px;white-space:nowrap}
+.count-chip b{color:var(--gold-l);font-size:1.05rem}
+.menu-btn{display:none;appearance:none;border:1.5px solid var(--gold);background:transparent;border-radius:12px;width:44px;height:44px;cursor:pointer;flex:none;position:relative}
+.menu-btn i,.menu-btn i::before,.menu-btn i::after{position:absolute;left:11px;right:11px;height:2px;background:var(--gold-l);border-radius:2px;content:""}
+.menu-btn i{top:21px}.menu-btn i::before{top:-7px;left:0;right:0}.menu-btn i::after{top:7px;left:0;right:0}
+.drawer{position:fixed;inset:0;z-index:70;background:rgba(30,3,6,.96);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;opacity:0;pointer-events:none;transition:opacity .3s}
+.drawer.on{opacity:1;pointer-events:auto}
+.drawer a{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.3rem;text-decoration:none;padding:8px 20px;color:var(--cream)}
+.drawer a small{display:block;text-align:center;font-family:"Great Vibes",cursive;font-weight:400;color:var(--gold);font-size:1rem}
+.drawer .close{position:absolute;top:12px;right:16px}
+@media (max-width:1080px){.nav{display:none}.menu-btn{display:block}.count-chip{margin-left:auto}}
+@media (max-width:420px){.count-chip{font-size:.7rem;padding:3px 9px}.logo{font-size:.95rem}}
+
+/* =========================================================
+   Opening
+   ========================================================= */
+.opening{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(80% 60% at 50% 45%,#5a0c12 0%,#2a0306 70%,#160103 100%);transition:opacity .9s .3s}
+.opening.fade{opacity:0;pointer-events:none}
+.op-light{position:absolute;left:50%;top:46%;width:30vmax;height:30vmax;transform:translate(-50%,-50%) scale(.2);border-radius:50%;background:radial-gradient(circle,rgba(255,236,170,.95) 0%,rgba(255,200,90,.5) 30%,transparent 70%);opacity:0;transition:transform 1.2s var(--ease-out),opacity .6s}
+.opening.open .op-light{opacity:1;transform:translate(-50%,-50%) scale(3)}
+.op-poster{--pw:min(78vw,50vh,400px);position:relative;width:var(--pw);height:calc(var(--pw)*1.414);perspective:1600px;cursor:pointer;animation:op-float 3.2s ease-in-out infinite}
+.opening.open .op-poster{animation:none}
+@keyframes op-float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1deg)}}
+.op-door{position:absolute;top:0;bottom:0;width:50%;overflow:hidden;transform-style:preserve-3d;transition:transform 1.3s cubic-bezier(.6,.05,.25,1);box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.op-door.l{left:0;transform-origin:left center;border-radius:10px 0 0 10px}
+.op-door.r{right:0;transform-origin:right center;border-radius:0 10px 10px 0}
+.opening.open .op-door.l{transform:rotateY(-118deg)}
+.opening.open .op-door.r{transform:rotateY(118deg)}
+.op-face{position:absolute;top:0;bottom:0;width:200%;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.op-door.l .op-face{left:0}.op-door.r .op-face{left:-100%}
+.op-door::after{content:"";position:absolute;inset:0;transform:rotateY(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;background:linear-gradient(135deg,#f6e3a6,#b8892f 50%,#f3d27e)}
+.opf{position:absolute;inset:0;border:calc(var(--pw)*.018) solid var(--gold);border-radius:10px;display:flex;flex-direction:column;align-items:center;padding-top:calc(var(--pw)*.08);text-align:center;overflow:hidden;overflow:clip}
+.opf::before{content:"";position:absolute;inset:calc(var(--pw)*.025);border:1px solid rgba(246,227,166,.6);border-radius:6px;pointer-events:none}
+.opf-script{font-family:"Great Vibes",cursive;font-size:calc(var(--pw)*.2);line-height:.82;margin:0}
+.opf-rib{margin-top:calc(var(--pw)*.04);font-family:"Shippori Mincho B1",serif;font-weight:800;color:#5a0a10;background:linear-gradient(180deg,#fff1c0,#d9b25c 50%,#b8872d);padding:calc(var(--pw)*.018) calc(var(--pw)*.08);font-size:calc(var(--pw)*.062);letter-spacing:.08em;clip-path:polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,4% 50%)}
+.opf-sub{margin:calc(var(--pw)*.02) 0 0;font-size:calc(var(--pw)*.042);font-weight:700;letter-spacing:.2em}
+.opf-badge{position:absolute;right:calc(var(--pw)*.06);top:calc(var(--pw)*.5);width:calc(var(--pw)*.24);height:calc(var(--pw)*.24);border-radius:50%;background:var(--green);border:2px solid var(--gold);display:grid;place-content:center;font-size:calc(var(--pw)*.032);font-weight:700;line-height:1.2}
+.opf-badge b{display:block;font-family:"Shippori Mincho B1",serif;font-size:calc(var(--pw)*.07);color:var(--gold-l)}
+.opf-store{position:absolute;bottom:calc(var(--pw)*.06);left:0;right:0;margin:0;font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:calc(var(--pw)*.05);color:var(--gold-l);letter-spacing:.06em}
+.op-pop{position:absolute;inset:0;pointer-events:none;z-index:3}
+.op-chicken{position:absolute;width:74%;left:4%;top:44%}
+.op-cake{position:absolute;width:40%;left:52%;top:60%}
+.op-hint{margin:0;font-weight:700;letter-spacing:.14em;color:var(--gold-l);animation:blink 1.6s infinite;position:relative}
+.opening.open .op-hint{opacity:0}
+@keyframes blink{50%{opacity:.35}}
+.op-skip{position:absolute;right:max(16px,env(safe-area-inset-right));top:max(14px,env(safe-area-inset-top));appearance:none;background:rgba(0,0,0,.3);border:1px solid rgba(246,227,166,.5);color:var(--gold-l);border-radius:99px;padding:8px 16px;cursor:pointer;font-weight:700}
+.fly{position:fixed;z-index:101;margin:0;pointer-events:none;transform-origin:0 0;will-change:transform}
+
+/* =========================================================
+   Hero
+   ========================================================= */
+.hero{position:relative;min-height:100svh;overflow:hidden;overflow:clip;background:#1a0503}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-bg.sp{display:none}
+.hero-vig{position:absolute;inset:0;background:radial-gradient(90% 75% at 62% 62%,transparent 25%,rgba(20,3,2,.7) 100%),linear-gradient(180deg,rgba(20,3,2,.55),transparent 28%,transparent 72%,var(--red-dd))}
+.hero-inner{position:relative;max-width:1320px;margin:0 auto;min-height:100svh;padding:calc(var(--hdr) + 4vh) 28px 40px}
+.hero-copy{position:relative;z-index:5;max-width:600px}
+.hero-kicker{margin:0 0 6px;letter-spacing:.22em;font-size:.8rem;color:var(--gold-l);font-weight:700}
+.hero-title{margin:0;font-weight:400;line-height:.82}
+.hero-title .script{display:inline-block;font-size:clamp(4.2rem,2rem + 7.6vw,8.8rem);padding:0 .12em .06em 0}
+.hero-title .script span{display:block;padding-left:.9em}
+.ribbon{position:relative;width:min(100%,540px);aspect-ratio:1536/480;margin:6px 0 0 -10px;container-type:inline-size}
+.ribbon img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ribbon span{position:absolute;inset:0;display:grid;place-items:center;font-family:"Shippori Mincho B1",serif;font-weight:800;color:#5a0a10;font-size:3.9cqw;letter-spacing:.04em;padding-bottom:2%;white-space:nowrap}
+.hero-lead{margin:6px 0 20px;font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:clamp(1.05rem,.8rem + 1vw,1.45rem);letter-spacing:.06em;text-shadow:0 2px 6px rgba(0,0,0,.6)}
+.hero-cta{display:flex;flex-wrap:wrap;gap:10px}
+.hero-products{position:absolute;inset:0;pointer-events:none}
+.hp{position:absolute}
+.hp img{width:100%;filter:drop-shadow(10px 22px 26px rgba(0,0,0,.55))}
+.hp-chicken{right:-3%;bottom:1%;width:min(58vw,840px);z-index:2}
+.hp-cake{right:39%;bottom:-2%;width:min(25vw,380px);z-index:4}
+.hero-badge{position:absolute;right:4%;top:calc(var(--hdr) + 3vh);z-index:6;width:clamp(120px,15vw,190px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#2a7a5a,#1F5E46 60%,#0f3a2b);border:3px solid var(--gold);box-shadow:0 0 0 6px rgba(216,178,90,.25),0 14px 30px rgba(0,0,0,.5);display:grid;place-content:center;text-align:center;line-height:1.25;font-weight:700;font-size:clamp(.62rem,.5rem + .35vw,.82rem);pointer-events:auto}
+.hero-badge b{display:block;font-family:"Shippori Mincho B1",serif;font-size:2.3em;color:var(--gold-l);line-height:1.1}
+.hero-badge hr{border:0;border-top:1px solid rgba(246,227,166,.5);width:70%;margin:4px auto}
+.floater{position:absolute;z-index:3}
+.floater img{width:100%;filter:drop-shadow(6px 12px 12px rgba(0,0,0,.45))}
+.f-holly{left:44%;top:16%;width:clamp(70px,9vw,130px)}
+.f-orn1{left:60%;top:6%;width:clamp(48px,6vw,90px)}
+.f-orn2{right:2%;top:46%;width:clamp(48px,5.5vw,84px)}
+.f-berry{left:36%;bottom:30%;width:clamp(42px,4.5vw,70px)}
+.f-cane{right:30%;top:14%;width:clamp(56px,6vw,96px)}
+.f-star{left:52%;bottom:6%;width:clamp(56px,6vw,96px);z-index:5}
+.f-gift{right:3%;bottom:4%;width:clamp(80px,9vw,140px);z-index:5}
+.float{animation:float 5s ease-in-out infinite}
+.float.f2{animation-duration:6.2s;animation-delay:-1.5s}
+.float.f3{animation-duration:4.4s;animation-delay:-3s}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-14px) rotate(2deg)}}
+body:not(.ready) .hp img,body:not(.ready) .floater,body:not(.ready) .hero-copy,body:not(.ready) .hero-badge{opacity:0}
+body.ready .floater{animation:pop-in .8s var(--ease-pop) both}
+body.ready .hero-copy{animation:rise .9s var(--ease-out) both}
+body.ready .hero-badge{animation:pop-in .9s .3s var(--ease-pop) both}
+@keyframes pop-in{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+.scroll-hint{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:6;font-size:.7rem;letter-spacing:.3em;color:var(--gold-l);text-align:center}
+.scroll-hint::after{content:"";display:block;width:1px;height:34px;margin:6px auto 0;background:linear-gradient(var(--gold-l),transparent);animation:drip 1.8s infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@media (max-width:760px){
+  .hero-bg.pc{display:none}.hero-bg.sp{display:block}
+  .hero-inner{display:flex;flex-direction:column;padding:calc(var(--hdr) + 14px) 16px 56px}
+  .hero-copy{text-align:center;margin:0 auto;max-width:none}
+  .hero-title .script span{padding-left:0}
+  .ribbon{margin:4px auto 0}
+  .hero-cta{justify-content:center}
+  .hero-cta .btn{flex:1 1 140px}
+  .hero-products{position:relative;inset:auto;height:94vw;margin-top:14px}
+  .hp-chicken{right:auto;left:3%;bottom:2%;width:96vw}
+  .hp-cake{right:auto;left:-6%;bottom:-6%;width:46vw}
+  .hero-badge{top:0;right:-4px;width:112px}
+  .f-holly{left:2%;top:4%}.f-orn1{left:38%;top:-2%}.f-orn2{right:auto;left:72%;top:42%}
+  .f-cane{right:auto;left:16%;top:30%}.f-berry{left:60%;bottom:4%}.f-star{left:auto;right:30%;bottom:-4%}.f-gift{right:-2%;bottom:-2%}
+}
+
+/* =========================================================
+   Sections
+   ========================================================= */
+.sec{position:relative;padding:clamp(80px,11vw,140px) 16px;overflow:hidden;overflow:clip}
+.sec::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 50%,transparent 55%,rgba(0,0,0,.35));pointer-events:none}
+.wrap{position:relative;max-width:1140px;margin:0 auto}
+.sec-hd{text-align:center;margin:0 auto clamp(28px,5vw,52px);max-width:780px}
+.sec-hd .script{font-size:clamp(2.6rem,1.6rem + 4vw,4.6rem);line-height:1;margin:0}
+.sec-hd h2{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:clamp(1.45rem,1.05rem + 1.8vw,2.35rem);margin:.25em 0 .4em;letter-spacing:.06em;text-shadow:0 2px 0 rgba(0,0,0,.35);line-height:1.4}
+.sec-hd .lead{margin:0;color:#f6e8cf;font-size:clamp(.92rem,.86rem + .3vw,1.05rem)}
+.sec-garland{position:absolute;left:-2%;right:-2%;top:-6px;height:clamp(60px,9vw,120px);pointer-events:none;z-index:2;display:flex;justify-content:center}
+.sec-garland img{width:104%;max-width:none;height:100%;object-fit:cover;object-position:center 50%}
+.card{background:rgba(20,4,4,.32);border:1.5px solid rgba(216,178,90,.55);border-radius:22px;padding:20px;box-shadow:inset 0 0 0 4px rgba(0,0,0,.08),0 18px 40px rgba(0,0,0,.25)}
+.green .card,.paper-green .card{background:rgba(0,20,12,.3)}
+.rv{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease-out),transform .9s var(--ease-out)}
+.rv.in{opacity:1;transform:none}
+
+/* =========================================================
+   Oven
+   ========================================================= */
+.oven-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(20px,4vw,48px);align-items:center}
+.oven-stage{position:relative;aspect-ratio:1/1.08;max-width:600px;width:100%;margin:0 auto}
+.oven-glow{position:absolute;left:50%;top:40%;width:90%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,170,60,.55),transparent 65%);opacity:var(--heat,0);transition:opacity .4s;filter:blur(10px)}
+.oven-box{position:absolute;left:8%;top:0;width:84%;aspect-ratio:1}
+.oven-img{position:absolute;inset:0;width:100%;height:100%;transition:opacity .5s}
+.oven-img.open{opacity:0}
+.oven-stage.opened .oven-img.open{opacity:1}
+.oven-stage.opened .oven-img.closed{opacity:0}
+.oven-stage.opened .oven-box{animation:door-thud .5s}
+@keyframes door-thud{30%{transform:translateY(4px)}60%{transform:translateY(-2px)}}
+.oven-window{position:absolute;left:24.6%;top:37.1%;width:50.8%;height:29.3%;border-radius:4%;overflow:hidden;opacity:calc(.25 + var(--heat,0)*.75);transition:opacity .5s}
+.oven-stage.opened .oven-window{opacity:0}
+.ow-c{position:absolute;left:12%;top:-2%;width:76%;transition:opacity .9s;opacity:0;filter:sepia(.35) saturate(1.4) brightness(calc(.7 + var(--heat,0)*.5))}
+.ow-c.on{opacity:1}
+.ow-heat{position:absolute;inset:0;background:radial-gradient(80% 90% at 50% 100%,rgba(255,140,30,.6),transparent 70%);mix-blend-mode:screen;animation:flicker 1.2s infinite}
+@keyframes flicker{50%{opacity:.6}}
+.oven-result{position:absolute;left:0;right:0;bottom:-4%;height:66%;pointer-events:none}
+.res-chicken{position:absolute;left:6%;width:88%;bottom:0;opacity:0;transform:translateY(-34%) scale(.42)}
+.oven-stage.done .res-chicken{animation:chicken-out 1.1s var(--ease-pop) forwards}
+@keyframes chicken-out{0%{opacity:0;transform:translateY(-34%) scale(.42)}25%{opacity:1}60%{transform:translateY(-6%) scale(1.06)}100%{opacity:1;transform:none}}
+.res-chicken img{width:100%;filter:drop-shadow(8px 22px 22px rgba(0,0,0,.55))}
+.gloss{position:absolute;inset:0;-webkit-mask-size:100% 100%;mask-size:100% 100%;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.65) 47%,rgba(255,240,200,.2) 52%,transparent 60%);background-size:260% 100%;background-position:130% 0;mix-blend-mode:screen;opacity:0}
+.oven-stage.done .gloss{opacity:1;animation:gloss 3.4s 1s ease-in-out infinite}
+@keyframes gloss{0%{background-position:130% 0}55%,100%{background-position:-30% 0}}
+.steam{position:absolute;left:10%;right:10%;top:-10%;height:80%;pointer-events:none}
+.puff{position:absolute;bottom:0;width:26%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.55),rgba(255,255,255,0) 68%);filter:blur(6px);animation:puff 3.6s ease-out forwards}
+@keyframes puff{0%{opacity:0;transform:translate(0,30%) scale(.5)}20%{opacity:.75}100%{opacity:0;transform:translate(var(--sx,0),-150%) scale(2.1)}}
+.steam-img{position:absolute;left:15%;width:70%;top:-40%;mix-blend-mode:screen;opacity:0;pointer-events:none}
+.oven-stage.done .steam-img{animation:steam-loop 5s 1s ease-in-out infinite}
+@keyframes steam-loop{0%{opacity:0;transform:translateY(20%) scaleX(1)}35%{opacity:.5}100%{opacity:0;transform:translateY(-20%) scaleX(1.2)}}
+.glint{position:absolute;width:14px;height:14px;pointer-events:none;background:radial-gradient(circle,#fff 0 2px,transparent 3px),linear-gradient(transparent 45%,rgba(255,255,255,.9) 50%,transparent 55%),linear-gradient(90deg,transparent 45%,rgba(255,255,255,.9) 50%,transparent 55%);animation:twinkle 1.4s ease-in-out infinite}
+@keyframes twinkle{0%,100%{transform:scale(0) rotate(0);opacity:0}50%{transform:scale(1) rotate(45deg);opacity:1}}
+
+.oven-panel{display:grid;gap:16px;justify-items:center;text-align:center}
+.dial-wrap{position:relative;width:210px;aspect-ratio:1}
+.dial-ticks{position:absolute;inset:0}
+.dial-ticks span{position:absolute;left:50%;top:50%;font-size:.72rem;font-weight:700;color:var(--gold-l);transform:translate(-50%,-50%) rotate(var(--a)) translateY(-96px) rotate(calc(var(--a) * -1))}
+.dial{position:absolute;inset:26px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3c4,#d9b25c 40%,#8a6420 80%);box-shadow:0 8px 0 #5a3e10,0 16px 30px rgba(0,0,0,.5),inset 0 -6px 10px rgba(0,0,0,.25);cursor:grab;touch-action:none}
+.dial:active{cursor:grabbing}
+.dial-knob{position:absolute;inset:18%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#3a3a3e,#111);transform:rotate(var(--rot,-135deg));transition:transform .08s}
+.dial-knob i{position:absolute;left:50%;top:6%;width:8px;height:32%;margin-left:-4px;border-radius:4px;background:linear-gradient(#ffd27a,#e07a1a);box-shadow:0 0 10px #ff9a2a}
+.temp{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.3rem}
+.temp b{font-size:2.6rem;color:var(--gold-l)}
+.bake-bar{width:min(100%,320px);height:12px;border-radius:99px;background:rgba(0,0,0,.35);overflow:hidden;border:1px solid rgba(216,178,90,.5)}
+.bake-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f6e3a6,#ffae3d,#e2541a);transition:width .2s linear}
+#bakeMsg{margin:0;font-weight:700;min-height:1.75em}
+.bake-steps{list-style:none;margin:0;padding:0;display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.bake-steps li{font-size:.78rem;padding:4px 10px;border-radius:99px;border:1px solid rgba(216,178,90,.4);opacity:.55;transition:all .3s}
+.bake-steps li.on{opacity:1;background:var(--gold);color:#3a1a05;font-weight:700}
+@media (max-width:860px){.oven-grid{grid-template-columns:1fr}.oven-panel{order:2}}
+
+/* =========================================================
+   Cake workshop
+   ========================================================= */
+.steps{list-style:none;margin:0 auto 22px;padding:0;display:flex;justify-content:center;gap:clamp(4px,1.5vw,14px);counter-reset:s;flex-wrap:wrap}
+.steps li{counter-increment:s;display:flex;align-items:center;gap:6px;font-weight:700;font-size:.88rem;opacity:.5;transition:opacity .3s}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--gold);font-family:"Shippori Mincho B1",serif}
+.steps li.on{opacity:1}
+.steps li.on::before{background:var(--gold);color:#3a1a05}
+.steps li.done{opacity:.85}
+.steps li+li::after{content:none}
+.cake-area{display:grid;grid-template-columns:minmax(0,1fr)}
+.cake-area>*{grid-area:1/1}
+.showcase{isolation:isolate;position:relative;width:100%;max-width:980px;margin:0 auto;aspect-ratio:1536/1024;transition:opacity .7s,transform .7s,filter .7s}
+.showcase.gone{opacity:0;transform:scale(.92);filter:blur(6px);pointer-events:none}
+.sc-img{position:absolute;inset:0;width:100%;height:100%}
+.sc-lights{position:absolute;left:9%;right:9%;top:13%;height:4%;display:flex;justify-content:space-between;pointer-events:none}
+.sc-lights i{width:1.2%;aspect-ratio:1;border-radius:50%;background:#ffe9a8;box-shadow:0 0 10px 3px rgba(255,210,120,.8);animation:bulb 2.4s ease-in-out infinite;animation-delay:calc(var(--i) * -.3s)}
+@keyframes bulb{50%{opacity:.35;box-shadow:0 0 4px 1px rgba(255,210,120,.4)}}
+.sc-cake{position:absolute;width:21%;aspect-ratio:1;transform:translate(-50%,-80%);appearance:none;border:0;background:none;padding:0;cursor:pointer;transition:transform .5s var(--ease-pop),filter .3s}
+.sc-cake img{width:100%;filter:drop-shadow(4px 10px 10px rgba(0,0,0,.45))}
+.sc-cake span{position:absolute;left:50%;bottom:-4%;transform:translateX(-50%);font-size:clamp(.6rem,.5rem + .4vw,.82rem);font-weight:700;background:rgba(30,6,4,.75);border:1px solid var(--gold);padding:1px 10px;border-radius:99px;white-space:nowrap}
+.sc-cake:hover{transform:translate(-50%,-84%) scale(1.04)}
+.sc-cake.hero-pick{z-index:2}
+.sc-cake.hero-pick::before{content:"";position:absolute;inset:-12%;border-radius:50%;background:radial-gradient(circle,rgba(255,230,150,.55),transparent 65%);animation:pulse 1.8s infinite}
+.sc-cake.hero-pick span{background:var(--gold);color:#3a1a05}
+@keyframes pulse{50%{transform:scale(1.12);opacity:.6}}
+.sc-tap{position:absolute;left:50%;top:6%;z-index:2;text-shadow:0 2px 6px rgba(0,0,0,.8);transform:translateX(-50%);font-size:clamp(.7rem,.6rem + .4vw,.9rem);font-weight:900;color:var(--gold-l);white-space:nowrap;animation:bob 1.2s ease-in-out infinite;pointer-events:none}
+@keyframes bob{50%{transform:translate(-50%,-6px)}}
+.sc-glass{position:absolute;left:8%;right:8%;top:14%;bottom:13%;pointer-events:none;overflow:hidden}
+.sc-glass::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.12) 24%,transparent 30%,transparent 62%,rgba(255,255,255,.08) 66%,transparent 70%);transition:transform 1s var(--ease-out)}
+.showcase.taking .sc-glass::before{transform:translateX(70%)}
+.sc-sparkles{position:absolute;inset:10% 8%;pointer-events:none}
+.showcase.taking .sc-cake.hero-pick{transform:translate(-50%,-96%) scale(1.08);filter:brightness(1.15)}
+
+.bench{user-select:none;-webkit-user-select:none;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:clamp(16px,3vw,40px);align-items:center;opacity:0;pointer-events:none;transition:opacity .5s}
+.bench.on{opacity:1;pointer-events:auto}
+.bench[hidden]{display:none}
+.bench-cake{position:relative;width:100%;max-width:560px;aspect-ratio:1;margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none;isolation:isolate}
+.bench-cake::before{content:"";position:absolute;left:5%;right:5%;bottom:6%;height:24%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.45),transparent);}
+.bc-img{position:absolute;inset:0;width:100%;height:100%;transition:opacity .35s}
+.bc-cut{opacity:0}
+.bench-cake.is-cut .bc-cut{opacity:1}
+.bench-cake.is-cut .bc-base{opacity:0}
+#creamCv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.berry-layer{position:absolute;inset:0;pointer-events:none}
+.berry{position:absolute;width:10.5%;aspect-ratio:1;transform:translate(-50%,-80%);pointer-events:auto;cursor:grab;touch-action:none}
+.berry img{position:relative;width:100%;filter:drop-shadow(1px 3px 2px rgba(80,0,0,.35))}
+.berry .bs{position:absolute;left:12%;right:2%;bottom:6%;height:22%;border-radius:50%;background:radial-gradient(closest-side,rgba(90,40,20,.45),transparent);transform:translate(10%,30%)}
+.berry.drop img{animation:berry-fall .6s cubic-bezier(.4,0,.6,1) both}
+.berry.drop .bs{animation:shadow-in .6s both}
+@keyframes berry-fall{0%{transform:translateY(-260%) rotate(-25deg);opacity:0}10%{opacity:1}68%{transform:translateY(0) rotate(4deg) scale(1)}78%{transform:translateY(4%) scale(1.14,.84)}90%{transform:translateY(-6%) scale(.96,1.05)}100%{transform:none}}
+@keyframes shadow-in{0%,40%{opacity:0;transform:translate(10%,30%) scale(.3)}70%,100%{opacity:1}}
+.berry.leave{transition:transform .7s var(--ease-out),opacity .7s;transform:translate(10%,0) scale(.6);opacity:0}
+.knife{position:absolute;left:50%;top:6%;width:9%;height:46%;transform:translate(-50%,0) rotate(-12deg);transform-origin:50% 100%;opacity:0;pointer-events:none;z-index:5;transition:opacity .2s}
+.knife::before{content:"";position:absolute;left:18%;right:18%;top:0;height:34%;border-radius:12px;background:linear-gradient(90deg,#3a1d0e,#7a4424 50%,#3a1d0e);box-shadow:inset 0 0 0 2px rgba(0,0,0,.25)}
+.knife::after{content:"";position:absolute;left:8%;right:22%;top:33%;bottom:0;background:linear-gradient(90deg,#9aa3ab,#f4f7f9 40%,#c7ced4 60%,#8c959d);clip-path:polygon(0 0,100% 0,100% 82%,0 100%);box-shadow:0 0 0 1px rgba(0,0,0,.2)}
+.bench-cake.knife-on .knife{opacity:1}
+.knife.slicing{opacity:1;animation:slice 1s ease-in-out both}
+@keyframes slice{0%{top:-6%;left:48%;transform:translate(-50%,0) rotate(-24deg)}28%{top:22%;left:40%;transform:translate(-50%,0) rotate(-24deg)}42%{top:-6%;left:52%;transform:translate(-50%,0) rotate(24deg)}72%{top:22%;left:60%;transform:translate(-50%,0) rotate(24deg)}88%{top:-4%;opacity:1}100%{top:-10%;opacity:0}}
+.slice{position:absolute;left:50%;top:44%;width:44%;transform:translate(-50%,-50%) scale(.5);opacity:0;pointer-events:none;z-index:4}
+.slice img{width:100%;filter:drop-shadow(6px 14px 14px rgba(0,0,0,.45))}
+.bench-cake.is-cut .slice{animation:slice-out 1.1s .15s var(--ease-pop) forwards}
+@keyframes slice-out{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}20%{opacity:1}60%{transform:translate(40%,-10%) scale(1.05) rotate(4deg)}100%{opacity:1;transform:translate(36%,4%) scale(1)}}
+.slice-berries .berry{width:22%;cursor:default;pointer-events:none}
+.bench-tools{display:grid;gap:14px;align-content:center}
+.tool{display:none;gap:12px}
+.tool.on{display:grid;animation:rise .5s var(--ease-out)}
+.tool h3{margin:0;font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.3rem;color:var(--gold-l)}
+.tool p{margin:0}
+.berry-bowl{position:relative;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:16px 10px 20px;border-radius:50% / 30%;background:radial-gradient(ellipse at 50% 30%,#fff 0,#f1ece4 55%,#cfc6b8 100%);box-shadow:inset 0 -10px 18px rgba(0,0,0,.18),0 12px 24px rgba(0,0,0,.35)}
+.bowl-berry{width:56px;aspect-ratio:1;cursor:grab;touch-action:none;transition:transform .2s}
+.bowl-berry:hover{transform:scale(1.1) rotate(-6deg)}
+.bowl-berry img{width:100%;pointer-events:none}
+.drag-ghost{position:fixed;z-index:80;pointer-events:none;transform:translate(-50%,-60%) scale(1.12);filter:drop-shadow(8px 18px 14px rgba(0,0,0,.4));transition:none}
+.drag-ghost img{width:100%}
+.drag-ghost.back{transition:left .45s var(--ease-out),top .45s var(--ease-out),opacity .45s,transform .45s;opacity:0;transform:translate(-50%,-50%) scale(.6)}
+.done-msg{font-family:"Great Vibes",cursive;font-size:clamp(2.4rem,1.8rem + 2vw,3.4rem);line-height:1;margin:0}
+@media (max-width:860px){.bench{grid-template-columns:1fr}.bench-cake{max-width:440px}}
+
+/* =========================================================
+   Atelier
+   ========================================================= */
+.at-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+.at-controls{display:grid;gap:12px;margin-bottom:14px}
+.ppl{display:flex;align-items:center;gap:12px;font-weight:700;flex-wrap:wrap}
+.ppl b{font-family:"Shippori Mincho B1",serif;font-size:1.4rem;color:var(--gold-l);min-width:3.2em}
+input[type=range]{-webkit-appearance:none;appearance:none;flex:1;min-width:160px;height:10px;border-radius:99px;background:linear-gradient(90deg,var(--gold) var(--p,33%),rgba(0,0,0,.35) var(--p,33%));outline-offset:6px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3c4,#d9b25c 50%,#8a6420);border:2px solid #fff6d8;box-shadow:0 4px 10px rgba(0,0,0,.4);cursor:grab}
+input[type=range]::-moz-range-thumb{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3c4,#d9b25c 50%,#8a6420);border:2px solid #fff6d8;cursor:grab}
+.tray-stage{position:relative;width:100%;aspect-ratio:3/2;--tw:.78;isolation:isolate;user-select:none;-webkit-user-select:none}
+.tray{position:absolute;left:calc(50% - var(--tw)*50%);top:calc(50% - var(--tw)*50%);width:calc(var(--tw)*100%);height:calc(var(--tw)*100%);transition:all .6s var(--ease-pop)}
+.tray>img{width:100%;height:100%;filter:drop-shadow(10px 18px 18px rgba(0,0,0,.45))}
+.tray-empty{position:absolute;inset:0;display:grid;place-items:center;margin:0;font-weight:700;color:rgba(255,248,232,.85);text-shadow:0 1px 3px rgba(0,0,0,.6);pointer-events:none;transition:opacity .3s}
+.tray-stage.has .tray-empty{opacity:0}
+.tray-size{position:absolute;right:2%;top:1%;font-size:.75rem;font-weight:700;background:rgba(0,0,0,.35);border-radius:99px;padding:2px 10px;pointer-events:none}
+.dish-item{position:absolute;width:16%;aspect-ratio:1;transform:translate(-50%,-50%);cursor:grab;touch-action:none;transition:left .5s var(--ease-out),top .5s var(--ease-out)}
+.dish-item img{width:100%;filter:drop-shadow(5px 8px 6px rgba(40,15,5,.45));transition:transform .2s,filter .2s}
+.dish-item.lift{z-index:50!important;transition:none}
+.dish-item.lift img{transform:scale(1.1);filter:drop-shadow(12px 20px 14px rgba(40,15,5,.4))}
+.dish-item.land img{animation:land .5s var(--ease-pop)}
+@keyframes land{0%{transform:scale(1.25)}55%{transform:scale(.92,.9)}100%{transform:none}}
+.dish-item.poof{transition:transform .35s,opacity .35s;transform:translate(-50%,-50%) scale(.2) rotate(40deg);opacity:0}
+.palette{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-height:640px;overflow:auto;padding:4px;scrollbar-width:thin}
+.pal-item{appearance:none;border:1.5px solid rgba(216,178,90,.45);background:rgba(0,0,0,.18);border-radius:16px;padding:6px 6px 8px;cursor:grab;display:grid;justify-items:center;gap:2px;touch-action:pan-y;transition:background .2s,transform .2s}
+.pal-item:hover{background:rgba(216,178,90,.15);transform:translateY(-2px)}
+.pal-item img{width:78%;pointer-events:none;filter:drop-shadow(3px 5px 4px rgba(0,0,0,.35))}
+.pal-item span{font-size:.74rem;font-weight:700;line-height:1.3;text-align:center}
+.pal-item.in-plan{border-color:var(--gold-l);background:rgba(216,178,90,.18)}
+.at-summary{margin-top:14px;display:grid;gap:6px}
+.at-summary .big{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.25rem}
+.at-summary .price{font-size:1.6rem;color:var(--gold-l);font-family:"Shippori Mincho B1",serif;font-weight:800}
+.note{font-size:.78rem;opacity:.85;margin:0}
+@media (max-width:860px){
+  .at-grid{grid-template-columns:1fr}
+  .palette{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:96px;overflow-x:auto;overflow-y:hidden;max-height:none;padding-bottom:10px;scroll-snap-type:x proximity}
+  .pal-item{touch-action:pan-x;scroll-snap-align:start}
+  .dish-item{width:19%}
+}
+
+/* =========================================================
+   Table simulator
+   ========================================================= */
+.tb-grid{display:grid;grid-template-columns:300px minmax(0,1fr);gap:24px;align-items:start}
+.tb-controls{display:grid;gap:16px}
+.tb-controls h4{margin:0 0 6px;font-size:.85rem;color:var(--gold-l);letter-spacing:.08em}
+.stepper{display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:700;background:rgba(0,0,0,.18);border:1.5px solid rgba(216,178,90,.45);border-radius:16px;padding:6px 8px 6px 16px}
+.stepper button{appearance:none;width:40px;height:40px;border-radius:50%;border:0;cursor:pointer;background:linear-gradient(180deg,#fff0bf,#d9b25c);color:#3a1a05;font-size:1.3rem;font-weight:900;line-height:1}
+.stepper b{font-family:"Shippori Mincho B1",serif;font-size:1.5rem;min-width:1.4em;text-align:center;color:var(--gold-l)}
+.stepper .lbl{margin-right:auto}
+.tb-stage{display:grid;gap:14px}
+.table{position:relative;width:100%;--u:4px;isolation:isolate;border-radius:28px;box-shadow:0 30px 60px rgba(0,0,0,.5);overflow:hidden;background:#4a2814}
+.tb-top{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.table.portrait .tb-top{inset:auto;left:50%;top:50%;transform:translate(-50%,-50%) rotate(90deg);max-width:none}
+.tb-el{position:absolute;transform:translate(-50%,-50%)}
+.tb-el img{width:100%;height:100%;object-fit:contain}
+.tb-el.pop{animation:tb-pop .55s var(--ease-pop) both;animation-delay:var(--d,0s)}
+@keyframes tb-pop{from{opacity:0;scale:.4;translate:0 -30px}to{opacity:1;scale:1;translate:0 0}}
+.seat{position:absolute;width:0;height:0}
+.seat>*{position:absolute;transform:translate(-50%,-50%)}
+.seat img{filter:drop-shadow(3px 5px 4px rgba(20,8,2,.45))}
+.seat .kidtag{font-size:calc(var(--u)*3.4);font-weight:900;background:var(--gold);color:#3a1a05;border-radius:99px;padding:0 .6em;white-space:nowrap;line-height:1.5}
+.tb-verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.vd{padding:14px 16px;border-radius:16px;background:rgba(0,0,0,.22);border:1.5px solid rgba(216,178,90,.45)}
+.vd h5{margin:0;font-size:.8rem;color:var(--gold-l);letter-spacing:.08em}
+.vd p{margin:4px 0 0}
+.vd .tag{display:inline-block;font-weight:900;border-radius:99px;padding:1px 12px;margin-right:6px;font-size:.9rem}
+.tag.ok{background:#f6e3a6;color:#3a1a05}.tag.more{background:#9fd3b8;color:#0f3a2b}.tag.less{background:#ff9a8a;color:#4a040a}
+.vd .sum{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.5rem;color:var(--gold-l)}
+@media (max-width:900px){.tb-grid{grid-template-columns:1fr}.tb-controls{grid-template-columns:1fr 1fr}.tb-controls>.full{grid-column:1/-1}}
+@media (max-width:520px){.tb-controls{grid-template-columns:1fr}}
+
+/* =========================================================
+   Snow dome
+   ========================================================= */
+.dome-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center}
+.dome-stage{isolation:isolate;position:relative;width:min(100%,460px);margin:0 auto;aspect-ratio:1024/1536;touch-action:none;cursor:grab;user-select:none}
+.dome-stage:active{cursor:grabbing}
+.dome-wob{position:absolute;inset:0;transform-origin:50% 88%;transform:rotate(var(--wob,0deg))}
+.dome-inner{position:absolute;left:9%;top:13.07%;width:82%;height:54.67%;clip-path:circle(50% at 50% 50%);background:radial-gradient(circle at 50% 40%,rgba(255,240,210,.18),rgba(60,10,10,.25) 75%)}
+#domeSnow{position:absolute;inset:0;width:100%;height:100%;z-index:2}
+.dome-cake{position:absolute;left:12%;right:12%;bottom:4%;aspect-ratio:1;z-index:1}
+.dome-cake img{position:absolute;inset:0;width:100%}
+.dome-img{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
+.dome-shadow{position:absolute;left:8%;right:8%;bottom:1%;height:8%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.55),transparent)}
+.dome-info{display:grid;gap:12px}
+.dome-info h3{margin:0;font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:clamp(1.5rem,1.2rem + 1.2vw,2.1rem)}
+.dome-info .script{font-size:2.6rem;line-height:1;margin:0}
+.price-list{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.price-list li{display:flex;justify-content:space-between;gap:16px;border-bottom:1px dashed rgba(216,178,90,.4);padding:4px 0;max-width:360px}
+.price-list b{font-family:"Shippori Mincho B1",serif;font-size:1.2rem;color:var(--gold-l)}
+.dots{display:flex;gap:8px}
+.dots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.3);transition:all .3s}
+.dots i.on{background:var(--gold-l);transform:scale(1.3)}
+.round{appearance:none;width:48px;height:48px;border-radius:50%;border:1.5px solid var(--gold);background:rgba(0,0,0,.2);color:var(--gold-l);font-size:1.4rem;cursor:pointer}
+.shake-meter{height:8px;border-radius:99px;background:rgba(0,0,0,.3);overflow:hidden;max-width:360px}
+.shake-meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#fff,#f6e3a6,#d8b25a);transition:width .12s}
+@media (max-width:760px){.dome-grid{grid-template-columns:1fr}.dome-stage{width:min(80%,360px)}.dome-info{text-align:center;justify-items:center}}
+
+/* =========================================================
+   Advent calendar
+   ========================================================= */
+.adv-banner{margin:0 auto 18px;max-width:640px;text-align:center;font-weight:700;background:rgba(0,0,0,.25);border:1.5px solid var(--gold);border-radius:99px;padding:8px 18px}
+.advent{position:relative;max-width:980px;margin:0 auto;border-radius:24px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.adv-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.adv-bg.sp{display:none}
+.advent::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(10,6,20,.15),rgba(10,6,20,.45));z-index:1}
+.adv-grid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(6px,1.4vw,14px);padding:clamp(14px,4vw,40px)}
+.door{position:relative;aspect-ratio:1;perspective:700px;appearance:none;border:0;padding:0;background:none;cursor:pointer}
+.door-in{position:absolute;inset:0;border-radius:12px;background:radial-gradient(circle,#fff4cf,#e9b84f 70%,#a77422);box-shadow:inset 0 0 18px rgba(120,60,0,.6);display:grid;place-items:center;overflow:hidden}
+.door-in img{width:80%}
+.door-face{position:absolute;inset:0;border-radius:12px;transform-origin:left center;transition:transform .9s cubic-bezier(.5,.1,.2,1);transform-style:preserve-3d;display:grid;place-items:center;box-shadow:0 6px 12px rgba(0,0,0,.4),inset 0 0 0 2px rgba(246,227,166,.75),inset 0 0 0 5px rgba(0,0,0,.15)}
+.door:nth-child(3n) .door-face{background:linear-gradient(145deg,#c41a24,#7a0a12)}
+.door:nth-child(3n+1) .door-face{background:linear-gradient(145deg,#2a7a5a,#0f3a2b)}
+.door:nth-child(3n+2) .door-face{background:linear-gradient(145deg,#f3d27e,#a77422)}
+.door:nth-child(3n+2) .door-face b{color:#5a0a10}
+.door-face b{font-family:"Shippori Mincho B1",serif;font-size:clamp(1.1rem,.7rem + 2vw,2.2rem);color:var(--gold-l);text-shadow:0 2px 0 rgba(0,0,0,.35);font-weight:800}
+.door-face::after{content:"";position:absolute;right:8%;top:50%;width:6%;aspect-ratio:1;border-radius:50%;background:var(--gold-l);box-shadow:0 0 0 2px rgba(0,0,0,.2)}
+.door.open .door-face{transform:rotateY(-108deg)}
+.door.locked .door-face b{opacity:.8}
+.door.locked::after{content:"🔒";position:absolute;right:6%;bottom:4%;font-size:.8rem}
+.door.shake .door-face{animation:dshake .45s}
+@keyframes dshake{25%{transform:rotate(-4deg)}75%{transform:rotate(4deg)}}
+.door.today .door-face{box-shadow:0 0 0 3px #fff6d8,0 0 22px 6px rgba(255,230,150,.75)}
+dialog.modal{border:0;padding:0;background:transparent;color:var(--cream);max-width:min(92vw,460px);width:100%}
+dialog.modal::backdrop{background:rgba(10,2,4,.7);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.modal-in{position:relative;border-radius:24px;padding:28px 24px 24px;text-align:center;border:2px solid var(--gold);background:radial-gradient(120% 80% at 50% 0%,#c41a24,#7a0a12);box-shadow:0 30px 60px rgba(0,0,0,.5);animation:pop-in .5s var(--ease-pop)}
+.modal-in .day{font-family:"Great Vibes",cursive;font-size:2.4rem;margin:0;line-height:1}
+.modal-in h3{margin:4px 0 10px;font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.35rem}
+.modal-in img{width:58%;margin:0 auto 8px;filter:drop-shadow(4px 10px 10px rgba(0,0,0,.4))}
+.modal-in p{margin:0 0 14px}
+.modal-in .x{position:absolute;right:12px;top:10px;appearance:none;background:none;border:0;color:var(--gold-l);font-size:1.6rem;cursor:pointer;width:40px;height:40px}
+.quiz-a{display:none;margin-top:6px;font-weight:900;color:var(--gold-l)}
+.quiz-a.on{display:block;animation:pop-in .5s var(--ease-pop)}
+@media (max-width:760px){.adv-bg.pc{display:none}.adv-bg.sp{display:block}}
+
+/* =========================================================
+   Pick-up board
+   ========================================================= */
+.bd-wrap{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}
+.bd-grid{isolation:isolate;user-select:none;-webkit-user-select:none;display:grid;grid-template-columns:72px repeat(3,1fr);gap:6px;position:relative}
+.bd-h{font-weight:900;text-align:center;font-size:.9rem;padding:6px 0;color:var(--gold-l)}
+.bd-h small{display:block;font-weight:500;font-size:.72rem;color:var(--cream)}
+.bd-t{display:grid;place-items:center;font-weight:700;font-size:.85rem}
+.cell{position:relative;appearance:none;border:1.5px solid rgba(216,178,90,.4);border-radius:14px;min-height:54px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:.78rem;color:var(--cream);transition:transform .2s,box-shadow .2s;background:rgba(0,0,0,.2)}
+.cell:hover{transform:translateY(-2px)}
+.cell[data-l="0"]{background:linear-gradient(180deg,rgba(159,211,184,.28),rgba(0,0,0,.15))}
+.cell[data-l="1"]{background:linear-gradient(180deg,rgba(246,227,166,.25),rgba(0,0,0,.15))}
+.cell[data-l="2"]{background:linear-gradient(180deg,rgba(255,170,90,.35),rgba(0,0,0,.15))}
+.cell[data-l="3"]{background:linear-gradient(180deg,rgba(255,90,70,.45),rgba(0,0,0,.15))}
+.mini-oven{position:relative;width:30px;height:24px;border-radius:5px;background:#1b1b1d;border:1.5px solid var(--gold);flex:none}
+.mini-oven::after{content:"";position:absolute;left:4px;right:4px;top:6px;bottom:4px;border-radius:3px;background:radial-gradient(circle at 50% 100%,var(--fc),#2a0d05 80%);animation:flicker calc(1.6s - var(--lv) * .3s) infinite}
+.cell[data-l="0"] .mini-oven{--fc:#6a5a3a;--lv:0}.cell[data-l="1"] .mini-oven{--fc:#ffb347;--lv:1}.cell[data-l="2"] .mini-oven{--fc:#ff7a1a;--lv:2}.cell[data-l="3"] .mini-oven{--fc:#ff3a1a;--lv:3}
+.cell.sel{box-shadow:0 0 0 3px var(--gold-l),0 0 24px rgba(255,220,140,.6);transform:scale(1.04);z-index:2}
+.cell.hover{box-shadow:0 0 0 3px #fff;transform:scale(1.06)}
+.cell .pin{position:absolute;right:-6px;top:-14px;width:36px;animation:pop-in .5s var(--ease-pop)}
+.cell .lbl-s{display:none}
+@media (min-width:520px){.cell .lbl-s{display:inline}}
+.bd-side{display:grid;gap:14px;position:sticky;top:calc(var(--hdr) + 16px)}
+.bd-token{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:18px;border:2px dashed var(--gold);background:rgba(0,0,0,.2)}
+.bd-chick{width:84px;cursor:grab;touch-action:none;animation:float 3s ease-in-out infinite}
+.bd-chick img{width:100%;pointer-events:none;filter:drop-shadow(4px 8px 6px rgba(0,0,0,.4))}
+.bd-legend{display:flex;flex-wrap:wrap;gap:8px;font-size:.78rem}
+.bd-legend span{display:flex;align-items:center;gap:6px}
+.bd-legend i{width:16px;height:16px;border-radius:5px;border:1px solid rgba(216,178,90,.5)}
+.bd-panel h4{margin:0;font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.25rem}
+.bd-panel p{margin:6px 0 12px}
+@media (max-width:900px){.bd-wrap{grid-template-columns:1fr}.bd-side{position:static;order:-1}.bd-grid{grid-template-columns:52px repeat(3,1fr)}}
+
+/* =========================================================
+   Menu / info
+   ========================================================= */
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.set-card{position:relative;text-align:center;padding:26px 18px 20px;border-radius:18px;background:linear-gradient(180deg,rgba(110,7,16,.85),rgba(74,4,10,.92));border:2px solid var(--gold);clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 14px,100% calc(100% - 14px),calc(100% - 14px) 100%,14px 100%,0 calc(100% - 14px),0 14px)}
+.set-card .size{display:inline-block;background:linear-gradient(180deg,#fff0bf,#d9b25c);color:#3a1a05;font-weight:900;border-radius:99px;padding:3px 18px;font-size:.85rem}
+.set-card h3{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.6rem;margin:10px 0 6px;letter-spacing:.12em}
+.set-card p{margin:0 0 12px;font-size:.88rem}
+.set-card .pr{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.8rem;color:var(--gold-l);line-height:1}
+.set-card .pr small{display:block;font-size:.72rem;font-weight:600;color:var(--cream);margin-top:4px}
+.limited{margin-top:18px;display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:center;background:linear-gradient(135deg,rgba(15,58,43,.9),rgba(10,42,31,.95));border:2px solid var(--gold);border-radius:22px;padding:20px}
+.limited img{width:100%;filter:drop-shadow(6px 12px 12px rgba(0,0,0,.45))}
+.limited h3{margin:0;font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.5rem}
+.limited ul{margin:8px 0;padding-left:1.2em}
+.cake-list{margin-top:18px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.cake-card{text-align:center;padding:14px;border-radius:18px;background:rgba(0,0,0,.2);border:1.5px solid rgba(216,178,90,.45)}
+.cake-card img{width:80%;margin:0 auto;filter:drop-shadow(4px 10px 10px rgba(0,0,0,.4))}
+.cake-card h4{margin:6px 0 4px;font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.05rem}
+.cake-card p{margin:0;font-size:.85rem}
+.info-bar{margin-top:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center}
+.info-bar div{padding:16px;border-radius:18px;background:var(--green);border:2px solid var(--gold)}
+.info-bar b{display:block;font-family:"Shippori Mincho B1",serif;font-size:1.5rem;color:var(--gold-l);line-height:1.3}
+@media (max-width:900px){.menu-grid{grid-template-columns:1fr}.limited{grid-template-columns:1fr;text-align:center}.limited img{max-width:260px;margin:0 auto}.cake-list{grid-template-columns:1fr 1fr}.info-bar{grid-template-columns:1fr}}
+
+/* =========================================================
+   Footer
+   ========================================================= */
+.ftr{position:relative;padding:clamp(90px,10vw,120px) 16px 40px;text-align:center;overflow:hidden;overflow:clip}
+.ftr .order{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:clamp(1.1rem,.9rem + 1vw,1.6rem);margin:0 0 14px}
+.ftr .tel{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:clamp(1.8rem,1.2rem + 3vw,3rem);color:var(--gold-l);text-decoration:none;display:inline-block;line-height:1.2}
+.ftr .store{font-family:"Shippori Mincho B1",serif;font-weight:800;font-size:1.6rem;margin:16px 0 0}
+.ftr address{font-style:normal;font-size:.9rem;opacity:.9}
+.asset-status{margin:28px auto 0;max-width:720px;font-size:.75rem;opacity:.75;text-align:left}
+.asset-status summary{cursor:pointer;text-align:center}
+.asset-status code{display:inline-block;background:rgba(0,0,0,.3);border-radius:6px;padding:0 6px;margin:2px}
+.copy{margin-top:20px;font-size:.72rem;opacity:.7}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body class="locked">
+<noscript><p style="padding:80px 16px;text-align:center">このサイトはJavaScriptを使っています。ブラウザの設定でJavaScriptを有効にしてください。</p></noscript>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<!-- ================= Opening ================= -->
+<div class="opening" id="opening">
+  <div class="op-light"></div>
+  <div class="op-poster" id="opPoster" role="button" tabindex="0" aria-label="ポスターをひらいてサイトへ">
+    <div class="op-door l"><div class="op-face"><div class="opf paper-red" data-face></div></div></div>
+    <div class="op-door r"><div class="op-face"><div class="opf paper-red" data-face></div></div></div>
+    <div class="op-pop"><img class="op-chicken" data-a="chicken_done" alt=""><img class="op-cake" data-a="cake_short" alt=""></div>
+  </div>
+  <p class="op-hint">ポスターをタップしてひらく</p>
+  <button class="op-skip" id="opSkip" type="button">スキップ</button>
+</div>
+<template id="tplFace">
+  <p class="opf-script gold-text">Merry<br>Christmas</p>
+  <div class="opf-rib">クリスマスオードブル</div>
+  <p class="opf-sub">ご予約受付中</p>
+  <div class="opf-badge">ご予約締切<b data-t="deadlineShort"></b></div>
+  <p class="opf-store">Dining &amp; Bar East</p>
+</template>
+
+<!-- ================= Header ================= -->
+<header class="hdr">
+  <a class="logo" href="#hero">Dining &amp; Bar East<small>Christmas 2026</small></a>
+  <nav class="nav" aria-label="ページ内メニュー">
+    <a href="#oven">チキン</a><a href="#cake">ケーキ工房</a><a href="#atelier">盛り付け</a><a href="#table">食卓</a><a href="#dome">スノードーム</a><a href="#advent">カレンダー</a><a href="#board">受け取り</a><a href="#menu">メニュー</a>
+  </nav>
+  <span class="count-chip" id="countChip"></span>
+  <button class="menu-btn" id="menuBtn" type="button" aria-label="メニューをひらく" aria-expanded="false"><i></i></button>
+</header>
+<div class="drawer" id="drawer" aria-hidden="true">
+  <button class="btn ghost small close" id="drawerClose" type="button">とじる</button>
+  <a href="#oven"><small>Roast Chicken</small>オーブンでチキン</a>
+  <a href="#cake"><small>Cake Studio</small>ケーキ工房</a>
+  <a href="#atelier"><small>Atelier</small>オードブル盛り付け</a>
+  <a href="#table"><small>Dinner Table</small>食卓シミュレーター</a>
+  <a href="#dome"><small>Snow Globe</small>スノードーム</a>
+  <a href="#advent"><small>Advent</small>アドベントカレンダー</a>
+  <a href="#board"><small>Pick-up</small>受け取り時間</a>
+  <a href="#menu"><small>Menu</small>メニュー・ご予約</a>
+</div>
+
+<main>
+<!-- ================= Hero ================= -->
+<section class="hero" id="hero">
+  <img class="hero-bg pc" data-a="bg_table_pc" alt="">
+  <img class="hero-bg sp" data-a="bg_table_sp" alt="">
+  <div class="hero-vig"></div>
+  <div class="hero-inner">
+    <div class="hero-copy px" data-depth=".12">
+      <p class="hero-kicker">DINING &amp; BAR EAST — CHRISTMAS 2026</p>
+      <h1 class="hero-title"><span class="script gold-text">Merry<span>Christmas</span></span><span class="sr">Dining &amp; Bar East クリスマスオードブル＆ケーキ ご予約受付中</span></h1>
+      <div class="ribbon"><img data-a="ribbon_gold" alt=""><span>クリスマスオードブル ＆ ケーキ</span></div>
+      <p class="hero-lead">食卓が華やぐ、シェフ特製のごちそうセット</p>
+      <div class="hero-cta"><a class="btn" href="#oven">チキンを焼いてみる</a><a class="btn ghost" href="#menu">メニューを見る</a></div>
+    </div>
+    <div class="hero-products">
+      <div class="hero-badge px" data-depth=".25">ご予約締切<b data-t="deadline"></b><hr>受取期間<br><span data-t="pickupRange"></span><br><span data-t="hours"></span></div>
+      <div class="hp hp-chicken px" data-depth=".4"><div class="float"><img id="heroChicken" data-a="chicken_done" alt="こんがり焼き上がったローストチキン"></div></div>
+      <div class="hp hp-cake px" data-depth=".62"><div class="float f2"><img id="heroCake" data-a="cake_short" alt="苺ショートケーキ"></div></div>
+      <div class="floater f-holly px" data-depth=".8"><div class="float f3"><img data-a="holly" alt=""></div></div>
+      <div class="floater f-orn1 px" data-depth=".3"><div class="float"><img data-a="ornament_1" alt=""></div></div>
+      <div class="floater f-orn2 px" data-depth=".7"><div class="float f2"><img data-a="ornament_2" alt=""></div></div>
+      <div class="floater f-berry px" data-depth=".9"><div class="float f3"><img data-a="strawberry_1" alt=""></div></div>
+      <div class="floater f-cane px" data-depth=".5"><div class="float f2"><img data-a="sweet_candycane" alt=""></div></div>
+      <div class="floater f-star px" data-depth="1"><div class="float"><img data-a="sweet_star" alt=""></div></div>
+      <div class="floater f-gift px" data-depth=".85"><div class="float f3"><img data-a="gift_closed" alt=""></div></div>
+    </div>
+  </div>
+  <div class="scroll-hint">SCROLL</div>
+</section>
+
+<!-- ================= Oven ================= -->
+<section class="sec paper-green" id="oven">
+  <div class="sec-garland"><img data-a="garland_pine" alt=""></div>
+  <div class="wrap">
+    <header class="sec-hd rv">
+      <p class="script gold-text">Roast Chicken</p>
+      <h2>オーブンで、こんがり焼きあげ</h2>
+      <p class="lead">ダイヤルを右へまわして、200℃まで上げてみて。オーブンに火が入り、チキンが焼けていきます。</p>
+    </header>
+    <div class="oven-grid">
+      <div class="oven-stage rv" id="ovenStage">
+        <div class="oven-glow"></div>
+        <div class="oven-box">
+          <img class="oven-img closed" data-a="oven_closed" alt="オーブン">
+          <img class="oven-img open" data-a="oven_open" alt="">
+          <div class="oven-window">
+            <img class="ow-c on" data-a="chicken_raw" alt="">
+            <img class="ow-c" data-a="chicken_mid" alt="">
+            <img class="ow-c" data-a="chicken_done" alt="">
+            <div class="ow-heat"></div>
+          </div>
+        </div>
+        <div class="oven-result">
+          <div class="res-chicken"><img data-a="chicken_done" alt="焼き上がったローストチキン"><div class="gloss" id="gloss"></div></div>
+          <div class="steam" id="steam"></div>
+          <img class="steam-img" data-a="steam" alt="">
+        </div>
+      </div>
+      <div class="oven-panel rv">
+        <div class="dial-wrap">
+          <div class="dial-ticks"><span style="--a:-135deg">OFF</span><span style="--a:-81deg">100</span><span style="--a:-27deg">150</span><span style="--a:27deg">200</span><span style="--a:81deg">220</span><span style="--a:135deg">250</span></div>
+          <div class="dial" id="dial" role="slider" tabindex="0" aria-label="オーブンの温度" aria-valuemin="0" aria-valuemax="250" aria-valuenow="0"><div class="dial-knob"><i></i></div></div>
+        </div>
+        <div class="temp"><b id="tempV">0</b> ℃</div>
+        <div class="bake-bar"><i id="bakeBar"></i></div>
+        <p id="bakeMsg">ダイヤルを 200℃ 以上へ</p>
+        <ul class="bake-steps"><li data-s="0" class="on">下ごしらえ</li><li data-s="1">じっくりロースト</li><li data-s="2">こんがり焼き上げ</li></ul>
+        <div class="row" style="justify-content:center"><button class="btn" id="bakeBtn" type="button">ワンタップで焼く</button><button class="btn ghost" id="bakeReset" type="button" hidden>もう一度焼く</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Cake workshop ================= -->
+<section class="sec paper-red" id="cake">
+  <div class="wrap">
+    <header class="sec-hd rv">
+      <p class="script gold-text">Cake Studio</p>
+      <h2>キラキラのショーケースから、<br>ケーキづくり</h2>
+      <p class="lead">まっしろなケーキを取り出して、ホイップを絞り、いちごをのせて、さいごはナイフでカット！</p>
+    </header>
+    <ol class="steps" id="cakeSteps"><li class="on">取り出す</li><li>ホイップ</li><li>いちご</li><li>カット</li></ol>
+    <div class="cake-area rv">
+      <div class="showcase" id="showcase">
+        <img class="sc-img" data-a="showcase" alt="クリスマス仕様のケーキショーケース">
+        <div class="sc-lights" id="scLights"></div>
+        <button class="sc-cake" style="left:24%;top:46%" data-cake="short" type="button"><img data-a="cake_short" alt=""><span>苺ショート</span></button>
+        <button class="sc-cake hero-pick" style="left:50%;top:46%" id="pickCake" type="button" aria-label="デコレーション用のケーキを取り出す"><b class="sc-tap">タップして取り出す</b><img data-a="cake_naked" alt=""><span>デコレーション用</span></button>
+        <button class="sc-cake" style="left:76%;top:46%" data-cake="fruit" type="button"><img data-a="cake_fruit" alt=""><span>フルーツ</span></button>
+        <button class="sc-cake" style="left:36%;top:80%" data-cake="cheese" type="button"><img data-a="cake_cheese" alt=""><span>チーズ</span></button>
+        <button class="sc-cake" style="left:64%;top:80%" data-cake="choco" type="button"><img data-a="cake_choco" alt=""><span>チョコレート</span></button>
+        <div class="sc-glass"></div>
+        <div class="sc-sparkles" id="scSparkles"></div>
+      </div>
+      <div class="bench" id="bench" hidden>
+        <div class="bench-cake" id="benchCake">
+          <img class="bc-img bc-base" data-a="cake_naked" alt="デコレーション前のケーキ">
+          <img class="bc-img bc-cut" data-a="cake_cut" alt="">
+          <canvas id="creamCv"></canvas>
+          <div class="berry-layer" id="berryLayer"></div>
+          <div class="slice" id="slice"><img data-a="cake_slice" alt="切り分けたケーキ"><div class="slice-berries" id="sliceBerries"></div></div>
+          <div class="knife" id="knife"></div>
+        </div>
+        <div class="bench-tools">
+          <div class="tool" data-tool="1">
+            <h3>ホイップを絞ろう</h3>
+            <p>ケーキの上をなぞると、ホイップがぷっくり絞れます。トンとタップすると、まるいロゼットに。</p>
+            <div class="row"><button class="btn small ghost" id="autoCream" type="button">おまかせで絞る</button><button class="btn small ghost" id="clearCream" type="button">やり直す</button></div>
+            <div class="row"><button class="btn" data-next="2" type="button">次へ：いちご</button></div>
+          </div>
+          <div class="tool" data-tool="2">
+            <h3>いちごをのせよう</h3>
+            <p>ボウルのいちごを、ケーキの上へドラッグ。ホイップの上にのせると、ちょこんと沈みます。</p>
+            <div class="berry-bowl" id="berryBowl"></div>
+            <div class="row"><button class="btn small ghost" id="autoBerry" type="button">おまかせでのせる</button></div>
+            <div class="row"><button class="btn" data-next="3" type="button">次へ：カット</button></div>
+          </div>
+          <div class="tool" data-tool="3">
+            <h3>ナイフでカット！</h3>
+            <p>ケーキの上を、左右にシュッとスワイプしてね。</p>
+            <div class="row"><button class="btn small ghost" id="autoCut" type="button">ワンタップでカット</button></div>
+          </div>
+          <div class="tool" data-tool="4">
+            <p class="done-msg gold-text">Merry Christmas!</p>
+            <h3>できあがり！</h3>
+            <p>ほんもののケーキは、ショーケースの4種類からお選びいただけます。</p>
+            <div class="row"><button class="btn" id="cakeAgain" type="button">もう一度つくる</button><a class="btn ghost" href="#dome">ケーキをえらぶ</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Atelier ================= -->
+<section class="sec paper-green" id="atelier">
+  <div class="sec-garland"><img data-a="garland_pine" alt=""></div>
+  <div class="wrap">
+    <header class="sec-hd rv">
+      <p class="script gold-text">Hors d'oeuvre Atelier</p>
+      <h2>オードブル盛り付けアトリエ</h2>
+      <p class="lead">料理をトレーへドラッグして、自分だけの盛り付けを。人数を変えるとトレーの大きさも変わります。<br>「おまかせ盛り」なら、ポスターのセットが一瞬で完成。</p>
+    </header>
+    <div class="at-grid rv">
+      <div class="at-main">
+        <div class="at-controls">
+          <label class="ppl">人数 <input type="range" min="2" max="5" step="1" value="3" id="atPeople" aria-label="人数"> <b id="atPeopleV">3人</b></label>
+          <div class="seg" id="atPlans">
+            <button type="button" data-plan="light">ライト<small>約2〜3人前</small></button>
+            <button type="button" data-plan="standard">スタンダード<small>約3〜4人前</small></button>
+            <button type="button" data-plan="premium">プレミアム<small>約4〜5人前</small></button>
+            <button type="button" id="atClear">トレーを空にする</button>
+          </div>
+        </div>
+        <div class="tray-stage" id="trayStage">
+          <div class="tray" id="tray"><img data-a="tray_wood" alt="木のオードブルトレー"><p class="tray-empty">ここに料理をドラッグ</p></div>
+          <span class="tray-size" id="traySize"></span>
+          <div id="trayItems"></div>
+        </div>
+        <div class="at-summary card" id="atSummary"></div>
+      </div>
+      <div class="palette" id="palette" aria-label="料理の一覧"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Table ================= -->
+<section class="sec paper-red" id="table">
+  <div class="wrap">
+    <header class="sec-hd rv">
+      <p class="script gold-text">Dinner Table</p>
+      <h2>食卓シミュレーター</h2>
+      <p class="lead">人数とセットを選ぶと、テーブルにお皿とグラスが並びます。<br>「4号は3〜4人分」の感覚を、目で確かめてみて。</p>
+    </header>
+    <div class="tb-grid rv">
+      <div class="tb-controls">
+        <div class="stepper" data-k="adults"><span class="lbl">おとな</span><button type="button" data-d="-1" aria-label="おとなを減らす">−</button><b>2</b><button type="button" data-d="1" aria-label="おとなを増やす">＋</button></div>
+        <div class="stepper" data-k="kids"><span class="lbl">こども</span><button type="button" data-d="-1" aria-label="こどもを減らす">−</button><b>2</b><button type="button" data-d="1" aria-label="こどもを増やす">＋</button></div>
+        <div class="full"><h4>オードブル</h4><div class="seg" id="tbSet">
+          <button type="button" data-v="none">なし</button><button type="button" data-v="light">ライト</button><button type="button" data-v="standard">スタンダード</button><button type="button" data-v="premium">プレミアム</button><button type="button" data-v="limited">限定セット</button></div></div>
+        <div class="full"><h4>ケーキ</h4><div class="seg" id="tbCake">
+          <button type="button" data-v="none">なし</button><button type="button" data-v="short">苺ショート</button><button type="button" data-v="fruit">フルーツ</button><button type="button" data-v="cheese">チーズ</button><button type="button" data-v="choco">チョコ</button></div></div>
+        <div class="full"><h4>ケーキのサイズ</h4><div class="seg" id="tbSize">
+          <button type="button" data-v="4">4号<small>直径12cm</small></button><button type="button" data-v="5">5号<small>直径15cm</small></button><button type="button" data-v="6">6号<small>直径18cm</small></button></div></div>
+      </div>
+      <div class="tb-stage">
+        <div class="table" id="tableEl"><img class="tb-top" data-a="table_top" alt=""><div id="tbItems"></div></div>
+        <div class="tb-verdict" id="tbVerdict"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Snow dome ================= -->
+<section class="sec paper-green" id="dome">
+  <div class="sec-garland"><img data-a="garland_pine" alt=""></div>
+  <div class="wrap">
+    <header class="sec-hd rv">
+      <p class="script gold-text">Snow Globe</p>
+      <h2>スノードームで、ケーキえらび</h2>
+      <p class="lead">ドームをつかんで左右にゆらすと、雪が舞ってケーキが入れかわります。</p>
+    </header>
+    <div class="dome-grid rv">
+      <div class="dome-stage" id="domeStage" aria-label="スノードーム。左右にドラッグしてゆらす">
+        <div class="dome-shadow"></div>
+        <div class="dome-wob" id="domeWob">
+          <div class="dome-inner"><div class="dome-cake" id="domeCake"></div><canvas id="domeSnow"></canvas></div>
+          <img class="dome-img" data-a="dome" alt="">
+        </div>
+      </div>
+      <div class="dome-info">
+        <p class="script gold-text">Christmas Cake</p>
+        <h3 id="dmName"></h3>
+        <p id="dmDesc" style="margin:0"></p>
+        <ul class="price-list" id="dmPrice"></ul>
+        <div class="shake-meter" aria-hidden="true"><i id="shakeMeter"></i></div>
+        <div class="row" style="justify-content:inherit"><button class="round" id="dmPrev" type="button" aria-label="前のケーキ">‹</button><div class="dots" id="dmDots"></div><button class="round" id="dmNext" type="button" aria-label="次のケーキ">›</button></div>
+        <div class="row" style="justify-content:inherit"><button class="btn ghost small" id="shakeBtn" type="button" hidden>スマホを振って遊ぶ</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Advent ================= -->
+<section class="sec paper-red" id="advent">
+  <div class="wrap">
+    <header class="sec-hd rv">
+      <p class="script gold-text">Advent Calendar</p>
+      <h2>アドベントカレンダー</h2>
+      <p class="lead">12月1日から、毎日ひとつ窓があきます。商品のご紹介や、こども向けのクイズも。</p>
+    </header>
+    <p class="adv-banner rv" id="advBanner"></p>
+    <div class="advent rv">
+      <img class="adv-bg pc" data-a="storefront_pc" alt="">
+      <img class="adv-bg sp" data-a="storefront_sp" alt="">
+      <div class="adv-grid" id="advGrid"></div>
+    </div>
+  </div>
+</section>
+<dialog class="modal" id="advModal"><div class="modal-in" id="advModalIn"></div></dialog>
+
+<!-- ================= Pick-up board ================= -->
+<section class="sec paper-green" id="board">
+  <div class="sec-garland"><img data-a="garland_pine" alt=""></div>
+  <div class="wrap">
+    <header class="sec-hd rv">
+      <p class="script gold-text">Pick-up Board</p>
+      <h2>受け取り時間の混雑予想</h2>
+      <p class="lead">チキンを、受け取りたい時間へドラッグ（タップでもOK）。<br>オーブンの火が弱いほど空いています。</p>
+    </header>
+    <div class="bd-wrap rv">
+      <div class="bd-grid" id="bdGrid"></div>
+      <div class="bd-side">
+        <div class="bd-token"><div class="bd-chick" id="bdChick" role="img" aria-label="ドラッグできるチキン"><img data-a="chicken_done" alt=""></div><div><b>ここからドラッグ</b><br><small>空いている時間へどうぞ</small></div></div>
+        <div class="bd-legend"><span><i style="background:rgba(159,211,184,.45)"></i>空いています</span><span><i style="background:rgba(246,227,166,.45)"></i>ふつう</span><span><i style="background:rgba(255,170,90,.55)"></i>やや混雑</span><span><i style="background:rgba(255,90,70,.6)"></i>混雑</span></div>
+        <div class="bd-panel card" id="bdPanel"><h4>時間をえらんでね</h4><p>混雑予想は目安です。受取期間 <span data-t="pickupRange"></span>　<span data-t="hours"></span></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Menu ================= -->
+<section class="sec paper-red" id="menu">
+  <div class="wrap">
+    <header class="sec-hd rv">
+      <p class="script gold-text">Menu</p>
+      <h2>クリスマスオードブル ＆ ケーキ</h2>
+      <p class="lead">ご予約受付中。ご注文・お問い合わせは「電話」または「DM」から。</p>
+    </header>
+    <div class="menu-grid rv" id="setCards"></div>
+    <div class="limited rv">
+      <img data-a="chicken_platter" alt="クリスマスチキン">
+      <div>
+        <p class="script gold-text" style="margin:0;font-size:2.2rem;line-height:1">Limited</p>
+        <h3>クリスマス限定オードブルセット</h3>
+        <ul>
+          <li>クリスマスチキン 1羽</li>
+          <li>クリスマスオードブル（サラダ・クリームペンネ・ローストビーフ・キッシュ）</li>
+          <li>クリスマスケーキ 4号</li>
+        </ul>
+        <p style="margin:0">3〜4人前　<b class="mincho" style="font-size:1.8rem;color:var(--gold-l)">14,800円</b>（税込）</p>
+      </div>
+    </div>
+    <div class="cake-list rv" id="cakeCards"></div>
+    <div class="info-bar rv">
+      <div>ご予約締切<b data-t="deadline"></b></div>
+      <div>受取期間<b data-t="pickupRange"></b></div>
+      <div>受取時間<b data-t="hours"></b></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ================= Footer ================= -->
+<footer class="ftr paper-green">
+  <div class="sec-garland"><img data-a="garland_pine" alt=""></div>
+  <p class="order">ご注文・お問い合わせは「電話」または「DM」から</p>
+  <a class="tel" id="telLink" href="#">TEL <span data-t="tel"></span></a>
+  <p style="margin:6px 0 0">DM <b data-t="dm"></b>　／　受付時間 <span data-t="reception"></span></p>
+  <p class="store">Dining &amp; Bar East</p>
+  <address data-t="address"></address>
+  <div class="row" style="justify-content:center;margin-top:20px"><button class="btn ghost small" id="replayOp" type="button">オープニングをもう一度</button></div>
+  <details class="asset-status" id="assetStatus"><summary>素材の読み込み状況</summary><div id="assetList"></div></details>
+  <p class="copy">※このサイトは架空の店舗のデモサイトです。</p>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+'use strict';
+/* =========================================================
+   Config（店舗情報・日付はここで変更）
+   ========================================================= */
+const CFG = {
+  year: 2026,
+  deadline: '2026-12-20',
+  pickupDays: ['2026-12-23', '2026-12-24', '2026-12-25'],
+  hours: '11:00〜19:00',
+  tel: '01-2345-6789',
+  dm: '@subarashiisaito',
+  address: '〒123-4567 高田市大通り1丁目2-3 高田スクエアガーデン20階',
+  reception: '10:00〜17:00',
+};
+/* 実画像に合わせて微調整する位置情報（画像サイズに対する割合） */
+const GEO = {
+  cakeTop: { cx: .5, cy: .42, rx: .293, ry: .1025 }, // cake_naked / cake_cut の上面の楕円
+};
+
+/* =========================================================
+   Helpers
+   ========================================================= */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const rand = (a, b) => a + Math.random() * (b - a);
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const frame = () => new Promise(r => requestAnimationFrame(() => r()));
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const yen = n => n.toLocaleString('ja-JP') + '円';
+const WD = '日月火水木金土';
+const dObj = s => new Date(s + 'T00:00:00');
+const md = s => { const d = dObj(s); return `${d.getMonth() + 1}/${d.getDate()}(${WD[d.getDay()]})`; };
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
+let toastT;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2800); }
+
+/* drag helper: pointer-based, works with mouse + touch */
+function drag(el, o) {
+  el.addEventListener('pointerdown', e => {
+    if (e.button > 0) return;
+    const id = e.pointerId, sx = e.clientX, sy = e.clientY; let active = false;
+    if (o.immediate) { active = true; try { el.setPointerCapture(id); } catch {} o.start && o.start(e); }
+    const mv = ev => {
+      if (ev.pointerId !== id) return;
+      if (!active) {
+        if (Math.hypot(ev.clientX - sx, ev.clientY - sy) < (o.threshold || 7)) return;
+        active = true; o.start && o.start(ev);
+      }
+      ev.preventDefault(); o.move && o.move(ev);
+    };
+    const up = ev => {
+      if (ev.pointerId !== id) return;
+      removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up);
+      if (active) o.end && o.end(ev, ev.type === 'pointercancel');
+      else if (ev.type === 'pointerup') o.tap && o.tap(ev);
+    };
+    addEventListener('pointermove', mv, { passive: false }); addEventListener('pointerup', up); addEventListener('pointercancel', up);
+  });
+  if (o.tap) el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); const r = el.getBoundingClientRect(); o.tap({ clientX: r.left + r.width / 2, clientY: r.top + r.height / 2, keyboard: true }); } });
+}
+/* fly a clone of an element from its rect to a target rect */
+function flyClone(fromEl, to, { duration = 900, arc = -90, z = 101 } = {}) {
+  const r1 = fromEl.getBoundingClientRect();
+  const cl = fromEl.cloneNode(true); cl.removeAttribute('id'); cl.className = 'fly';
+  Object.assign(cl.style, { left: r1.left + 'px', top: r1.top + 'px', width: r1.width + 'px', height: r1.height + 'px', zIndex: z });
+  document.body.appendChild(cl);
+  const dx = to.left - r1.left, dy = to.top - r1.top, sx = to.width / r1.width, sy = to.height / r1.height;
+  if (RM) { cl.remove(); return Promise.resolve(); }
+  const a = cl.animate([
+    { transform: 'translate(0,0) scale(1,1)' },
+    { transform: `translate(${dx * .45}px,${dy * .45 + arc}px) scale(${lerp(1, sx, .5) * 1.12},${lerp(1, sy, .5) * 1.12}) rotate(-5deg)`, offset: .5 },
+    { transform: `translate(${dx}px,${dy}px) scale(${sx},${sy})` },
+  ], { duration, easing: 'cubic-bezier(.3,.7,.25,1)', fill: 'forwards' });
+  return a.finished.then(() => cl.remove());
+}
+
+/* =========================================================
+   Placeholder art（仮素材）
+   assets/<name>.png が見つからないとき、ここで描いた SVG を代わりに表示します
+   ========================================================= */
+const PH = (() => {
+  const S = (w, h, body, defs = '') => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs>${defs}</defs>${body}</svg>`);
+  const st = a => a.map(([o, c, op]) => `<stop offset="${o}" stop-color="${c}"${op != null ? ` stop-opacity="${op}"` : ''}/>`).join('');
+  const rg = (id, a, cx = .38, cy = .32, r = .75) => `<radialGradient id="${id}" cx="${cx}" cy="${cy}" r="${r}">${st(a)}</radialGradient>`;
+  const lg = (id, a, x2 = 0, y2 = 1) => `<linearGradient id="${id}" x1="0" y1="0" x2="${x2}" y2="${y2}">${st(a)}</linearGradient>`;
+  const blur = (id, s) => `<filter id="${id}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="${s}"/></filter>`;
+  let seed = 1; const R = s => { seed = s; }; const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+  const rr = (a, b) => a + rnd() * (b - a);
+  const E = (cx, cy, rx, ry, f, rot = 0, ex = '') => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${f}"${rot ? ` transform="rotate(${rot} ${cx} ${cy})"` : ''} ${ex}/>`;
+  const C = (cx, cy, r, f, ex = '') => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${f}" ${ex}/>`;
+  const parsley = (x, y, s = 1) => [[0, 0, 24, '#2f7d32'], [20, -12, 18, '#3f9442'], [-18, -12, 17, '#2a6e2c'], [6, 18, 16, '#4caf50'], [-10, 14, 13, '#2f7d32']].map(([dx, dy, r, c]) => C(x + dx * s, y + dy * s, r * s, c)).join('');
+  const GD = rg('roast', [[0, '#f8c76f'], [.6, '#c46c22'], [1, '#7a3510']]) + rg('meat', [[0, '#fbe8d2'], [1, '#e2bf98']]) + rg('beefg', [[0, '#e88f8f'], [.5, '#c4545a'], [.78, '#a3523a'], [1, '#6b3420']], .5, .5, .55)
+    + rg('ball', [[0, '#c07a44'], [.7, '#7a3f1a'], [1, '#4e250d']]) + rg('cheeseg', [[0, '#ffeaa8'], [.7, '#f0b94d'], [1, '#b9741d']], .5, .45, .7) + rg('cer', [[0, '#ffffff'], [.85, '#f3efe8'], [1, '#d4ccbf']], .42, .36, .66)
+    + rg('tom', [[0, '#ff8a7a'], [.6, '#d8261f'], [1, '#8c0d0d']]) + rg('salm', [[0, '#ffb894'], [1, '#e8673f']]) + rg('fryg', [[0, '#f0b257'], [1, '#a65a17']]) + rg('sb', [[0, '#ff6b6b'], [.55, '#d8102a'], [1, '#7a0618']], .35, .3, .8)
+    + rg('cr', [[0, '#ffffff'], [.6, '#fbf6ec'], [1, '#d9cbb3']]) + rg('gk', [[0, '#fff3c4'], [.45, '#d9b25c'], [1, '#7a5418']]) + blur('bl', 6) + blur('bl20', 20);
+
+  /* ---------- small shared pieces ---------- */
+  const strawberrySide = (x, y, s = 1, rot = 0) => `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})"><path d="M0 -34 C 32 -36 40 -4 22 22 C 12 36 4 42 0 44 C -4 42 -12 36 -22 22 C -40 -4 -32 -36 0 -34Z" fill="url(#sb)"/>${[[-10, -12], [8, -16], [14, 2], [-14, 6], [0, 18], [-4, -2], [10, 16], [-10, 22]].map(([a, b]) => `<ellipse cx="${a}" cy="${b}" rx="2" ry="3" fill="#ffe08a"/>`).join('')}<path d="M-20 -32 l8 -12 6 9 6 -12 6 12 6 -9 8 12 Q0 -24 -20 -32Z" fill="#2f7a2a"/><ellipse cx="-10" cy="-16" rx="7" ry="12" fill="#fff" opacity=".35"/></g>`;
+  const rosette = (x, y, r) => `<g>${E(x + r * .2, y + r * .5, r * 1.05, r * .45, '#6e4a2a', 0, 'opacity=".16"')}${E(x, y, r, r * .72, 'url(#cr)')}${E(x, y - r * .4, r * .66, r * .48, 'url(#cr)')}${E(x, y - r * .74, r * .34, r * .26, 'url(#cr)')}<path d="M${x - r * .6} ${y - r * .1} q${r * .6} ${-r * .5} ${r * 1.2} 0" stroke="#d9cbb3" stroke-width="${r * .08}" fill="none" opacity=".7"/></g>`;
+  const strawberryTop = (x, y, s = 1, rot = 0) => `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})"><path d="M0 -40 C 30 -40 40 -10 26 16 C 16 32 6 40 0 42 C -6 40 -16 32 -26 16 C -40 -10 -30 -40 0 -40Z" fill="url(#sb)"/><path d="M-16 -38 l6 -10 10 6 10 -6 6 10 Q0 -30 -16 -38Z" fill="#2f7a2a"/></g>`;
+
+  /* ---------- chicken (stage 0 raw / 1 mid / 2 done) ---------- */
+  function chicken(stage) {
+    const K = [['#fff0e4', '#f3c8ac', '#cf9374'], ['#ffe0a6', '#e7a75a', '#a8622a'], ['#ffd88a', '#d0802a', '#6e300c']][stage];
+    const gloss = [.15, .3, .6][stage];
+    const pot = [['#f6e7b8', '#d9c48a'], ['#f1d58f', '#c99a4a'], ['#f6c862', '#a86a22']][stage];
+    const pots = [[250, 690], [340, 735], [690, 730], [780, 690], [520, 760], [430, 755], [612, 758]].map(([x, y], i) => E(x, y, 48, 34, 'url(#pt)', (i * 37) % 60 - 30)).join('');
+    const toms = [[200, 640], [826, 640], [580, 790]].map(([x, y]) => C(x, y, 32, 'url(#tom)') + `<path d="M${x - 10} ${y - 28}l10 8 10-8" stroke="#2f6b2a" stroke-width="6" fill="none"/>`).join('');
+    const herbs = [[170, 610], [850, 600], [300, 790], [720, 790]].map(([x, y]) => `<g stroke="#3d7a35" stroke-width="7" stroke-linecap="round" fill="none"><path d="M${x} ${y}q36-40 80-50"/>${[0, 1, 2, 3].map(k => `<path d="M${x + 18 * k} ${y - 12 * k}l-14-16M${x + 18 * k} ${y - 12 * k}l20-6"/>`).join('')}</g>`).join('');
+    return S(1024, 1024, `
+      ${E(512, 712, 410, 150, '#141416')}${E(512, 690, 390, 128, 'url(#pan)')}
+      ${herbs}${pots}
+      ${E(512, 520, 278, 190, 'url(#sk)')}
+      ${E(420, 440, 140, 112, 'url(#sk)', -10)}${E(606, 440, 140, 112, 'url(#sk)', 10)}
+      <path d="M320 600 q-90 40 -140 -6" stroke="url(#leg)" stroke-width="60" stroke-linecap="round" fill="none"/>
+      <path d="M704 600 q90 40 140 -6" stroke="url(#leg)" stroke-width="60" stroke-linecap="round" fill="none"/>
+      ${C(176, 590, 20, '#f4ead8')}${C(848, 590, 20, '#f4ead8')}
+      ${E(330, 520, 70, 46, 'url(#sk)', -40)}${E(694, 520, 70, 46, 'url(#sk)', 40)}
+      ${E(440, 380, 120, 40, '#fff', -14, `opacity="${gloss}" filter="url(#b8)"`)}${E(620, 400, 70, 22, '#fff', 10, `opacity="${gloss * .8}" filter="url(#b8)"`)}
+      ${E(520, 560, 150, 30, '#fff', 0, `opacity="${gloss * .5}" filter="url(#b8)"`)}
+      ${toms}`,
+      rg('sk', [[0, K[0]], [.55, K[1]], [1, K[2]]], .42, .3, .78) + lg('leg', [[0, K[0]], [1, K[2]]]) + rg('pan', [[0, '#3c3c40'], [1, '#121214']], .5, .3, .8) + rg('pt', [[0, pot[0]], [1, pot[1]]]) + GD + blur('b8', 10));
+  }
+
+  /* ---------- oven ---------- */
+  function oven(open) {
+    const body = `<rect x="140" y="96" width="744" height="830" rx="40" fill="url(#ob)"/><rect x="140" y="96" width="744" height="830" rx="40" fill="none" stroke="#c9a14a" stroke-width="6"/>
+      <rect x="180" y="128" width="664" height="128" rx="20" fill="#0d0d0f"/>
+      ${[290, 400].map(x => C(x, 192, 36, 'url(#gk)') + `<rect x="${x - 4}" y="160" width="8" height="28" rx="4" fill="#5a4210"/>`).join('')}
+      <rect x="520" y="166" width="280" height="54" rx="10" fill="#1d0905"/>${[0, 1, 2, 3, 4, 5].map(i => `<rect x="${540 + i * 42}" y="182" width="30" height="22" rx="4" fill="#ff8a2a" opacity="${.25 + i * .12}"/>`).join('')}
+      <rect x="170" y="920" width="90" height="40" rx="8" fill="#0d0d0f"/><rect x="764" y="920" width="90" height="40" rx="8" fill="#0d0d0f"/>`;
+    const closed = `<rect x="184" y="290" width="656" height="600" rx="26" fill="url(#od)" stroke="#c9a14a" stroke-width="5"/>
+      <rect x="252" y="380" width="520" height="300" rx="18" fill="url(#ow)"/>
+      <rect x="252" y="380" width="520" height="300" rx="18" fill="none" stroke="#000" stroke-opacity=".6" stroke-width="10"/>
+      <path d="M300 396 l110 0 l-90 268 l-56 0z" fill="#fff" opacity=".08"/>
+      <rect x="262" y="318" width="500" height="26" rx="13" fill="url(#gh)"/>`;
+    const opened = `<rect x="200" y="290" width="624" height="490" rx="18" fill="url(#oi)"/>
+      ${[430, 560, 690].map(y => `<line x1="220" y1="${y}" x2="804" y2="${y}" stroke="#3a1404" stroke-width="7" opacity=".5"/>`).join('')}
+      <polygon points="184,780 840,780 900,1004 124,1004" fill="url(#od)" stroke="#c9a14a" stroke-width="5"/>
+      <polygon points="252,808 772,808 812,960 212,960" fill="#2a0f06" opacity=".75"/>
+      <rect x="230" y="975" width="564" height="18" rx="9" fill="url(#gh)"/>`;
+    return S(1024, 1024, body + (open ? opened : closed),
+      lg('ob', [[0, '#3b3b40'], [1, '#141416']]) + lg('od', [[0, '#2c2c30'], [1, '#111113']]) + rg('ow', [[0, '#ffd27a'], [.5, '#e0661c'], [1, '#3a1004']], .5, .7, .8)
+      + rg('oi', [[0, '#fff1b8'], [.45, '#ffa63d'], [1, '#8a2a06']], .5, .55, .75) + lg('gh', [[0, '#9a7228'], [.5, '#fff1c0'], [1, '#9a7228']], 1, 0) + GD);
+  }
+
+  /* ---------- cakes (45°) ---------- */
+  const CAKE_DEFS = lg('sw', [[0, '#d8cdbb'], [.22, '#fffdf8'], [.6, '#f4eee2'], [1, '#cfc3ae']], 1, 0) + rg('tw', [[0, '#ffffff'], [1, '#ece4d6']], .4, .35, .8)
+    + lg('ss', [[0, '#b97e33'], [.25, '#f0c477'], [.65, '#e5b260'], [1, '#a8702c']], 1, 0) + rg('plate', [[0, '#ffffff'], [.8, '#eeeae3'], [1, '#bdb5a8']], .5, .4, .7)
+    + lg('chs', [[0, '#c9a370'], [.25, '#f6dfae'], [.7, '#f0d39a'], [1, '#c09060']], 1, 0) + rg('cht', [[0, '#e6aa63'], [.7, '#c27c38'], [1, '#8a5020']], .5, .45, .7)
+    + lg('cos', [[0, '#1e0f08'], [.3, '#4a2a1a'], [.7, '#3b2014'], [1, '#160a05']], 1, 0) + rg('cot', [[0, '#6a3b22'], [.6, '#3b1f12'], [1, '#22100a']], .4, .35, .8) + GD;
+  const plateBase = `${E(512, 712, 430, 146, '#000', 0, 'opacity=".18" filter="url(#bl)"')}${E(512, 698, 420, 140, 'url(#plate)')}${E(512, 690, 396, 124, '#fbfaf7')}`;
+  const cyl = (side, top) => `<path d="M212 430 L212 640 A300 105 0 0 0 812 640 L812 430 Z" fill="${side}"/>${E(512, 430, 300, 105, top)}`;
+  function cake(kind) {
+    let body = plateBase;
+    if (kind === 'sponge') {
+      R(4); body += cyl('url(#ss)', '#f2cd84');
+      for (let i = 0; i < 70; i++) { const a = rnd() * 6.28, d = Math.sqrt(rnd()); body += C(512 + Math.cos(a) * 290 * d, 430 + Math.sin(a) * 100 * d, rr(2, 5), '#c99448', 'opacity=".5"'); }
+    } else if (['naked', 'short'].includes(kind)) {
+      body += cyl('url(#sw)', 'url(#tw)');
+      if (kind === 'short') {
+        const items = [];
+        for (let i = 0; i < 12; i++) { const a = i / 12 * 6.283; items.push({ y: 430 + Math.sin(a) * 86, s: rosette(512 + Math.cos(a) * 262, 430 + Math.sin(a) * 86, 30) }); }
+        for (let i = 0; i < 8; i++) { const a = i / 8 * 6.283 + .3; const x = 512 + Math.cos(a) * 180, y = 430 + Math.sin(a) * 58; items.push({ y: y + 1, s: strawberrySide(x, y - 26, 1.05, Math.cos(a) * 12) }); }
+        items.push({ y: 430, s: strawberrySide(512, 400, 1.2) });
+        items.sort((a, b) => a.y - b.y).forEach(o => body += o.s);
+      }
+    } else if (kind === 'fruit') {
+      R(9); body += cyl('url(#ss)', 'url(#tw)');
+      const cols = ['#7a1030', '#2a1b4a', '#d62839', '#f4a300', '#6a0d2b', '#3b2a6b', '#e85d75', '#8bc34a'];
+      const items = [];
+      for (let i = 0; i < 46; i++) { const a = rnd() * 6.28, d = Math.sqrt(rnd()) * .9; const x = 512 + Math.cos(a) * 280 * d, y = 430 + Math.sin(a) * 96 * d; items.push({ y, s: rnd() < .3 ? strawberrySide(x, y - 18, .7, rr(-20, 20)) : C(x, y - 12, rr(14, 24), cols[i % cols.length]) + C(x - 5, y - 18, 5, '#fff', 'opacity=".5"') }); }
+      items.sort((a, b) => a.y - b.y).forEach(o => body += o.s);
+    } else if (kind === 'cheese') {
+      body += `<path d="M212 430 L212 640 A300 105 0 0 0 812 640 L812 430 Z" fill="url(#chs)"/><path d="M212 600 L212 640 A300 105 0 0 0 812 640 L812 600 A300 105 0 0 1 212 600Z" fill="#8a5a2b"/>${E(512, 430, 300, 105, 'url(#cht)')}`;
+      for (let i = 0; i < 16; i++) { const a = i / 16 * 6.283; body += rosette(512 + Math.cos(a) * 272, 430 + Math.sin(a) * 92, 20); }
+    } else if (kind === 'choco') {
+      R(2); body += cyl('url(#cos)', 'url(#cot)');
+      for (let i = 0; i < 160; i++) { const x = rr(216, 808); const ty = 430 + Math.sqrt(Math.max(0, 1 - ((x - 512) / 300) ** 2)) * 105; body += `<rect x="${x}" y="${rr(ty, ty + 200)}" width="3" height="9" rx="1.5" fill="${['#2a140a', '#5a3420', '#120804'][i % 3]}" transform="rotate(${rr(-60, 60)} ${x} ${ty + 100})"/>`; }
+      body += E(440, 400, 120, 22, '#fff', -4, 'opacity=".22" filter="url(#bl)"') + strawberrySide(560, 380, 1.1, 10) + strawberrySide(500, 392, 1, -14) + E(610, 410, 40, 22, '#4a2a1a') + E(604, 404, 30, 14, '#fff8ec');
+    } else if (kind === 'cut') {
+      const pts = '512,430 662,521 662,960 362,960 362,521';
+      body += `<mask id="cm"><rect width="1024" height="1024" fill="#fff"/><polygon points="${pts}" fill="#000"/></mask><g mask="url(#cm)">${cyl('url(#sw)', 'url(#tw)')}</g>`;
+      const layers = [[0, .06, '#fbf8f2'], [.06, .3, '#f0c477'], [.3, .4, '#fffaf0'], [.4, .64, '#ebba68'], [.64, .72, '#fffaf0'], [.72, .96, '#e5b260'], [.96, 1, '#f6f1e8']];
+      const face = (x1, shade) => layers.map(([a, b, c]) => `<polygon points="${x1},${521 + 210 * a} 512,${430 + 210 * a} 512,${430 + 210 * b} ${x1},${521 + 210 * b}" fill="${c}"/>`).join('')
+        + [.35, .69].map(t => [0.25, .5, .75].map(k => E(lerp(x1, 512, k), lerp(521, 430, k) + 210 * t, 18, 9, '#d8203a')).join('')).join('')
+        + `<polygon points="${x1},521 512,430 512,640 ${x1},731" fill="#000" opacity="${shade}"/>`;
+      body += face(362, .02) + face(662, .12);
+    }
+    return S(1024, 1024, body, CAKE_DEFS);
+  }
+  function slice() {
+    const L = [[0, .06, '#fbf8f2'], [.06, .3, '#f0c477'], [.3, .4, '#fffaf0'], [.4, .64, '#ebba68'], [.64, .72, '#fffaf0'], [.72, .96, '#e5b260'], [.96, 1, '#f6f1e8']];
+    let b = `${E(512, 780, 330, 100, 'url(#plate)')}${E(512, 772, 300, 86, '#fbfaf7')}<polygon points="352,420 672,420 600,350 424,350" fill="#fffdf9"/><polygon points="672,420 600,350 600,560 672,640" fill="#ece4d6"/>`;
+    b += L.map(([a, c, col]) => `<rect x="352" y="${420 + 220 * a}" width="320" height="${220 * (c - a) + 1}" fill="${col}"/>`).join('');
+    b += [.35, .68].map(t => [400, 470, 540, 610].map(x => E(x + 18, 420 + 220 * t, 24, 11, '#d8203a')).join('')).join('');
+    return S(1024, 1024, b, CAKE_DEFS);
+  }
+  function strawberry(i) { const rot = [0, 24, -22, 10][i] || 0; return S(512, 512, strawberrySide(256, 250, 4.6, rot), GD); }
+  function strawberryHalf(i) {
+    return S(512, 512, `<g transform="translate(256 260) rotate(${i ? 20 : -14}) scale(4.4)"><path d="M0 -34 C 32 -36 40 -4 22 22 C 12 36 4 42 0 44 C -4 42 -12 36 -22 22 C -40 -4 -32 -36 0 -34Z" fill="#c8102a"/><path d="M0 -28 C 26 -28 32 -4 17 18 C 10 30 3 36 0 37 C -3 36 -10 30 -17 18 C -32 -4 -26 -28 0 -28Z" fill="url(#half)"/><path d="M0 -24 L0 30" stroke="#fff3f0" stroke-width="3" opacity=".7"/><path d="M-20 -32 l8 -12 6 9 6 -12 6 12 6 -9 8 12 Q0 -24 -20 -32Z" fill="#2f7a2a"/></g>`, GD + rg('half', [[0, '#fff2ee'], [.55, '#ff9aa8'], [1, '#e8303f']], .5, .45, .6));
+  }
+
+  /* ---------- dishes (top-down) ---------- */
+  const dish = body => S(1024, 1024, body, GD);
+  const ceramic = (r = 400) => C(512, 512, r + 10, '#000', 'opacity=".1" filter="url(#bl)"') + C(512, 512, r, 'url(#cer)') + C(512, 512, r - 48, '#f7f4ee');
+  const D = {
+    chicken_cut: () => { let b = ''; [[400, 380, -20], [610, 360, 15], [710, 530, 40], [580, 670, -10], [380, 650, 25], [320, 500, -35], [510, 520, 5]].forEach(([x, y, r]) => { b += E(x, y, 135, 86, 'url(#roast)', r) + E(x + 14, y + 12, 86, 44, 'url(#meat)', r) + E(x - 30, y - 30, 50, 14, '#fff', r, 'opacity=".35"'); }); return dish(b + parsley(300, 300) + parsley(730, 720)); },
+    chicken_leg: () => { let b = ''; [[-200, -22], [0, 0], [200, 22]].forEach(([dx, r]) => { b += `<g transform="translate(${512 + dx} 520) rotate(${r})"><path d="M0 -270 C 130 -270 150 -40 50 50 L 34 170 L -34 170 L -50 50 C -150 -40 -130 -270 0 -270Z" fill="url(#roast)"/><rect x="-22" y="150" width="44" height="110" rx="16" fill="#f4ead8"/>${C(-20, 268, 24, '#f4ead8')}${C(20, 268, 24, '#f4ead8')}${E(-40, -170, 40, 70, '#fff', -15, 'opacity=".3"')}</g>`; }); return dish(b + parsley(512, 860)); },
+    salmon: () => { let b = ''; [[512, 512], [340, 400], [684, 400], [340, 640], [684, 640]].forEach(([x, y]) => { b += C(x, y, 100, 'url(#salm)') + `<path d="M${x - 60} ${y} a60 60 0 1 1 60 60 a40 40 0 1 1 -40 -40 a18 18 0 1 1 18 18" stroke="#ffe0cf" stroke-width="12" fill="none" opacity=".85"/>`; }); b += `<g stroke="#3f8a3c" stroke-width="5" fill="none">${[0, 1, 2, 3, 4, 5].map(i => `<path d="M${470 + i * 14} ${250}q10 -40 30 -60"/>`).join('')}</g><path d="M700 780 l120 -60 a70 70 0 0 1 -60 120z" fill="#ffe14d" stroke="#f2c200" stroke-width="10"/>`; return dish(b); },
+    ratatouille: () => { R(11); let b = ceramic(380) + C(512, 512, 320, '#9e2a1c'); const cs = ['#6b8e23', '#e8b923', '#c0392b', '#7a1f6b', '#f2c94c']; for (let i = 0; i < 46; i++) { const a = rnd() * 6.28, d = Math.sqrt(rnd()) * 280; const x = 512 + Math.cos(a) * d, y = 512 + Math.sin(a) * d; const c = cs[i % 5]; b += C(x, y, rr(22, 40), c) + C(x, y, rr(8, 14), '#fff', 'opacity=".25"'); } return dish(b + parsley(512, 512, .9)); },
+    gratin: () => { R(5); let b = E(512, 512, 450, 340, '#000', 0, 'opacity=".12" filter="url(#bl)"') + E(512, 512, 440, 330, 'url(#cer)') + E(512, 512, 380, 272, 'url(#cheeseg)'); for (let i = 0; i < 26; i++) { b += E(rr(200, 820), rr(300, 720), rr(20, 50), rr(14, 30), '#8a4b16', rr(0, 90), 'opacity=".45" filter="url(#bl)"'); } return dish(b + parsley(512, 512, .7)); },
+    salad: () => { R(13); let b = C(512, 512, 420, '#dff0ea', 'opacity=".6" stroke="#fff" stroke-width="14"'); const g = ['#3e8e41', '#6abf4b', '#2e6b30', '#9ccc65', '#7a1f4b']; for (let i = 0; i < 38; i++) { const a = rnd() * 6.28, d = Math.sqrt(rnd()) * 320; b += E(512 + Math.cos(a) * d, 512 + Math.sin(a) * d, rr(50, 100), rr(30, 56), g[i % 5], rr(0, 180)); } for (let i = 0; i < 7; i++) { const a = rnd() * 6.28, d = rr(60, 280); b += C(512 + Math.cos(a) * d, 512 + Math.sin(a) * d, 42, 'url(#tom)'); } for (let i = 0; i < 20; i++) { b += C(rr(260, 760), rr(260, 760), 9, '#f6d24a'); } return dish(b); },
+    pork: () => { let b = ''; for (let i = 0; i < 6; i++) { const a = -60 + i * 24; b += `<g transform="rotate(${a} 512 700)">${E(512, 380, 110, 170, '#f3cdbd', 0, 'stroke="#9a5a2a" stroke-width="18"')}${E(512, 330, 50, 60, '#fff5ee', 0, 'opacity=".4"')}</g>`; } return dish(b + parsley(512, 780)); },
+    shrimp: () => { let b = ''; [[360, 420, -20], [600, 380, 20], [500, 640, 0]].forEach(([x, y, r]) => { b += `<g transform="rotate(${r} ${x} ${y})"><path d="M${x - 120} ${y} A120 120 0 1 1 ${x + 120} ${y}" stroke="#ff8a50" stroke-width="80" stroke-linecap="round" fill="none"/><path d="M${x - 120} ${y} A120 120 0 1 1 ${x + 120} ${y}" stroke="#ffd0b0" stroke-width="20" fill="none" opacity=".55"/>${[-60, 0, 60].map(k => `<line x1="${x + k - 20}" y1="${y - 150}" x2="${x + k + 20}" y2="${y - 80}" stroke="#5a2a10" stroke-width="10" opacity=".55"/>`).join('')}<path d="M${x + 120} ${y} l40 40 l-70 10z" fill="#d6401a"/></g>`; }); return dish(b + `<path d="M720 760 l120 -60 a70 70 0 0 1 -60 120z" fill="#ffe14d" stroke="#f2c200" stroke-width="10"/>` + parsley(260, 760)); },
+    quiche: () => { R(8); let b = C(512, 512, 410, '#000', 'opacity=".12" filter="url(#bl)"') + C(512, 512, 400, '#c98a3e') + C(512, 512, 380, 'none', 'stroke="#e6ad62" stroke-width="44" stroke-dasharray="46 20"') + C(512, 512, 340, 'url(#cheeseg)'); for (let i = 0; i < 30; i++) { const a = rnd() * 6.28, d = Math.sqrt(rnd()) * 300; b += C(512 + Math.cos(a) * d, 512 + Math.sin(a) * d, rr(10, 22), i % 2 ? '#3e7a32' : '#c0505a', 'opacity=".8"'); } [0, 60, 120].forEach(a => b += `<line x1="${512 - Math.cos(a / 57.3) * 340}" y1="${512 - Math.sin(a / 57.3) * 340}" x2="${512 + Math.cos(a / 57.3) * 340}" y2="${512 + Math.sin(a / 57.3) * 340}" stroke="#a87a30" stroke-width="6" opacity=".6"/>`); return dish(b); },
+    caprese: () => { let b = ''; for (let i = 0; i < 10; i++) { const a = i / 10 * 6.283, x = 512 + Math.cos(a) * 250, y = 512 + Math.sin(a) * 250; b += i % 2 ? C(x, y, 100, '#fbf7ef', 'stroke="#e9e1d0" stroke-width="6"') : C(x, y, 100, 'url(#tom)') + [0, 1, 2, 3, 4].map(k => E(x + Math.cos(k * 1.25) * 50, y + Math.sin(k * 1.25) * 50, 14, 8, '#ffd27a', k * 72)).join(''); } for (let i = 0; i < 6; i++) { const a = i / 6 * 6.283 + .3; b += E(512 + Math.cos(a) * 110, 512 + Math.sin(a) * 110, 60, 30, '#2f8a3a', a * 57); } return dish(b + `<path d="M330 380 q180 120 360 0" stroke="#8a9a20" stroke-width="10" fill="none" opacity=".5"/>`); },
+    fry: () => { R(21); let b = ''; for (let i = 0; i < 12; i++) { b += `<rect x="${rr(560, 820)}" y="${rr(220, 520)}" width="34" height="${rr(140, 220)}" rx="10" fill="#f3c457" stroke="#c9922a" stroke-width="4" transform="rotate(${rr(-50, 50)} 690 380)"/>`; } [[330, 400], [420, 560], [290, 620], [520, 420], [380, 270]].forEach(([x, y]) => { for (let k = 0; k < 5; k++) b += C(x + rr(-40, 40), y + rr(-40, 40), rr(46, 66), 'url(#fryg)'); }); [[640, 700, -20], [520, 790, 10]].forEach(([x, y, r]) => b += E(x, y, 170, 52, 'url(#fryg)', r) + `<path d="M${x + 160} ${y - 10} l70 -40 l-10 80z" fill="#e2451f" transform="rotate(${r} ${x} ${y})"/>`); return dish(b + `<path d="M180 760 l120 -60 a70 70 0 0 1 -60 120z" fill="#ffe14d" stroke="#f2c200" stroke-width="10"/>`); },
+    beef: () => { let b = E(470, 560, 160, 110, '#5a2a14', 20, 'opacity=".75"'); for (let i = 0; i < 5; i++) { const a = -50 + i * 25; b += `<g transform="rotate(${a} 512 760)">${E(512, 420, 160, 110, 'url(#beefg)')}</g>`; } return dish(b + parsley(760, 300) + parsley(260, 320, .8)); },
+    scallop: () => { R(3); let b = ''; [[512, 512], [320, 420], [700, 420], [380, 680], [650, 680]].forEach(([x, y]) => { b += C(x, y, 104, '#fbf1e2', 'stroke="#efe0c8" stroke-width="8"') + C(x - 30, y - 30, 30, '#fff', 'opacity=".55"'); for (let k = 0; k < 4; k++) b += C(x + rr(-60, 60), y + rr(-60, 60), 9, '#d83a4a'); }); return dish(b + `<g stroke="#3f8a3c" stroke-width="5">${[0, 1, 2, 3, 4, 5, 6].map(i => `<path d="M${300 + i * 60} ${230 + (i % 2) * 20}l20 -30"/>`).join('')}</g>`); },
+    cheese: () => dish(`${C(360, 420, 200, '#fbf7ee', 'stroke="#e7dcc4" stroke-width="22"')}<path d="M360 420 L560 380 A200 200 0 0 1 540 520 Z" fill="#f6e3a8"/>
+      <path d="M520 600 L860 520 L860 740 Z" fill="#f1ead6" stroke="#ddd2b6" stroke-width="10"/><path d="M600 600 q60 20 80 60 M700 580 q30 50 90 70 M760 620 q20 40 60 50" stroke="#4c6b7a" stroke-width="10" fill="none" opacity=".75"/>
+      <path d="M200 640 L500 820 L240 860 Z" fill="#f2c94c" stroke="#d9a92e" stroke-width="10"/>${C(300, 760, 22, '#d9a92e')}${C(380, 800, 16, '#d9a92e')}${C(260, 700, 14, '#d9a92e')}
+      ${[0, 1, 2, 3, 4, 5].map(i => C(700 + (i % 3) * 56, 260 + Math.floor(i / 3) * 56, 30, '#6b2a5a')).join('')}`),
+    lasagna: () => { R(17); let b = `<rect x="150" y="170" width="724" height="684" rx="70" fill="url(#cer)"/><rect x="200" y="220" width="624" height="584" rx="34" fill="#c2452a"/>`; for (let i = 0; i < 30; i++) b += E(rr(240, 780), rr(260, 760), rr(30, 70), rr(20, 40), '#f3c35a', rr(0, 180), 'opacity=".85"'); for (let i = 0; i < 18; i++) b += C(rr(240, 780), rr(260, 760), rr(10, 26), '#7a3010', 'opacity=".5" filter="url(#bl)"'); return dish(b + parsley(512, 512, .8)); },
+    meatball: () => { let b = C(512, 512, 380, '#b3301e') + C(470, 460, 300, '#c8402a', 'opacity=".5" filter="url(#bl20)"'); [[512, 512], [340, 420], [680, 420], [340, 620], [680, 620], [512, 330], [512, 700]].forEach(([x, y]) => b += C(x, y, 92, 'url(#ball)') + C(x - 30, y - 30, 22, '#fff', 'opacity=".28"')); return dish(b + parsley(420, 520, .6) + parsley(610, 560, .6)); },
+    terrine: () => { R(6); let b = ''; [[512, 330, -6], [512, 520, 4], [512, 710, -3]].forEach(([x, y, r]) => { b += `<g transform="rotate(${r} ${x} ${y})"><rect x="${x - 230}" y="${y - 80}" width="460" height="160" rx="12" fill="#e8a99a" stroke="#8a5a3a" stroke-width="16"/>`; for (let k = 0; k < 12; k++) b += C(x + rr(-200, 200), y + rr(-60, 60), rr(8, 16), k % 2 ? '#6aa84f' : '#7a3b2a'); b += '</g>'; }); return dish(b); },
+    penne: () => { R(10); let b = ceramic(400) + C(512, 512, 340, '#f6e6bf'); for (let i = 0; i < 44; i++) { const a = rnd() * 6.28, d = Math.sqrt(rnd()) * 290; const x = 512 + Math.cos(a) * d, y = 512 + Math.sin(a) * d; b += `<rect x="${x - 44}" y="${y - 16}" width="88" height="32" rx="12" fill="#efc977" stroke="#d6a84a" stroke-width="4" transform="rotate(${rr(0, 180)} ${x} ${y})"/>`; } for (let i = 0; i < 40; i++) b += C(rr(250, 770), rr(250, 770), 4, '#2a1a10'); return dish(b + parsley(512, 512, .7)); },
+  };
+
+  /* ---------- tableware / table ---------- */
+  function tray() { R(31); let g = ''; for (let i = 0; i < 34; i++) { const y = rr(130, 900); g += `<path d="M110 ${y} q300 ${rr(-14, 14)} 650 0 t650 0" stroke="#5a3418" stroke-width="${rr(2, 5)}" fill="none" opacity=".18"/>`; } return S(1536, 1024, `<rect x="40" y="60" width="1456" height="904" rx="70" fill="url(#wd)"/><rect x="100" y="120" width="1336" height="784" rx="40" fill="url(#wd2)"/>${g}<rect x="100" y="120" width="1336" height="784" rx="40" fill="none" stroke="#4a2810" stroke-opacity=".35" stroke-width="10"/>`, lg('wd', [[0, '#b98250'], [1, '#6e4220']]) + lg('wd2', [[0, '#d09d66'], [.5, '#b98552'], [1, '#a06c3e']], 1, .2)); }
+  function tableTop() { R(41); let p = ''; for (let x = 0; x < 1536; x += 192) p += `<rect x="${x}" y="0" width="192" height="1024" fill="${['#6b3d1e', '#5e3419', '#73431f', '#653a1b'][x / 192 % 4]}"/><line x1="${x}" y1="0" x2="${x}" y2="1024" stroke="#2a1508" stroke-width="5"/>`; for (let i = 0; i < 60; i++) { const x = rr(0, 1536); p += `<path d="M${x} 0 q${rr(-20, 20)} 512 0 1024" stroke="#2a1508" stroke-width="${rr(1, 3)}" opacity=".25" fill="none"/>`; } return S(1536, 1024, `${p}<rect x="0" y="380" width="1536" height="264" fill="#a3121b"/><rect x="0" y="380" width="1536" height="264" fill="url(#lin)" opacity=".35"/><rect x="0" y="396" width="1536" height="6" fill="#d8b25a"/><rect x="0" y="622" width="1536" height="6" fill="#d8b25a"/>`, lg('lin', [[0, '#000'], [.5, '#fff'], [1, '#000']])); }
+  function plate() { return S(1024, 1024, C(512, 512, 500, 'url(#cer)') + C(512, 512, 440, 'none', 'stroke="#c9a24a" stroke-width="10"') + C(512, 512, 330, '#fbf8f2') + C(512, 512, 330, 'none', 'stroke="#e5ded2" stroke-width="10"'), GD); }
+  const fork = () => S(256, 1024, `<rect x="104" y="420" width="48" height="560" rx="24" fill="url(#gld)"/><path d="M64 60 h128 v260 q0 90 -64 110 q-64 -20 -64 -110z" fill="url(#gld)"/>${[90, 122, 154].map(x => `<rect x="${x}" y="40" width="12" height="230" fill="#1a0a04" opacity=".55"/>`).join('')}`, lg('gld', [[0, '#9a7228'], [.5, '#fff1c0'], [1, '#9a7228']], 1, 0));
+  const knife = () => S(256, 1024, `<rect x="104" y="560" width="48" height="420" rx="24" fill="url(#gld)"/><path d="M104 60 q90 40 60 520 h-60z" fill="url(#gld)"/>`, lg('gld', [[0, '#9a7228'], [.5, '#fff1c0'], [1, '#9a7228']], 1, 0));
+  const glass = (liq, r) => S(1024, 1024, C(512, 512, 300, '#ffffff', 'opacity=".14" stroke="#fff" stroke-opacity=".7" stroke-width="12"') + C(512, 512, r, liq) + E(430, 420, 90, 40, '#fff', -30, 'opacity=".45"'), GD);
+  const candle = () => S(1024, 1024, C(512, 512, 300, 'url(#gk)') + C(512, 512, 190, '#b5121b') + C(512, 512, 150, 'url(#fl)') + C(512, 512, 10, '#2a1408'), GD + rg('fl', [[0, '#fffbe0'], [.4, '#ffd36a', .9], [1, '#ff8a2a', 0]], .5, .5, .5));
+  const platter = () => S(1024, 1024, E(512, 512, 480, 360, 'url(#cer)') + E(512, 512, 420, 300, '#f8f5ef') + E(512, 500, 250, 180, 'url(#roast)') + E(400, 560, 120, 60, 'url(#roast)', -30) + E(624, 560, 120, 60, 'url(#roast)', 30) + E(450, 430, 90, 30, '#fff', -15, 'opacity=".35"') + C(250, 360, 34, 'url(#tom)') + C(770, 660, 34, 'url(#tom)') + parsley(780, 360) + parsley(250, 660), GD);
+  function cakeTop(kind) {
+    let b = C(512, 512, 500, 'url(#cer)');
+    if (kind === 'short') { b += C(512, 512, 400, 'url(#tw2)'); for (let i = 0; i < 16; i++) { const a = i / 16 * 6.283; b += C(512 + Math.cos(a) * 350, 512 + Math.sin(a) * 350, 40, 'url(#cr)'); } for (let i = 0; i < 8; i++) { const a = i / 8 * 6.283 + .2; b += strawberryTop(512 + Math.cos(a) * 240, 512 + Math.sin(a) * 240, 1.3, a * 57 + 90); } b += strawberryTop(512, 512, 1.5); }
+    else if (kind === 'fruit') { R(7); b += C(512, 512, 400, '#fff8ee'); const cs = ['#7a1030', '#2a1b4a', '#d62839', '#f4a300', '#6a0d2b', '#3b2a6b', '#e85d75', '#8bc34a']; for (let i = 0; i < 70; i++) { const a = rnd() * 6.28, d = Math.sqrt(rnd()) * 340; b += C(512 + Math.cos(a) * d, 512 + Math.sin(a) * d, rr(16, 30), cs[i % 8]); } }
+    else if (kind === 'cheese') { b += C(512, 512, 400, 'url(#cht2)'); for (let i = 0; i < 20; i++) { const a = i / 20 * 6.283; b += C(512 + Math.cos(a) * 360, 512 + Math.sin(a) * 360, 28, 'url(#cr)'); } }
+    else { b += C(512, 512, 400, 'url(#cot2)') + E(420, 400, 160, 60, '#fff', -30, 'opacity=".18" filter="url(#bl)"') + strawberryTop(560, 480, 1.4, 20) + strawberryTop(470, 540, 1.3, -30) + C(600, 590, 40, '#fff8ec'); }
+    return S(1024, 1024, b, GD + rg('tw2', [[0, '#ffffff'], [1, '#ece4d6']], .45, .4, .7) + rg('cht2', [[0, '#e6aa63'], [.75, '#c27c38'], [1, '#8a5020']], .5, .5, .6) + rg('cot2', [[0, '#6a3b22'], [.7, '#3b1f12'], [1, '#22100a']], .45, .45, .65));
+  }
+
+  /* ---------- decor ---------- */
+  function bg(w, h) {
+    R(w); let b = `<rect width="${w}" height="${h}" fill="url(#bgg)"/>`;
+    for (let i = 0; i < 46; i++) b += C(rr(0, w), rr(0, h * .62), rr(16, 80), ['#ffd27a', '#ff8a3a', '#ffeebb', '#d8303a'][i % 4], `opacity="${rr(.12, .5).toFixed(2)}" filter="url(#bk)"`);
+    b += `<rect y="${h * .64}" width="${w}" height="${h * .36}" fill="url(#tbl)"/>`;
+    [[.08, .6], [.9, .58], [.22, .63]].forEach(([x, y]) => b += C(w * x, h * y, 90, '#ffcf6a', 'opacity=".35" filter="url(#bk)"') + `<rect x="${w * x - 24}" y="${h * y - 10}" width="48" height="${h * .1}" rx="6" fill="#b5121b"/>`);
+    return S(w, h, b, lg('bgg', [[0, '#2a0b08'], [1, '#120403']]) + lg('tbl', [[0, '#3a1a0c'], [1, '#1a0904']]) + blur('bk', 14));
+  }
+  function ribbon() {
+    return S(1536, 1024, `<polygon points="110,560 420,520 420,720 110,760 220,640" fill="#a97c2c"/><polygon points="1426,560 1116,520 1116,720 1426,760 1316,640" fill="#a97c2c"/><polygon points="300,640 420,720 420,620" fill="#6e4f16"/><polygon points="1236,640 1116,720 1116,620" fill="#6e4f16"/><rect x="300" y="400" width="936" height="240" rx="8" fill="url(#rb)"/><rect x="300" y="414" width="936" height="5" fill="#fff6d0" opacity=".7"/><rect x="300" y="620" width="936" height="5" fill="#7a5418" opacity=".5"/>`,
+      lg('rb', [[0, '#b8872d'], [.18, '#f8e4a0'], [.4, '#d9b25c'], [.62, '#fff1c0'], [.82, '#d0a54e'], [1, '#b8872d']], 1, 0));
+  }
+  function hollyLeaf(cx, cy, L, W, rot) { const pts = []; const n = 7; for (let k = 0; k <= n; k++) { const t = k / n, x = -L / 2 + L * t, y = -W * Math.sin(Math.PI * t) * (k % 2 ? 1.25 : .8); pts.push([x, y]); } for (let k = n - 1; k > 0; k--) { const t = k / n, x = -L / 2 + L * t, y = W * Math.sin(Math.PI * t) * (k % 2 ? 1.25 : .8); pts.push([x, y]); } return `<g transform="translate(${cx} ${cy}) rotate(${rot})"><polygon points="${pts.map(p => p.join(',')).join(' ')}" fill="url(#hl)"/><line x1="${-L / 2}" y1="0" x2="${L / 2}" y2="0" stroke="#7fbf6a" stroke-width="5" opacity=".6"/></g>`; }
+  const berryC = (x, y, r = 34) => C(x, y, r, 'url(#hb)') + C(x - r * .35, y - r * .35, r * .25, '#fff', 'opacity=".6"');
+  const holly = () => S(1024, 1024, hollyLeaf(360, 470, 440, 120, -30) + hollyLeaf(660, 470, 440, 120, 30) + hollyLeaf(512, 640, 400, 110, 90) + berryC(480, 520) + berryC(550, 510) + berryC(515, 575), lg('hl', [[0, '#3f8f4a'], [1, '#0f3d1e']]) + rg('hb', [[0, '#ff6b6b'], [.6, '#d01020'], [1, '#6a0010']]));
+  function garland() { R(51); let b = ''; for (let i = 0; i < 360; i++) { const x = rr(0, 1536), y = 512 + Math.sin(x / 1536 * 6.28) * 50 + rr(-90, 90); const a = rr(0, 6.28); b += `<line x1="${x}" y1="${y}" x2="${x + Math.cos(a) * 60}" y2="${y + Math.sin(a) * 40}" stroke="${['#1f5e2e', '#2f7a3a', '#14431f', '#3e8e41'][i % 4]}" stroke-width="9" stroke-linecap="round"/>`; } for (let x = 60; x < 1536; x += 150) { const y = 512 + Math.sin(x / 1536 * 6.28) * 50; b += berryC(x, y + 20, 22) + berryC(x + 30, y + 6, 20) + C(x + 80, y - 20, 30, 'url(#gk)'); } return S(1536, 1024, b, GD + rg('hb', [[0, '#ff6b6b'], [.6, '#d01020'], [1, '#6a0010']])); }
+  function ornament(i) {
+    const cap = `<rect x="226" y="88" width="60" height="44" rx="8" fill="url(#gk)"/><circle cx="256" cy="74" r="16" fill="none" stroke="#c9a14a" stroke-width="7"/>`;
+    const ball = f => cap + C(256, 296, 176, f) + E(196, 226, 50, 30, '#fff', -35, 'opacity=".55"') + `<path d="M90 300 q166 60 332 0" stroke="#fff1c0" stroke-width="10" fill="none" opacity=".6"/>`;
+    const d = [() => ball('url(#gk)'), () => ball('url(#rb2)'), () => cap + C(256, 296, 176, '#ffffff', 'opacity=".12" stroke="#fff" stroke-opacity=".8" stroke-width="5"') + C(256, 320, 70, '#d8303a', 'opacity=".7"') + E(196, 226, 50, 30, '#fff', -35, 'opacity=".7"'),
+      () => `<polygon points="256,40 316,190 476,196 350,292 396,450 256,360 116,450 162,292 36,196 196,190" fill="url(#gk)" stroke="#9a7228" stroke-width="6"/>`,
+      () => `<path d="M256 80 c-110 0 -130 120 -140 220 c-10 70 -50 90 -60 120 h400 c-10 -30 -50 -50 -60 -120 c-10 -100 -30 -220 -140 -220z" fill="url(#rb2)"/>${C(256, 440, 34, 'url(#gk)')}${C(256, 70, 22, 'url(#gk)')}`,
+      () => { let s = ''; for (let r = 0; r < 7; r++) for (let k = 0; k < 4; k++) s += E(180 + k * 50 + (r % 2) * 25, 120 + r * 48, 34, 26, ['#7a4a22', '#5a3416'][(r + k) % 2]); return s; }];
+    return S(512, 512, d[i](), GD + rg('rb2', [[0, '#ff6b6b'], [.55, '#c41a24'], [1, '#5a0a10']]));
+  }
+  function gift(kind) {
+    const col = kind === 'green' ? ['#2a7a5a', '#1F5E46', '#0f3a2b'] : ['#e0303a', '#b5121b', '#7a0a12'];
+    const lid = kind === 'open' ? -170 : 0;
+    const box = `<polygon points="200,420 640,480 640,880 200,800" fill="${col[1]}"/><polygon points="640,480 840,400 840,790 640,880" fill="${col[2]}"/><rect x="400" y="450" width="60" height="400" fill="url(#gk)" transform="skewY(7.8)"/><polygon points="730,438 770,422 770,822 730,838" fill="#9a7228"/>`;
+    const top = `<g transform="translate(0 ${lid}) ${kind === 'open' ? 'rotate(-12 520 420)' : ''}"><polygon points="180,410 640,470 860,390 400,340" fill="${col[0]}"/><polygon points="180,410 640,470 640,520 180,460" fill="${col[1]}"/><polygon points="640,470 860,390 860,440 640,520" fill="${col[2]}"/><polygon points="400,370 440,374 680,450 640,456" fill="url(#gk)"/><polygon points="540,350 580,346 520,470 480,470" fill="url(#gk)"/>${E(470, 360, 90, 50, 'url(#gk)', -20)}${E(600, 350, 90, 50, 'url(#gk)', 20)}${C(535, 372, 28, '#9a7228')}</g>`;
+    const glow = kind === 'open' ? C(520, 430, 260, 'url(#gl)') : '';
+    return S(1024, 1024, glow + box + top, GD + rg('gl', [[0, '#fff6c8'], [.5, '#ffd36a', .6], [1, '#ffd36a', 0]], .5, .5, .5));
+  }
+  function sweet(kind) {
+    if (kind === 'gingerbread') return S(1024, 1024, `<g fill="#b8733a" stroke="#8a4f22" stroke-width="10">${C(512, 260, 140, '#b8733a')}<rect x="372" y="380" width="280" height="320" rx="120"/><rect x="190" y="410" width="240" height="110" rx="55" transform="rotate(-20 310 465)"/><rect x="594" y="410" width="240" height="110" rx="55" transform="rotate(20 714 465)"/><rect x="380" y="600" width="110" height="280" rx="55" transform="rotate(12 435 740)"/><rect x="534" y="600" width="110" height="280" rx="55" transform="rotate(-12 589 740)"/></g>${C(462, 240, 18, '#2a1408')}${C(562, 240, 18, '#2a1408')}<path d="M450 310 q62 50 124 0" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="round"/>${[460, 540, 620].map(y => C(512, y, 18, '#e0303a')).join('')}<path d="M230 440 q20 30 0 60 M794 440 q-20 30 0 60" stroke="#fff" stroke-width="10" fill="none"/>`);
+    if (kind === 'candycane') return S(1024, 1024, `<path d="M600 900 L600 340 a140 140 0 0 0 -280 0" stroke="#fff" stroke-width="110" fill="none" stroke-linecap="round"/><path d="M600 900 L600 340 a140 140 0 0 0 -280 0" stroke="#d8102a" stroke-width="110" fill="none" stroke-linecap="round" stroke-dasharray="40 50"/><path d="M640 880 L640 340" stroke="#fff" stroke-width="14" opacity=".5"/>`);
+    if (kind === 'star') return S(1024, 1024, `<polygon points="512,90 618,360 900,370 680,550 760,830 512,670 264,830 344,550 124,370 406,360" fill="#d9a45a" stroke="#fff" stroke-width="22" stroke-linejoin="round"/><polygon points="512,250 570,400 720,410 600,500 640,650 512,560 384,650 424,500 304,410 454,400" fill="#e9bb72"/>${C(512, 470, 30, '#e0303a')}`);
+    return S(1024, 1024, `${C(512, 512, 380, '#cfe6f2')}${C(512, 512, 380, 'none', 'stroke="#fff" stroke-width="18"')}<g stroke="#fff" stroke-width="34" stroke-linecap="round">${[0, 60, 120].map(a => `<line x1="${512 - Math.cos(a / 57.3) * 280}" y1="${512 - Math.sin(a / 57.3) * 280}" x2="${512 + Math.cos(a / 57.3) * 280}" y2="${512 + Math.sin(a / 57.3) * 280}"/>`).join('')}</g>`);
+  }
+  function showcase() {
+    let b = `<rect x="60" y="40" width="1416" height="944" rx="30" fill="url(#scw)" stroke="#d8b25a" stroke-width="10"/><rect x="80" y="60" width="1376" height="70" rx="16" fill="url(#gh2)"/><rect x="120" y="140" width="1296" height="760" rx="12" fill="url(#sci)"/>${E(768, 160, 620, 120, '#ffe7a8', 0, 'opacity=".35" filter="url(#bl20)"')}`;
+    b += `<rect x="120" y="462" width="1296" height="18" fill="#fff" opacity=".25"/><rect x="120" y="476" width="1296" height="6" fill="#d8b25a"/><rect x="120" y="804" width="1296" height="18" fill="#fff" opacity=".25"/><rect x="120" y="818" width="1296" height="6" fill="#d8b25a"/>`;
+    b += `<rect x="80" y="900" width="1376" height="70" rx="16" fill="#1e0c08" stroke="#d8b25a" stroke-width="4"/>`;
+    return S(1536, 1024, b, lg('scw', [[0, '#4a2014'], [1, '#1e0c08']]) + lg('sci', [[0, '#4a1a1c'], [.5, '#2a0b0d'], [1, '#170708']]) + lg('gh2', [[0, '#9a7228'], [.5, '#fff1c0'], [1, '#9a7228']], 1, 0) + GD);
+  }
+  function dome() {
+    return S(1024, 1536, `<path d="M170 1080 Q512 1170 854 1080 L910 1340 Q512 1440 114 1340Z" fill="url(#db)"/><path d="M190 1150 Q512 1240 834 1150 L856 1240 Q512 1330 168 1240Z" fill="#8f0f17"/><path d="M190 1150 Q512 1240 834 1150" stroke="#fff1c0" stroke-width="6" fill="none" opacity=".7"/>
+      ${C(512, 620, 420, 'url(#dg)', 'stroke="#fff" stroke-opacity=".55" stroke-width="7"')}<path d="M210 560 A320 320 0 0 1 430 280" stroke="#fff" stroke-width="22" stroke-linecap="round" fill="none" opacity=".7"/><path d="M250 680 A300 300 0 0 1 240 600" stroke="#fff" stroke-width="14" stroke-linecap="round" fill="none" opacity=".5"/>${E(760, 840, 30, 70, '#fff', 30, 'opacity=".25"')}`,
+      rg('dg', [[0, '#ffffff', .02], [.8, '#ffffff', .06], [1, '#ffffff', .3]], .5, .5, .5) + lg('db', [[0, '#fff1c0'], [.35, '#d9b25c'], [1, '#6e4f16']]));
+  }
+  function storefront(w, h) {
+    R(w + 3); let b = `<rect width="${w}" height="${h}" fill="url(#sky)"/>`;
+    for (let i = 0; i < 70; i++) b += C(rr(0, w), rr(0, h * .3), rr(1, 3), '#fff', `opacity="${rr(.3, .9).toFixed(2)}"`);
+    const bx = w * .1, bw = w * .8, by = h * .2, bh = h * .7;
+    b += `<polygon points="${bx - 30},${by} ${w / 2},${by - h * .12} ${bx + bw + 30},${by}" fill="#3a1410"/><rect x="${bx}" y="${by}" width="${bw}" height="${bh}" fill="url(#brick)"/>`;
+    const cols = 5, rows = 5, cw = bw / cols, ch = bh * .78 / rows;
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) b += `<rect x="${bx + c * cw + cw * .2}" y="${by + r * ch + ch * .18}" width="${cw * .6}" height="${ch * .64}" rx="8" fill="url(#win)"/>`;
+    b += `<rect x="${w / 2 - cw * .45}" y="${by + bh - bh * .2}" width="${cw * .9}" height="${bh * .2}" rx="10" fill="#2a0f08"/>${C(w / 2, by + bh - bh * .27, Math.min(cw, ch) * .38, 'none', 'stroke="#2f7a3a" stroke-width="22"')}`;
+    b += `<rect y="${by + bh - 10}" width="${w}" height="${h - (by + bh) + 10}" fill="#eef4fa"/>`;
+    for (let i = 0; i < 120; i++) b += C(rr(0, w), rr(0, h), rr(2, 6), '#fff', `opacity="${rr(.4, .9).toFixed(2)}"`);
+    return S(w, h, b, lg('sky', [[0, '#081028'], [1, '#2a1a3a']]) + lg('brick', [[0, '#5a2a22'], [1, '#3a1812']]) + rg('win', [[0, '#fff3c0'], [.6, '#ffb84a'], [1, '#c96a1a']], .5, .5, .7));
+  }
+  function steam() { R(77); let b = '<rect width="1024" height="1536" fill="#000"/>'; for (let i = 0; i < 10; i++) { const x = rr(300, 724); b += `<path d="M${x} 1500 q${rr(-160, 160)} -400 0 -700 t0 -700" stroke="#fff" stroke-width="${rr(40, 90)}" fill="none" opacity="${rr(.25, .5).toFixed(2)}" filter="url(#sb2)"/>`; } return S(1024, 1536, b, blur('sb2', 30)); }
+
+  const MAP = {
+    bg_table_pc: () => bg(1536, 1024), bg_table_sp: () => bg(1024, 1536), ribbon_gold: ribbon, holly, garland_pine: garland,
+    ornament_1: () => ornament(0), ornament_2: () => ornament(1), ornament_3: () => ornament(2), ornament_4: () => ornament(3), ornament_5: () => ornament(4), ornament_6: () => ornament(5),
+    gift_closed: () => gift('closed'), gift_open: () => gift('open'), gift_green: () => gift('green'),
+    sweet_gingerbread: () => sweet('gingerbread'), sweet_candycane: () => sweet('candycane'), sweet_star: () => sweet('star'), sweet_snow: () => sweet('snow'),
+    oven_closed: () => oven(false), oven_open: () => oven(true), chicken_raw: () => chicken(0), chicken_mid: () => chicken(1), chicken_done: () => chicken(2), steam,
+    showcase, cake_naked: () => cake('naked'), cake_short: () => cake('short'), cake_cut: () => cake('cut'), cake_slice: slice,
+    cake_fruit: () => cake('fruit'), cake_cheese: () => cake('cheese'), cake_choco: () => cake('choco'),
+    strawberry_1: () => strawberry(0), strawberry_2: () => strawberry(1), strawberry_3: () => strawberry(2), strawberry_4: () => strawberry(3), strawberry_half_1: () => strawberryHalf(0), strawberry_half_2: () => strawberryHalf(1),
+    tray_wood: tray, table_top: tableTop, plate, fork, knife, glass_wine: () => glass('#5a0a18', 230), glass_juice: () => glass('#f7a21b', 200), candle, chicken_platter: platter,
+    top_short: () => cakeTop('short'), top_fruit: () => cakeTop('fruit'), top_cheese: () => cakeTop('cheese'), top_choco: () => cakeTop('choco'),
+    dome, storefront_sp: () => storefront(1024, 1536), storefront_pc: () => storefront(1536, 1024),
+  };
+  Object.keys(D).forEach(k => MAP['dish_' + k] = D[k]);
+  const cache = new Map();
+  const get = name => { if (!cache.has(name)) cache.set(name, (MAP[name] || (() => S(512, 512, '<rect width="512" height="512" rx="40" fill="#c9a14a" opacity=".4"/>')))()); return cache.get(name); };
+  get.names = Object.keys(MAP);
+  return get;
+})();
+
+/* =========================================================
+   Assets: assets/<name>.png → fallback to placeholder
+   ========================================================= */
+const ASSET_STATE = {};
+function hydrate(img) {
+  const name = img.dataset.a; if (!name || img.dataset.h) return;
+  img.dataset.h = '1'; img.draggable = false; if (!img.hasAttribute('alt')) img.alt = '';
+  img.addEventListener('error', function onErr() { img.removeEventListener('error', onErr); ASSET_STATE[name] = 'ph'; img.src = PH(name); assetStatus(); });
+  img.addEventListener('load', () => { if (!img.src.startsWith('data:')) { ASSET_STATE[name] = 'real'; assetStatus(); } }, { once: true });
+  img.src = `assets/${name}.png`;
+}
+function mkImg(name, cls) { const i = new Image(); i.dataset.a = name; if (cls) i.className = cls; i.alt = ''; hydrate(i); return i; }
+let statusT;
+function assetStatus() {
+  clearTimeout(statusT);
+  statusT = setTimeout(() => {
+    const names = PH.names; const real = names.filter(n => ASSET_STATE[n] === 'real'); const ph = names.filter(n => ASSET_STATE[n] === 'ph');
+    $('#assetList').innerHTML = `<p>実画像：${real.length}点 ／ 仮素材：${ph.length}点（assets フォルダに同じ名前の PNG を入れると差し替わります）</p>` + (ph.length ? `<p>仮素材のもの：${ph.map(n => `<code>${n}.png</code>`).join('')}</p>` : '');
+  }, 300);
+}
+
+/* =========================================================
+   Data（ポスターの商品情報）
+   ========================================================= */
+const DISHES = {
+  chicken_cut: 'ローストチキン', chicken_leg: '骨付きローストチキン', salmon: 'スモークサーモン', ratatouille: 'ラタトゥイユ', gratin: 'ポテトグラタン', salad: '彩りサラダ',
+  pork: 'ローストポーク', shrimp: '海老のグリル', quiche: 'キッシュ', caprese: 'カプレーゼ', fry: 'フライ盛り', beef: 'ローストビーフ', scallop: 'ホタテのマリネ',
+  cheese: 'チーズ3種', lasagna: 'ラザニア', meatball: '特製デリ（ミートボール）', terrine: '特製デリ（テリーヌ）', penne: 'クリームペンネ',
+};
+const PLANS = {
+  light: { name: 'ライト', serve: '約2〜3人前', min: 2, max: 3, price: 3800, desc: 'ローストチキンカット／スモークサーモン／ラタトゥイユ／ポテトグラタン／彩りサラダ', dishes: ['chicken_cut', 'salmon', 'ratatouille', 'gratin', 'salad'], tray: [34, 23] },
+  standard: { name: 'スタンダード', serve: '約3〜4人前', min: 3, max: 4, price: 5800, desc: 'ローストチキン＆ポーク／海老のグリル／キッシュ／カプレーゼ／フライ盛り／サラダ', dishes: ['chicken_cut', 'pork', 'shrimp', 'quiche', 'caprese', 'fry', 'salad'], tray: [40, 27] },
+  premium: { name: 'プレミアム', serve: '約4〜5人前', min: 4, max: 5, price: 8800, desc: '骨付きローストチキン／ローストビーフ／ホタテのマリネ／チーズ3種／ラザニア／特製デリ2種／サラダ', dishes: ['chicken_leg', 'beef', 'scallop', 'cheese', 'lasagna', 'meatball', 'terrine', 'salad'], tray: [46, 31] },
+  limited: { name: '限定オードブルセット', serve: '3〜4人前', min: 3, max: 4, price: 14800, dishes: ['salad', 'penne', 'beef', 'quiche'], tray: [34, 23], chicken: true, cake: { kind: 'choco', size: 4 } },
+};
+const CAKES = {
+  short: { name: '苺ショートケーキ', desc: 'ふんわりスポンジに、生クリームと苺をたっぷり飾った定番ケーキ', sizes: { 4: 2600, 5: 3200, 6: 3800 } },
+  fruit: { name: 'フルーツケーキ', desc: '色とりどりのフルーツをたっぷりのせた人気のクリスマスケーキ', sizes: { 5: 4000 } },
+  cheese: { name: 'チーズケーキ', desc: 'なめらかな口どけと濃厚なコクの、シンプルに仕立てたチーズケーキ', sizes: { 5: 3000 } },
+  choco: { name: 'チョコレートケーキ', desc: 'しっとり濃厚な味わいが魅力。甘さ控えめで大人にも人気のケーキ', sizes: { 5: 3200 } },
+};
+const SIZES = { 4: { cm: 12, min: 3, max: 4 }, 5: { cm: 15, min: 4, max: 5 }, 6: { cm: 18, min: 5, max: 6 } };
+
+/* =========================================================
+   Text fill / header
+   ========================================================= */
+function fillText() {
+  const T = {
+    deadline: md(CFG.deadline), deadlineShort: md(CFG.deadline).replace(/\(.\)/, ''),
+    pickupRange: `${md(CFG.pickupDays[0])}▸${md(CFG.pickupDays[2])}`, hours: CFG.hours,
+    tel: CFG.tel, dm: CFG.dm, address: CFG.address, reception: CFG.reception,
+  };
+  const tpl = $('#tplFace');
+  $$('[data-face]').forEach(f => f.appendChild(tpl.content.cloneNode(true)));
+  $$('[data-t]').forEach(e => e.textContent = T[e.dataset.t] ?? '');
+  $('#telLink').href = 'tel:' + CFG.tel.replace(/-/g, '');
+  const end = new Date(CFG.deadline + 'T23:59:59'); const days = Math.ceil((end - new Date()) / 864e5);
+  $('#countChip').innerHTML = days > 0 ? `ご予約締切まで あと<b>${days}</b>日` : 'ご予約受付は終了しました';
+}
+function headerMenu() {
+  const d = $('#drawer'), b = $('#menuBtn');
+  const set = on => { d.classList.toggle('on', on); d.setAttribute('aria-hidden', !on); b.setAttribute('aria-expanded', on); };
+  b.addEventListener('click', () => set(true)); $('#drawerClose').addEventListener('click', () => set(false));
+  $$('a', d).forEach(a => a.addEventListener('click', () => set(false)));
+}
+
+/* =========================================================
+   FX: snow + sparkles
+   ========================================================= */
+const FX = (() => {
+  const c = $('#fx'), x = c.getContext('2d'); let W, H; const flakes = [], sparks = [];
+  function size() { const d = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight; c.width = W * d; c.height = H * d; x.setTransform(d, 0, 0, d, 0, 0); }
+  size(); addEventListener('resize', size);
+  const N = RM ? 18 : Math.round(clamp(W * H / 16000, 30, 100));
+  for (let i = 0; i < N; i++) flakes.push({ x: rand(0, W), y: rand(0, H), r: rand(.8, 2.8), s: rand(.25, .9), d: rand(0, 6.28), o: rand(.3, .85) });
+  const COLS = ['255,236,170', '255,255,255', '255,200,110', '255,120,120'];
+  function burst(px, py, n = 16, power = 1) { if (RM) n = Math.min(n, 6); for (let i = 0; i < n; i++) { const a = rand(0, 6.28), sp = rand(1, 4.5) * power; sparks.push({ x: px, y: py, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 1.2, life: 1, dec: rand(.012, .026), r: rand(2, 4.5), c: COLS[i % 4], star: Math.random() < .55 }); } }
+  function star(px, py, r) { x.beginPath(); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, rr = i % 2 ? r * .32 : r; x.lineTo(px + Math.cos(a) * rr, py + Math.sin(a) * rr); } x.closePath(); x.fill(); }
+  let t0 = performance.now();
+  (function loop(t) {
+    const dt = Math.min(3, (t - t0) / 16.7); t0 = t;
+    if (!document.hidden) {
+      x.clearRect(0, 0, W, H);
+      for (const f of flakes) { f.y += f.s * dt; f.x += Math.sin(t * .0008 + f.d) * .35 * dt; if (f.y > H + 5) { f.y = -5; f.x = rand(0, W); } x.fillStyle = `rgba(255,255,255,${f.o})`; x.beginPath(); x.arc(f.x, f.y, f.r, 0, 6.283); x.fill(); }
+      x.globalCompositeOperation = 'lighter';
+      for (let i = sparks.length - 1; i >= 0; i--) { const s = sparks[i]; s.x += s.vx * dt; s.y += s.vy * dt; s.vy += .06 * dt; s.vx *= .98; s.life -= s.dec * dt; if (s.life <= 0) { sparks.splice(i, 1); continue; } x.fillStyle = `rgba(${s.c},${s.life})`; if (s.star) star(s.x, s.y, s.r * 1.8 * s.life + 1); else { x.beginPath(); x.arc(s.x, s.y, s.r * s.life, 0, 6.283); x.fill(); } }
+      x.globalCompositeOperation = 'source-over';
+    }
+    requestAnimationFrame(loop);
+  })(t0);
+  let last = 0;
+  addEventListener('pointermove', e => { if (e.pointerType !== 'mouse' || RM) return; const n = performance.now(); if (n - last < 45) return; last = n; sparks.push({ x: e.clientX, y: e.clientY, vx: rand(-.5, .5), vy: rand(-.2, .6), life: .9, dec: .03, r: rand(1.5, 3), c: COLS[(Math.random() * 3) | 0], star: true }); }, { passive: true });
+  addEventListener('pointerdown', e => burst(e.clientX, e.clientY, 8, .7), { passive: true });
+  return { burst, burstAt(el, n = 26, p = 1.2) { const r = el.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, n, p); } };
+})();
+
+/* =========================================================
+   Opening
+   ========================================================= */
+const Opening = (() => {
+  const op = $('#opening'); let done = false, auto;
+  function finish() { document.body.classList.remove('locked'); document.body.classList.add('ready'); op.hidden = true; }
+  async function open() {
+    if (done) return; done = true; clearTimeout(auto);
+    op.classList.add('open');
+    const pr = $('#opPoster').getBoundingClientRect(); FX.burst(pr.left + pr.width / 2, pr.top + pr.height / 2, 60, 2);
+    await wait(RM ? 0 : 700);
+    const pairs = [[$('.op-chicken'), $('#heroChicken')], [$('.op-cake'), $('#heroCake')]];
+    const flights = pairs.map(([a, b], i) => { const to = b.getBoundingClientRect(); const p = flyClone(a, to, { duration: 1300 + i * 200, arc: -160 }); a.style.visibility = 'hidden'; return p; });
+    op.classList.add('fade');
+    setTimeout(() => { document.body.classList.add('ready'); }, RM ? 0 : 1100);
+    await Promise.all(flights);
+    finish();
+  }
+  function start() {
+    if (RM) { finish(); return; }
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    scrollTo(0, 0);
+    done = false; op.hidden = false; op.classList.remove('open', 'fade'); $$('.op-pop img').forEach(i => i.style.visibility = '');
+    document.body.classList.add('locked'); document.body.classList.remove('ready');
+    auto = setTimeout(open, 4200);
+  }
+  $('#opPoster').addEventListener('click', open);
+  $('#opPoster').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+  $('#opSkip').addEventListener('click', e => { e.stopPropagation(); clearTimeout(auto); done = true; op.classList.add('fade'); finish(); });
+  $('#replayOp').addEventListener('click', start);
+  return { start };
+})();
+
+/* =========================================================
+   Hero parallax
+   ========================================================= */
+(() => {
+  const hero = $('#hero'), px = $$('.px', hero); let mx = 0, my = 0, tx = 0, ty = 0, vis = true;
+  hero.addEventListener('pointermove', e => { if (e.pointerType !== 'mouse') return; const r = hero.getBoundingClientRect(); mx = (e.clientX - r.left) / r.width * 2 - 1; my = (e.clientY - r.top) / r.height * 2 - 1; });
+  new IntersectionObserver(([en]) => vis = en.isIntersecting).observe(hero);
+  (function loop() {
+    if (vis && !RM) { tx = lerp(tx, mx, .06); ty = lerp(ty, my, .06); const s = scrollY; px.forEach(el => { const d = +el.dataset.depth; el.style.transform = `translate3d(${(-tx * d * 36).toFixed(1)}px,${(-ty * d * 24 - s * d * .45).toFixed(1)}px,0)`; }); }
+    requestAnimationFrame(loop);
+  })();
+})();
+
+/* reveal */
+(() => {
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+  $$('.rv').forEach(el => io.observe(el));
+})();
+
+/* =========================================================
+   Oven
+   ========================================================= */
+(() => {
+  const stage = $('#ovenStage'), dial = $('#dial'), knob = $('.dial-knob', dial), tempV = $('#tempV'), bar = $('#bakeBar'), msg = $('#bakeMsg');
+  const stg = $$('.ow-c', stage), steps = $$('.bake-steps li'), steamBox = $('#steam'), btn = $('#bakeBtn'), again = $('#bakeReset');
+  let angle = -135, temp = 0, baking = false, progress = 0, done = false, steamT;
+  const setAngle = a => { angle = clamp(a, -135, 135); temp = Math.round((angle + 135) / 270 * 250); knob.style.setProperty('--rot', angle + 'deg'); tempV.textContent = temp; dial.setAttribute('aria-valuenow', temp); stage.style.setProperty('--heat', baking ? 1 : (temp / 250 * .8).toFixed(2)); };
+  const ang = e => { const r = dial.getBoundingClientRect(); return Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2)) * 180 / Math.PI + 90; };
+  let a0 = 0, base = 0;
+  drag(dial, {
+    immediate: true,
+    start(e) { a0 = ang(e); base = angle; },
+    move(e) { if (baking || done) return; let d = ang(e) - a0; if (d > 180) d -= 360; if (d < -180) d += 360; setAngle(base + d); if (temp >= 200) bake(); },
+    end() { if (!baking && !done && temp < 200) { msg.textContent = 'もう少し！ 200℃ 以上まで回してね'; } },
+  });
+  dial.addEventListener('keydown', e => { if (baking || done) return; if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { setAngle(angle + 15); if (temp >= 200) bake(); } if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') setAngle(angle - 15); });
+  btn.addEventListener('click', () => { if (baking || done) return; setAngle(70); bake(); });
+  async function bake() {
+    if (baking || done) return; baking = true; btn.disabled = true; msg.textContent = 'オーブンに火が入りました…'; stage.style.setProperty('--heat', 1);
+    const dur = RM ? 600 : lerp(7000, 4800, (temp - 200) / 50); const t0 = performance.now();
+    await new Promise(res => { (function tick(t) { progress = clamp((t - t0) / dur, 0, 1); bar.style.width = progress * 100 + '%'; const s = progress < .34 ? 0 : progress < .7 ? 1 : 2; stg.forEach((im, i) => im.classList.toggle('on', i === s)); steps.forEach((l, i) => l.classList.toggle('on', i <= s)); msg.textContent = ['下ごしらえしたチキンを、じっくり加熱中…', '皮がきつね色に。脂がじゅわっ…', 'こんがり、つやつやに焼けてきた！'][s]; if (progress < 1) requestAnimationFrame(tick); else res(); })(t0); });
+    baking = false; done = true;
+    stage.classList.add('opened'); await wait(350); stage.classList.add('done');
+    msg.textContent = '焼きあがり！ メリークリスマス！';
+    setAngle(-135); stage.style.setProperty('--heat', .25);
+    const im = $('.res-chicken img', stage); const g = $('#gloss'); const setMask = () => { const u = `url("${im.currentSrc || im.src}")`; g.style.webkitMaskImage = u; g.style.maskImage = u; }; im.complete ? setMask() : im.addEventListener('load', setMask, { once: true });
+    setTimeout(() => FX.burstAt($('.res-chicken', stage), 40, 1.6), 700);
+    glints(); steamOn(); again.hidden = false; btn.hidden = true;
+  }
+  function glints() { const box = $('.res-chicken', stage); $$('.glint', box).forEach(g => g.remove()); [[30, 30], [55, 22], [70, 40], [42, 48]].forEach(([l, t], i) => { const g = document.createElement('i'); g.className = 'glint'; g.style.left = l + '%'; g.style.top = t + '%'; g.style.animationDelay = (i * .35) + 's'; box.appendChild(g); }); }
+  function steamOn() { clearInterval(steamT); steamT = setInterval(() => { if (document.hidden) return; const p = document.createElement('i'); p.className = 'puff'; p.style.left = rand(5, 70) + '%'; p.style.setProperty('--sx', rand(-40, 40) + 'px'); steamBox.appendChild(p); setTimeout(() => p.remove(), 3700); }, RM ? 2000 : 260); }
+  again.addEventListener('click', () => { clearInterval(steamT); steamBox.innerHTML = ''; done = false; stage.classList.remove('opened', 'done'); stg.forEach((im, i) => im.classList.toggle('on', i === 0)); steps.forEach((l, i) => l.classList.toggle('on', i === 0)); bar.style.width = 0; msg.textContent = 'ダイヤルを 200℃ 以上へ'; again.hidden = true; btn.hidden = false; btn.disabled = false; setAngle(-135); });
+  setAngle(-135);
+})();
+
+/* =========================================================
+   Cake workshop
+   ========================================================= */
+(() => {
+  const showcase = $('#showcase'), bench = $('#bench'), box = $('#benchCake'), cv = $('#creamCv'), g = cv.getContext('2d', { willReadFrequently: true });
+  const layer = $('#berryLayer'), knife = $('#knife'), sliceB = $('#sliceBerries'), stepsEl = $$('#cakeSteps li');
+  let step = 0, W = 0, dpr = 1, blobs = [], berries = [], cut = false, busy = false;
+  // showcase decor
+  $('#scLights').innerHTML = Array.from({ length: 18 }, (_, i) => `<i style="--i:${i}"></i>`).join('');
+  const sp = $('#scSparkles'); for (let i = 0; i < 10; i++) { const s = document.createElement('i'); s.className = 'glint'; s.style.left = rand(0, 100) + '%'; s.style.top = rand(0, 100) + '%'; s.style.animationDelay = rand(0, 3) + 's'; s.style.animationDuration = rand(1.6, 3) + 's'; sp.appendChild(s); }
+  $$('.sc-cake[data-cake]').forEach(b => b.addEventListener('click', () => { const c = CAKES[b.dataset.cake]; toast(`${c.name}：${Object.entries(c.sizes).map(([s, p]) => `${s}号 ${yen(p)}`).join('／')}（税込）`); }));
+
+  function size() { const r = box.getBoundingClientRect(); if (!r.width) return; W = r.width; dpr = Math.min(2, devicePixelRatio || 1); cv.width = W * dpr; cv.height = W * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0); redraw(); }
+  new ResizeObserver(size).observe(box);
+  const geo = () => ({ cx: GEO.cakeTop.cx * W, cy: GEO.cakeTop.cy * W, rx: GEO.cakeTop.rx * W, ry: GEO.cakeTop.ry * W });
+  const inTop = (x, y, k = 1) => { const o = geo(); return ((x - o.cx) / o.rx) ** 2 + ((y - o.cy) / o.ry) ** 2 <= k; };
+  function clampTop(x, y, k = .9) { const o = geo(); let dx = (x - o.cx) / o.rx, dy = (y - o.cy) / o.ry; const d = Math.hypot(dx, dy); if (d > k) { dx *= k / d; dy *= k / d; } return [o.cx + dx * o.rx, o.cy + dy * o.ry]; }
+  const local = e => { const r = box.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  function ell(x, y, rx, ry) { g.beginPath(); g.ellipse(x, y, rx, ry, 0, 0, 6.2832); g.fill(); }
+  function drawBlob(b) {
+    const o = geo(), x = b.x * W, y = b.y * W; const persp = .8 + .4 * clamp((y - (o.cy - o.ry)) / (2 * o.ry), 0, 1); const r = b.r * W * persp;
+    g.fillStyle = 'rgba(110,70,35,.14)'; ell(x + r * .2, y + r * .45, r * 1.1, r * .5);
+    const tiers = b.t === 3 ? [[0, 1], [-.42, .74], [-.78, .48], [-1.04, .22]] : [[0, 1], [-.36, .64]];
+    for (const [dy, s] of tiers) {
+      const q = r * s, yy = y + dy * r; const gr = g.createRadialGradient(x - q * .4, yy - q * .38, q * .05, x, yy, q * 1.08);
+      gr.addColorStop(0, '#ffffff'); gr.addColorStop(.5, '#fdf8ee'); gr.addColorStop(1, '#d6c6ab'); g.fillStyle = gr; ell(x, yy, q, q * .7);
+      g.strokeStyle = 'rgba(170,140,100,.3)'; g.lineWidth = Math.max(1, q * .08);
+      for (let i = 0; i < 5; i++) { const a = b.a + i * 1.2566; g.beginPath(); g.moveTo(x + Math.cos(a) * q * .2, yy + Math.sin(a) * q * .14); g.quadraticCurveTo(x + Math.cos(a + .5) * q * .75, yy + Math.sin(a + .5) * q * .52, x + Math.cos(a + .9) * q * .95, yy + Math.sin(a + .9) * q * .64); g.stroke(); }
+    }
+  }
+  function wedge() { const o = geo(); const p1 = [o.cx + o.rx * Math.cos(Math.PI / 3), o.cy + o.ry * Math.sin(Math.PI / 3)], p2 = [o.cx + o.rx * Math.cos(Math.PI * 2 / 3), o.cy + o.ry * Math.sin(Math.PI * 2 / 3)]; return [[o.cx, o.cy], p1, [p1[0], W], [p2[0], W], p2]; }
+  function pip([x, y], poly) { let ins = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const [xi, yi] = poly[i], [xj, yj] = poly[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) ins = !ins; } return ins; }
+  function redraw() {
+    g.clearRect(0, 0, W, W); [...blobs].sort((a, b) => a.y - b.y).forEach(drawBlob);
+    if (cut) { g.save(); g.globalCompositeOperation = 'destination-out'; g.beginPath(); wedge().forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.fill(); g.restore(); }
+  }
+  function addBlob(x, y, t) { blobs.push({ x: x / W, y: y / W, r: t === 3 ? .034 : .026, t, a: rand(0, 6.28) }); drawBlob(blobs[blobs.length - 1]); }
+  const creamAt = (x, y) => { try { return g.getImageData(x * dpr, y * dpr, 1, 1).data[3] > 60; } catch { return false; } };
+
+  function setStep(n) {
+    step = n; stepsEl.forEach((l, i) => { l.classList.toggle('on', i === Math.min(n, 3)); l.classList.toggle('done', i < n); });
+    $$('.tool').forEach(t => t.classList.toggle('on', +t.dataset.tool === n));
+    box.classList.toggle('knife-on', n === 3); box.style.cursor = n === 1 ? 'crosshair' : n === 3 ? 'ew-resize' : '';
+  }
+  $$('[data-next]').forEach(b => b.addEventListener('click', () => setStep(+b.dataset.next)));
+
+  // take out
+  $('#pickCake').addEventListener('click', async () => {
+    if (busy) return; busy = true; const src = $('#pickCake img');
+    showcase.classList.add('taking'); FX.burstAt(src, 30, 1.4); await wait(RM ? 0 : 650);
+    bench.hidden = false; await frame(); size();
+    const base = $('.bc-base'); base.style.visibility = 'hidden';
+    await flyClone(src, base.getBoundingClientRect(), { duration: 1000, arc: -120 });
+    base.style.visibility = ''; showcase.classList.add('gone'); bench.classList.add('on'); setStep(1); busy = false;
+    FX.burstAt(box, 24, 1.2);
+  });
+
+  // pointer on the cake (cream & knife)
+  let mode = null, last = null, kStart = null, moved = 0;
+  box.addEventListener('pointerdown', e => {
+    if (busy) return;
+    if (step === 1) { mode = 'cream'; const [x0, y0] = local(e); if (!inTop(x0, y0, 1.25)) { mode = null; return; } const [x, y] = clampTop(x0, y0); last = [x, y]; moved = 0; box.setPointerCapture(e.pointerId); e.preventDefault(); }
+    else if (step === 3 && !cut) { mode = 'knife'; kStart = local(e); box.setPointerCapture(e.pointerId); moveKnife(e); }
+  });
+  box.addEventListener('pointermove', e => {
+    if (mode === 'cream') {
+      const [x, y] = clampTop(...local(e)); const d = Math.hypot(x - last[0], y - last[1]); const stepD = W * .016;
+      if (d >= stepD) { const n = Math.floor(d / stepD); for (let i = 1; i <= n; i++) addBlob(lerp(last[0], x, i / n), lerp(last[1], y, i / n), 2); moved += d; last = [x, y]; }
+    } else if (mode === 'knife') moveKnife(e);
+    else if (step === 3 && e.pointerType === 'mouse') moveKnife(e);
+  });
+  const endPtr = e => {
+    if (mode === 'cream' && moved < W * .02) addBlob(last[0], last[1], 3);
+    if (mode === 'knife') { const [x, y] = local(e); const o = geo(); if (Math.abs(x - kStart[0]) > W * .28 && Math.max(y, kStart[1]) > o.cy - o.ry * 2.5 && Math.min(y, kStart[1]) < o.cy + o.ry * 3) doCut(); }
+    mode = null;
+  };
+  box.addEventListener('pointerup', endPtr); box.addEventListener('pointercancel', () => mode = null);
+  function moveKnife(e) { const [x, y] = local(e); knife.style.left = x / W * 100 + '%'; knife.style.top = clamp(y / W * 100 - 40, -10, 50) + '%'; }
+
+  $('#autoCream').addEventListener('click', async () => { if (busy) return; busy = true; const o = geo(); for (let i = 0; i < 14; i++) { const a = i / 14 * 6.283 + Math.PI / 2; addBlob(o.cx + Math.cos(a) * o.rx * .86, o.cy + Math.sin(a) * o.ry * .86, 3); await wait(RM ? 0 : 55); } addBlob(o.cx, o.cy, 3); busy = false; });
+  $('#clearCream').addEventListener('click', () => { blobs = []; redraw(); berries.forEach(b => b.el.remove()); berries = []; });
+
+  // strawberries
+  const BN = ['strawberry_1', 'strawberry_2', 'strawberry_3', 'strawberry_4', 'strawberry_half_1', 'strawberry_half_2'];
+  const bowl = $('#berryBowl');
+  BN.forEach(n => { const d = document.createElement('div'); d.className = 'bowl-berry'; d.tabIndex = 0; d.setAttribute('role', 'button'); d.setAttribute('aria-label', 'いちごをケーキにのせる'); d.appendChild(mkImg(n)); bowl.appendChild(d); berryDrag(d, n, null); });
+  function makeGhost(name, e) { const gh = document.createElement('div'); gh.className = 'drag-ghost'; gh.style.width = W * .105 + 'px'; gh.appendChild(mkImg(name)); document.body.appendChild(gh); moveGhost(gh, e); return gh; }
+  function moveGhost(gh, e) { gh.style.left = e.clientX + 'px'; gh.style.top = e.clientY + 'px'; }
+  function berryDrag(el, name, rec) {
+    let gh = null, home = null;
+    drag(el, {
+      start(e) { if (busy) return; home = el.getBoundingClientRect(); if (rec) { berries = berries.filter(b => b !== rec); el.remove(); } gh = makeGhost(name, e); if (step < 2) setStep(2); },
+      move(e) { if (gh) moveGhost(gh, e); },
+      end(e, cancel) {
+        if (!gh) return; const [x, y] = local(e);
+        if (!cancel && inTop(x, y, 1.15) && !cut) { const [cx, cy] = clampTop(x, y, .88); gh.remove(); placeBerry(cx / W, cy / W, name); }
+        else { gh.classList.add('back'); gh.style.left = home.left + home.width / 2 + 'px'; gh.style.top = home.top + home.height / 2 + 'px'; setTimeout(() => gh.remove(), 460); }
+        gh = null;
+      },
+      tap() { if (busy || cut || rec) return; const o = geo(); const a = rand(0, 6.28), d = Math.sqrt(rand(0, 1)) * .75; if (step < 2) setStep(2); placeBerry((o.cx + Math.cos(a) * o.rx * d) / W, (o.cy + Math.sin(a) * o.ry * d) / W, name); },
+    });
+  }
+  function placeBerry(nx, ny, name, anim = true) {
+    const onCream = creamAt(nx * W, ny * W);
+    const el = document.createElement('div'); el.className = 'berry' + (anim ? ' drop' : '');
+    el.style.left = nx * 100 + '%'; el.style.top = (ny - (onCream ? .014 : 0)) * 100 + '%'; el.style.zIndex = Math.round(ny * 1000);
+    el.innerHTML = '<i class="bs"></i>'; el.appendChild(mkImg(name)); layer.appendChild(el);
+    const rec = { nx, ny, name, el }; berries.push(rec); berryDrag(el, name, rec);
+    if (anim) setTimeout(() => { const r = el.getBoundingClientRect(); FX.burst(r.left + r.width / 2, r.top + r.height * .8, 6, .6); }, 420);
+    return rec;
+  }
+  $('#autoBerry').addEventListener('click', async () => { if (busy || cut) return; busy = true; const o = geo(); for (let i = 0; i < 8; i++) { const a = i / 8 * 6.283 + .4; placeBerry((o.cx + Math.cos(a) * o.rx * .58) / W, (o.cy + Math.sin(a) * o.ry * .58) / W, BN[i % 4]); await wait(RM ? 0 : 110); } placeBerry(o.cx / W, o.cy / W, 'strawberry_1'); busy = false; });
+
+  // cut
+  async function doCut() {
+    if (cut || busy) return; busy = true; knife.classList.add('slicing'); await wait(RM ? 0 : 1000); knife.classList.remove('slicing');
+    cut = true; box.classList.add('is-cut'); redraw();
+    const poly = wedge(); const moving = berries.filter(b => pip([b.nx * W, b.ny * W], poly));
+    moving.forEach(b => b.el.classList.add('leave')); setTimeout(() => moving.forEach(b => b.el.remove()), 700);
+    berries = berries.filter(b => !moving.includes(b));
+    sliceB.innerHTML = ''; (moving.length ? moving : [{ name: 'strawberry_1' }]).slice(0, 2).forEach((b, i) => { const d = document.createElement('div'); d.className = 'berry'; d.style.left = (44 + i * 14) + '%'; d.style.top = (36 - i * 2) + '%'; d.appendChild(mkImg(b.name)); sliceB.appendChild(d); });
+    setTimeout(() => FX.burstAt(box, 50, 1.8), 600);
+    setStep(4); busy = false;
+  }
+  $('#autoCut').addEventListener('click', doCut);
+  $('#cakeAgain').addEventListener('click', () => { blobs = []; berries.forEach(b => b.el.remove()); berries = []; cut = false; box.classList.remove('is-cut'); redraw(); bench.classList.remove('on'); setTimeout(() => { bench.hidden = true; }, 400); showcase.classList.remove('gone', 'taking'); setStep(0); });
+  setStep(0);
+})();
+
+/* =========================================================
+   Atelier
+   ========================================================= */
+(() => {
+  const stage = $('#trayStage'), items = $('#trayItems'), pal = $('#palette'), sum = $('#atSummary'), ppl = $('#atPeople'), pv = $('#atPeopleV');
+  const TW = { 2: .62, 3: .74, 4: .86, 5: .98 }; const SZ = () => innerWidth <= 860 ? .19 : .16;
+  let people = 3, list = [], current = null, z = 1;
+  const btns = {};
+  Object.entries(DISHES).forEach(([k, n]) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'pal-item'; b.appendChild(mkImg('dish_' + k)); b.insertAdjacentHTML('beforeend', `<span>${n}</span>`); pal.appendChild(b); btns[k] = b; palDrag(b, k); });
+  const tr = () => { const w = TW[people]; return { l: (1 - w) / 2, t: (1 - w) / 2, w, h: w }; };
+  const inner = () => { const r = tr(); return { l: r.l + r.w * .09, t: r.t + r.h * .16, w: r.w * .82, h: r.h * .68 }; };
+  const sp = e => { const r = stage.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; };
+  const onTray = (x, y, m = 0) => { const r = tr(); return x > r.l - m && x < r.l + r.w + m && y > r.t - m && y < r.t + r.h + m; };
+  const clampIn = (x, y) => { const i = inner(); return [clamp(x, i.l, i.l + i.w), clamp(y, i.t, i.t + i.h)]; };
+  function place(rec) { rec.el.style.left = rec.x * 100 + '%'; rec.el.style.top = rec.y * 100 + '%'; rec.el.style.zIndex = Math.round(rec.y * 100) + (rec.z || 0); }
+  function add(k, x, y, fromRect) {
+    const el = document.createElement('div'); el.className = 'dish-item'; el.style.width = SZ() * 100 + '%'; el.appendChild(mkImg('dish_' + k)); el.setAttribute('role', 'img'); el.setAttribute('aria-label', DISHES[k]);
+    const rec = { k, x, y, el, z: z++ }; place(rec); items.appendChild(el); list.push(rec); itemDrag(rec);
+    if (fromRect && !RM) { const r = el.getBoundingClientRect(); const dx = fromRect.left + fromRect.width / 2 - (r.left + r.width / 2), dy = fromRect.top + fromRect.height / 2 - (r.top + r.height / 2); el.animate([{ transform: `translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(.5)` }, { transform: `translate(calc(-50% + ${dx * .4}px),calc(-50% + ${dy * .4 - 80}px)) scale(1.15)`, offset: .55 }, { transform: 'translate(-50%,-50%) scale(1)' }], { duration: 650, easing: 'cubic-bezier(.3,.7,.25,1)' }).finished.then(() => land(rec)); }
+    else land(rec);
+    current = null; update(); return rec;
+  }
+  function land(rec) { rec.el.classList.remove('land'); void rec.el.offsetWidth; rec.el.classList.add('land'); const r = rec.el.getBoundingClientRect(); FX.burst(r.left + r.width / 2, r.top + r.height / 2, 5, .5); }
+  function remove(rec) { list = list.filter(r => r !== rec); rec.el.classList.add('poof'); setTimeout(() => rec.el.remove(), 360); current = null; update(); }
+  function freeSpot() { const i = inner(); let best = null, bd = -1; for (let n = 0; n < 24; n++) { const x = i.l + Math.random() * i.w, y = i.t + Math.random() * i.h; const d = list.reduce((m, r) => Math.min(m, Math.hypot(r.x - x, (r.y - y) / 1.5)), 9); if (d > bd) { bd = d; best = [x, y]; } } return best; }
+  function palDrag(b, k) {
+    let gh = null;
+    drag(b, {
+      start(e) { gh = document.createElement('div'); gh.className = 'drag-ghost'; gh.style.width = stage.getBoundingClientRect().width * SZ() + 'px'; gh.appendChild(mkImg('dish_' + k)); document.body.appendChild(gh); gh.style.left = e.clientX + 'px'; gh.style.top = e.clientY + 'px'; },
+      move(e) { gh.style.left = e.clientX + 'px'; gh.style.top = e.clientY + 'px'; },
+      end(e, cancel) { const [x, y] = sp(e); if (!cancel && onTray(x, y, .04)) { gh.remove(); add(k, ...clampIn(x, y)); } else { const r = b.getBoundingClientRect(); gh.classList.add('back'); gh.style.left = r.left + r.width / 2 + 'px'; gh.style.top = r.top + r.height / 2 + 'px'; setTimeout(() => gh.remove(), 460); } gh = null; },
+      tap() { add(k, ...freeSpot(), b.getBoundingClientRect()); },
+    });
+  }
+  function itemDrag(rec) {
+    drag(rec.el, {
+      start() { rec.el.classList.add('lift'); },
+      move(e) { const [x, y] = sp(e); rec.x = x; rec.y = y; place(rec); rec.el.style.zIndex = 999; },
+      end(e) { rec.el.classList.remove('lift'); const [x, y] = sp(e); if (!onTray(x, y, .02)) { remove(rec); toast(`${DISHES[rec.k]}をトレーから外しました`); return; } rec.z = z++; [rec.x, rec.y] = clampIn(x, y); place(rec); land(rec); current = null; update(); },
+    });
+  }
+  function setPeople(n) {
+    people = n; ppl.value = n; pv.textContent = n + '人'; ppl.style.setProperty('--p', (n - 2) / 3 * 100 + '%'); stage.style.setProperty('--tw', TW[n]);
+    $('#traySize').textContent = ['', '', 'Sサイズ', 'Mサイズ', 'Lサイズ', 'XLサイズ'][n] + 'のトレー';
+    list.forEach(r => { [r.x, r.y] = clampIn(r.x, r.y); place(r); }); update();
+  }
+  ppl.addEventListener('input', () => setPeople(+ppl.value));
+  function layout(n) { const i = inner(); const cols = n <= 4 ? 2 : n <= 6 ? 3 : 4; const rows = Math.ceil(n / cols); const out = []; for (let k = 0; k < n; k++) { const r = Math.floor(k / cols), c = k % cols; const inRow = Math.min(cols, n - r * cols); out.push([i.l + i.w * ((c + .5 + (cols - inRow) / 2) / cols) + rand(-.012, .012), i.t + i.h * ((r + .5) / rows) + rand(-.02, .02)]); } return out; }
+  async function plan(key) {
+    if (current === '_busy') return;
+    const p = PLANS[key]; list.slice().forEach(r => { list = list.filter(x => x !== r); r.el.classList.add('poof'); setTimeout(() => r.el.remove(), 360); });
+    setPeople({ light: 3, standard: 4, premium: 5 }[key]); current = '_busy'; await wait(RM ? 0 : 380);
+    const pos = layout(p.dishes.length);
+    for (let i = 0; i < p.dishes.length; i++) { add(p.dishes[i], ...pos[i], btns[p.dishes[i]].getBoundingClientRect()); current = '_busy'; await wait(RM ? 0 : 120); }
+    current = key; update(); FX.burstAt(stage, 40, 1.6);
+  }
+  $$('#atPlans [data-plan]').forEach(b => b.addEventListener('click', () => plan(b.dataset.plan)));
+  $('#atClear').addEventListener('click', () => { list.slice().forEach(remove); });
+  const same = (a, b) => a.length === b.length && [...a].sort().join() === [...b].sort().join();
+  function update() {
+    stage.classList.toggle('has', list.length > 0);
+    const keys = list.map(r => r.k); const match = Object.keys(PLANS).filter(k => k !== 'limited').find(k => same(keys, PLANS[k].dishes));
+    $$('#atPlans [data-plan]').forEach(b => b.setAttribute('aria-pressed', b.dataset.plan === match));
+    Object.entries(btns).forEach(([k, b]) => b.classList.toggle('in-plan', keys.includes(k)));
+    const rec = { 2: 'light', 3: 'light', 4: 'standard', 5: 'premium' }[people]; const rp = PLANS[rec];
+    if (match) { const p = PLANS[match]; sum.innerHTML = `<p class="big" style="margin:0">おまかせ盛り「${p.name}」</p><p style="margin:0">${p.serve}　<span class="price">${yen(p.price)}</span>（税込）</p><p class="note">${p.desc}</p>`; }
+    else if (list.length) sum.innerHTML = `<p class="big" style="margin:0">カスタム盛り（${list.length}品）</p><p style="margin:0">${people}人なら「${rp.name}」（${rp.serve}・${yen(rp.price)}）がおすすめです。</p><p class="note">※販売はセット単位です。内容のご相談はお電話・DMでどうぞ。料理をトレーの外へドラッグすると外せます。</p>`;
+    else sum.innerHTML = `<p class="big" style="margin:0">トレーはからっぽです</p><p style="margin:0">料理をドラッグするか、タップで追加。${people}人なら「${rp.name}」がおすすめ。</p>`;
+  }
+  addEventListener('resize', () => list.forEach(r => r.el.style.width = SZ() * 100 + '%'));
+  setPeople(3);
+})();
+
+/* =========================================================
+   Table simulator
+   ========================================================= */
+(() => {
+  const tbl = $('#tableEl'), box = $('#tbItems'), top = $('.tb-top', tbl), vd = $('#tbVerdict');
+  const st = { adults: 2, kids: 2, set: 'standard', cake: 'short', size: 5 };
+  let W = 200, H = 110, portrait = false;
+  const seg = (id, key, conv = v => v) => { const el = $(id); $$('button', el).forEach(b => b.addEventListener('click', () => { st[key] = conv(b.dataset.v); if (key === 'cake' && st.cake !== 'short' && st.cake !== 'none') st.size = 5; render(true); })); };
+  seg('#tbSet', 'set'); seg('#tbCake', 'cake'); seg('#tbSize', 'size', Number);
+  $$('.stepper').forEach(s => $$('button', s).forEach(b => b.addEventListener('click', () => { const k = s.dataset.k; const v = st[k] + +b.dataset.d; const tot = (k === 'adults' ? v + st.kids : st.adults + v); if (v < (k === 'adults' ? 1 : 0) || tot > 8) { toast('テーブルは8人までです'); return; } st[k] = v; render(true); })));
+  function unit() { const u = tbl.clientWidth / W; tbl.style.setProperty('--u', u + 'px'); if (portrait) { top.style.width = tbl.clientHeight + 'px'; top.style.height = tbl.clientWidth + 'px'; } else { top.style.width = ''; top.style.height = ''; } }
+  new ResizeObserver(() => { const p = tbl.parentElement.clientWidth < 560; if (p !== portrait) { portrait = p; render(false); } unit(); }).observe(tbl.parentElement);
+  const cm = v => `calc(var(--u) * ${v})`;
+  function el(cls, name, x, y, w, h, rot = 0, d = 0, animate = true) { const e = document.createElement('div'); e.className = 'tb-el ' + cls + (animate ? ' pop' : ''); Object.assign(e.style, { left: cm(x), top: cm(y), width: cm(w), height: cm(h ?? w), transform: `translate(-50%,-50%) rotate(${rot}deg)` }); e.style.setProperty('--d', d + 's'); if (name) e.appendChild(mkImg(name)); box.appendChild(e); return e; }
+  function render(animate) {
+    W = portrait ? 110 : 200; H = portrait ? 200 : 110; tbl.classList.toggle('portrait', portrait); tbl.style.aspectRatio = `${W}/${H}`; unit();
+    $$('.stepper').forEach(s => $('b', s).textContent = st[s.dataset.k]);
+    [['#tbSet', 'set'], ['#tbCake', 'cake'], ['#tbSize', 'size']].forEach(([id, k]) => $$(id + ' button').forEach(b => b.setAttribute('aria-pressed', String(st[k]) === b.dataset.v)));
+    $$('#tbSize button').forEach(b => b.disabled = st.cake === 'none' || (st.cake !== 'short' && b.dataset.v !== '5'));
+    box.innerHTML = '';
+    const n = st.adults + st.kids, front = Math.ceil(n / 2), back = n - front, L = portrait ? H : W, S = portrait ? W : H; let idx = 0;
+    const seats = [];
+    [[front, S - 20, portrait ? -90 : 0], [back, 20, portrait ? 90 : 180]].forEach(([k, s, rot]) => { for (let i = 0; i < k; i++) { const a = L * (i + 1) / (k + 1); seats.push(portrait ? { x: s, y: a, rot } : { x: a, y: s, rot }); } });
+    seats.forEach((p, i) => {
+      const kid = i >= st.adults; const seat = document.createElement('div'); seat.className = 'seat'; Object.assign(seat.style, { left: cm(p.x), top: cm(p.y), transform: `rotate(${p.rot}deg)` }); box.appendChild(seat);
+      const put = (name, x, y, w, h, cls = '') => { const e = document.createElement('div'); e.className = 'tb-el ' + cls + (animate ? ' pop' : ''); Object.assign(e.style, { left: cm(x), top: cm(y), width: cm(w), height: cm(h ?? w) }); e.style.setProperty('--d', (i * .05 + .02 * idx++) + 's'); if (name) e.appendChild(mkImg(name)); seat.appendChild(e); return e; };
+      put('plate', 0, 0, kid ? 22 : 28); put('fork', -19, 0, 4.5, 19); put('knife', 19, 0, 4.5, 19);
+      put(kid ? 'glass_juice' : 'glass_wine', 16, -16, 14);
+      if (kid) { put('gift_closed', -16, -17, 12); const t = put(null, 0, 11.5, 16, 5); t.innerHTML = `<span class="kidtag" style="display:inline-block;transform:rotate(${-p.rot}deg)">こども</span>`; t.style.display = 'grid'; t.style.placeItems = 'center'; }
+    });
+    // center row
+    const centre = []; const set = PLANS[st.set];
+    if (set && set.chicken) centre.push({ kind: 'chicken', w: 36, h: 36 });
+    if (set) centre.push({ kind: 'tray', w: set.tray[0], h: set.tray[1], set });
+    if (set && set.cake) centre.push({ kind: 'cake', w: SIZES[set.cake.size].cm / .78, cake: set.cake.kind });
+    if (st.cake !== 'none') centre.push({ kind: 'cake', w: SIZES[st.size].cm / .78, cake: st.cake });
+    const gap = 6; const total = centre.reduce((s, c) => s + c.w, 0) + gap * (centre.length - 1); let pos = L / 2 - total / 2;
+    centre.forEach((c, i) => {
+      const a = pos + c.w / 2; pos += c.w + gap; const x = portrait ? S / 2 : a, y = portrait ? a : S / 2; const d = .25 + i * .12;
+      if (c.kind === 'chicken') el('', 'chicken_platter', x, y, c.w, c.w, portrait ? 90 : 0, d, animate);
+      else if (c.kind === 'cake') el('', 'top_' + c.cake, x, y, c.w, c.w, 0, d, animate);
+      else { const t = el('', 'tray_wood', x, y, c.w, c.h, portrait ? 90 : 0, d, animate); const ds = c.set.dishes; const cols = Math.ceil(ds.length / 2); ds.forEach((k, j) => { const r = Math.floor(j / cols), cc = j % cols; const inRow = r ? ds.length - cols : cols; const dx = (cc + .5 - inRow / 2) / cols * c.w * .78; const dy = (r - .5) * c.h * .38; const im = mkImg('dish_' + k); Object.assign(im.style, { position: 'absolute', left: `calc(50% + ${cm(dx)})`, top: `calc(50% + ${cm(dy)})`, width: cm(c.h * .44), height: cm(c.h * .44), transform: 'translate(-50%,-50%)', filter: 'drop-shadow(1px 2px 2px rgba(0,0,0,.4))' }); t.appendChild(im); }); }
+    });
+    if (L - total > 50) { const cx = portrait ? S / 2 : L / 2 - total / 2 - 12, cy = portrait ? L / 2 - total / 2 - 12 : S / 2; el('', 'candle', cx, cy, 11, 11, 0, .5, animate); const cx2 = portrait ? S / 2 : L / 2 + total / 2 + 12, cy2 = portrait ? L / 2 + total / 2 + 12 : S / 2; el('', 'candle', cx2, cy2, 11, 11, 0, .55, animate); }
+    verdict();
+  }
+  function judge(eq, min, max) { if (eq < min) return ['more', 'たっぷり']; if (eq <= max) return ['ok', 'ちょうどいい']; return ['less', '少し足りないかも']; }
+  function verdict() {
+    const eq = st.adults + st.kids * .5; const out = []; let total = 0;
+    const set = PLANS[st.set];
+    if (set) { total += set.price; const [c, t] = judge(eq, set.min, set.max); const next = { light: 'スタンダード', standard: 'プレミアム', premium: 'ライトを追加', limited: 'ライトを追加' }[st.set]; out.push(`<div class="vd"><h5>オードブル：${set.name}（${set.serve}）</h5><p><span class="tag ${c}">${t}</span>${c === 'less' ? `「${next}」がおすすめ` : c === 'more' ? 'おかわりも楽しめる量です' : 'みんなで分けてぴったり'}</p></div>`); }
+    else out.push(`<div class="vd"><h5>オードブル</h5><p>セットを選ぶと、量の目安を表示します</p></div>`);
+    if (st.cake !== 'none') { const s = SIZES[st.size]; const extra = set && set.cake ? 4 : 0; const k = CAKES[st.cake]; total += k.sizes[st.size] || 0; const [c, t] = judge(eq, s.min + (extra ? 2 : 0), s.max + (extra ? 3 : 0)); out.push(`<div class="vd"><h5>ケーキ：${k.name} ${st.size}号（直径${s.cm}cm・約${s.min}〜${s.max}人分）</h5><p><span class="tag ${c}">${t}</span>${c === 'less' && st.cake === 'short' && st.size < 6 ? `${st.size + 1}号もおすすめ` : c === 'more' ? '翌日のおやつにも' : 'ひとり1切れずつ楽しめます'}</p></div>`); }
+    out.push(`<div class="vd"><h5>合計の目安（おとな${st.adults}人・こども${st.kids}人）</h5><p class="sum">${total ? yen(total) : '—'}<small style="font-size:.8rem">（税込）</small></p><p class="note">こどもは0.5人分として計算しています。</p></div>`);
+    vd.innerHTML = out.join('');
+  }
+  render(false);
+})();
+
+/* =========================================================
+   Snow dome
+   ========================================================= */
+(() => {
+  const stage = $('#domeStage'), wob = $('#domeWob'), holder = $('#domeCake'), cv = $('#domeSnow'), x = cv.getContext('2d'), meter = $('#shakeMeter');
+  const keys = Object.keys(CAKES); let idx = 0, energy = 0, wobA = 0, wobV = 0, cool = 0, W = 0;
+  const imgs = keys.map(k => { const i = mkImg('cake_' + k); i.style.opacity = 0; holder.appendChild(i); return i; });
+  $('#dmDots').innerHTML = keys.map(() => '<i></i>').join('');
+  function show(i, dir = 1) {
+    const prev = imgs[idx]; idx = (i + keys.length) % keys.length; const nx = imgs[idx];
+    if (prev !== nx) { prev.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `rotate(${dir * 200}deg) scale(.3)` }], { duration: RM ? 1 : 500, easing: 'ease-in', fill: 'forwards' }); }
+    nx.animate([{ opacity: 0, transform: `rotate(${-dir * 200}deg) scale(.3)` }, { opacity: 1, transform: 'scale(1.08)', offset: .7 }, { opacity: 1, transform: 'none' }], { duration: RM ? 1 : 750, delay: prev !== nx && !RM ? 300 : 0, easing: 'cubic-bezier(.3,1.4,.5,1)', fill: 'forwards' });
+    const c = CAKES[keys[idx]]; $('#dmName').textContent = c.name; $('#dmDesc').textContent = c.desc;
+    $('#dmPrice').innerHTML = Object.entries(c.sizes).map(([s, p]) => `<li><span>${s}号（直径${SIZES[s].cm}cm・約${SIZES[s].min}〜${SIZES[s].max}人分）</span><b>${yen(p)}</b></li>`).join('') + '<li style="border:0;font-size:.78rem;opacity:.8">価格はすべて税込</li>';
+    $$('#dmDots i').forEach((d, j) => d.classList.toggle('on', j === idx));
+    if (prev !== nx) setTimeout(() => FX.burstAt(holder, 24, 1.2), 500);
+  }
+  $('#dmPrev').addEventListener('click', () => { kick(-12); show(idx - 1, -1); });
+  $('#dmNext').addEventListener('click', () => { kick(12); show(idx + 1, 1); });
+  // snow particles in normalized circle coords
+  const P = Array.from({ length: RM ? 40 : 150 }, () => { const a = rand(0, 6.28), d = Math.sqrt(rand(0, 1)) * .95; return { x: Math.cos(a) * d, y: Math.abs(Math.sin(a) * d) * .3 + .6, vx: 0, vy: 0, r: rand(.006, .016), s: Math.random() < .12 }; });
+  function kick(f) { P.forEach(p => { p.vx += rand(-.02, .02) + f * .0016 * rand(.5, 1.5); p.vy -= rand(.01, .05) * Math.min(1, Math.abs(f) / 8 + .3); }); wobV += f * .5; }
+  function size() { W = cv.clientWidth; const d = Math.min(2, devicePixelRatio || 1); cv.width = W * d; cv.height = W * d; x.setTransform(d, 0, 0, d, 0, 0); }
+  new ResizeObserver(size).observe(cv);
+  let vis = false; new IntersectionObserver(([e]) => vis = e.isIntersecting).observe(stage);
+  (function loop(t) {
+    if (vis && W) {
+      x.clearRect(0, 0, W, W); const R = W / 2;
+      for (const p of P) { p.vy += .0009; p.vx *= .985; p.vy *= .985; p.x += p.vx; p.y += p.vy; const d = Math.hypot(p.x, p.y); if (d > .96) { const nx = p.x / d, ny = p.y / d; p.x = nx * .96; p.y = ny * .96; const dot = p.vx * nx + p.vy * ny; p.vx -= 1.6 * dot * nx; p.vy -= 1.6 * dot * ny; p.vx *= .5; p.vy *= .5; }
+        const px = R + p.x * R, py = R + p.y * R, rr = p.r * W; if (p.s) { x.fillStyle = `rgba(255,226,150,${.6 + .4 * Math.sin(t * .006 + p.x * 40)})`; x.beginPath(); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, q = i % 2 ? rr * .4 : rr * 1.6; x.lineTo(px + Math.cos(a) * q, py + Math.sin(a) * q); } x.fill(); } else { x.fillStyle = 'rgba(255,255,255,.9)'; x.beginPath(); x.arc(px, py, rr, 0, 6.283); x.fill(); } }
+      wobV += -wobA * .08; wobV *= .86; wobA += wobV; wob.style.setProperty('--wob', clamp(wobA, -14, 14).toFixed(2) + 'deg');
+      energy = Math.max(0, energy - .6); meter.style.width = clamp(energy / 120 * 100, 0, 100) + '%'; cool = Math.max(0, cool - 1);
+    }
+    requestAnimationFrame(loop);
+  })(0);
+  let lx = 0, lt = 0;
+  drag(stage, {
+    immediate: true,
+    start(e) { lx = e.clientX; lt = performance.now(); },
+    move(e) { const n = performance.now(); const vx = (e.clientX - lx) / Math.max(8, n - lt) * 16; lx = e.clientX; lt = n; kick(clamp(vx, -30, 30) * .5); energy += Math.abs(vx) * .9; if (energy > 120 && !cool) { energy = 30; cool = 50; show(idx + (vx > 0 ? 1 : -1), vx > 0 ? 1 : -1); } },
+  });
+  // device shake
+  const sb = $('#shakeBtn');
+  if ('DeviceMotionEvent' in window && matchMedia('(pointer:coarse)').matches) {
+    sb.hidden = false; let lastA = null;
+    const on = () => { addEventListener('devicemotion', e => { const a = e.accelerationIncludingGravity; if (!a || a.x == null) return; if (lastA) { const d = Math.abs(a.x - lastA.x) + Math.abs(a.y - lastA.y) + Math.abs(a.z - lastA.z); if (d > 14) { kick(clamp((a.x - lastA.x) * 1.5, -30, 30)); energy += d * 1.6; if (energy > 120 && !cool) { energy = 30; cool = 50; show(idx + 1, 1); } } } lastA = { x: a.x, y: a.y, z: a.z }; }); sb.textContent = 'スマホを振ってね！'; sb.disabled = true; };
+    sb.addEventListener('click', async () => { try { if (typeof DeviceMotionEvent.requestPermission === 'function') { const r = await DeviceMotionEvent.requestPermission(); if (r !== 'granted') { toast('モーションの許可がありません。ドラッグでも遊べます'); return; } } on(); } catch { toast('この端末では使えません。ドラッグで遊んでね'); } });
+  }
+  show(0);
+})();
+
+/* =========================================================
+   Advent calendar
+   ========================================================= */
+(() => {
+  const grid = $('#advGrid'), modal = $('#advModal'), mi = $('#advModalIn');
+  const DL = md(CFG.deadline);
+  const C = {
+    1: { t: 'クリスマス特設サイト、オープン！', b: 'Dining & Bar East のクリスマスへようこそ。今日から毎日ひとつ、窓をあけてね。', i: 'gift_open' },
+    2: { t: 'オードブル「ライト」', b: `約2〜3人前 ${yen(3800)}（税込）。ローストチキンカット／スモークサーモン／ラタトゥイユ／ポテトグラタン／彩りサラダ。`, i: 'dish_chicken_cut', go: '#atelier' },
+    3: { t: 'こどもクイズ', b: 'サンタクロースのそりを引いている動物は、なーんだ？', q: 'こたえ：トナカイ！', i: 'sweet_gingerbread' },
+    4: { t: 'オードブル「スタンダード」', b: `約3〜4人前 ${yen(5800)}（税込）。ローストチキン＆ポーク、海老のグリル、キッシュなど7品。`, i: 'dish_shrimp', go: '#atelier' },
+    5: { t: '苺ショートケーキ', b: `ふんわりスポンジに、生クリームと苺をたっぷり。4号 ${yen(2600)}／5号 ${yen(3200)}／6号 ${yen(3800)}（税込）。`, i: 'cake_short', go: '#dome' },
+    6: { t: 'クリスマスのまめちしき', b: 'ツリーのてっぺんに飾る星は「ベツレヘムの星」をあらわしているといわれています。', i: 'ornament_4' },
+    7: { t: 'オードブル「プレミアム」', b: `約4〜5人前 ${yen(8800)}（税込）。骨付きローストチキン、ローストビーフ、ホタテのマリネなど。`, i: 'dish_beef', go: '#atelier' },
+    8: { t: 'フルーツケーキ', b: `色とりどりのフルーツをたっぷりのせた人気のケーキ。5号 ${yen(4000)}（税込）。`, i: 'cake_fruit', go: '#dome' },
+    9: { t: 'こどもクイズ', b: 'クリスマスの夜、くつしたを飾るのはどうしてかな？', q: 'こたえ：サンタさんがプレゼントを入れてくれる、という言い伝えから！', i: 'sweet_candycane' },
+    10: { t: 'チーズケーキ', b: `なめらかな口どけと濃厚なコク。5号 ${yen(3000)}（税込）。`, i: 'cake_cheese', go: '#dome' },
+    11: { t: 'オーブンで焼いてみよう', b: 'このサイトのオーブンで、チキンをこんがり焼きあげてみてね。', i: 'chicken_done', go: '#oven' },
+    12: { t: 'チョコレートケーキ', b: `しっとり濃厚、甘さ控えめで大人にも人気。5号 ${yen(3200)}（税込）。`, i: 'cake_choco', go: '#dome' },
+    13: { t: '限定オードブルセット', b: `チキン1羽＋オードブル＋ケーキ4号のセット。3〜4人前 ${yen(14800)}（税込）。`, i: 'chicken_platter', go: '#menu' },
+    14: { t: '量の目安をチェック', b: '食卓シミュレーターで、人数ぶんのお皿を並べてみよう。', i: 'plate', go: '#table' },
+    15: { t: 'ご予約締切まで、あと5日', b: `ご予約は ${DL} まで。お電話（${CFG.tel}）またはDM（${CFG.dm}）でどうぞ。`, i: 'gift_green' },
+    16: { t: 'スノードームで遊ぼう', b: 'ドームをゆらして、雪を舞わせてみてね。', i: 'dome', go: '#dome' },
+    17: { t: 'こどもクイズ', b: 'クリスマスカラーの「赤」と「緑」。もうひとつ、よく使われる色は？', q: 'こたえ：金色（ゴールド）！ 白もよく使われるよ。', i: 'ornament_1' },
+    18: { t: 'ケーキをデコレーション', b: 'ケーキ工房で、ホイップといちごを飾ってみてね。', i: 'strawberry_1', go: '#cake' },
+    19: { t: 'ご予約締切は明日！', b: `${DL} がご予約締切です。お早めにどうぞ。`, i: 'gift_closed' },
+    20: { t: '本日、ご予約締切です', b: `本日 ${DL} がご予約締切です。受付時間 ${CFG.reception}。`, i: 'gift_open', tel: true },
+    21: { t: '受け取り時間をえらぼう', b: '受け取りボードで、空いている時間をチェック。', i: 'chicken_done', go: '#board' },
+    22: { t: 'おうちに帰るまで', b: 'ケーキは箱を水平にして、なるべく揺らさずにお持ち帰りください。', i: 'cake_short' },
+    23: { t: '受け取りスタート！', b: `今日から ${md(CFG.pickupDays[2])} まで、${CFG.hours} にお受け取りいただけます。`, i: 'chicken_platter' },
+    24: { t: 'メリークリスマス・イブ', b: 'すてきな夜になりますように。', i: 'ornament_2' },
+    25: { t: 'Merry Christmas!', b: 'Dining & Bar East のクリスマスにおつきあいいただき、ありがとうございました。', i: 'gift_open' },
+  };
+  const order = [7, 18, 3, 24, 12, 1, 15, 21, 9, 5, 20, 11, 25, 2, 16, 8, 22, 13, 4, 19, 10, 23, 6, 17, 14];
+  const now = new Date(); const y = CFG.year; const mode = now < new Date(y, 11, 1) ? 'preview' : (now.getFullYear() === y && now.getMonth() === 11 ? 'live' : 'after');
+  const today = mode === 'live' ? now.getDate() : 0;
+  const can = d => mode !== 'live' || d <= today;
+  $('#advBanner').textContent = mode === 'preview' ? '12月1日スタート！ いまは「おためし」で、すべての窓をあけられます' : mode === 'live' ? `今日は12月${today}日。${today}番の窓まであけられます` : 'すべての窓をあけられます';
+  const opened = new Set(store.get('eastAdvent', []));
+  order.forEach(d => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'door' + (can(d) ? '' : ' locked') + (d === today ? ' today' : '') + (opened.has(d) ? ' open' : ''); b.setAttribute('aria-label', `${d}日の窓`);
+    b.innerHTML = `<div class="door-in"></div><div class="door-face"><b>${d}</b></div>`; $('.door-in', b).appendChild(mkImg(C[d].i));
+    b.addEventListener('click', async () => {
+      if (!can(d)) { b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); toast(`${d}日になったら、あけられます`); return; }
+      const first = !b.classList.contains('open'); b.classList.add('open'); opened.add(d); store.set('eastAdvent', [...opened]);
+      if (first) { FX.burstAt(b, 22, 1.1); await wait(RM ? 0 : 700); }
+      openModal(d);
+    });
+    grid.appendChild(b);
+  });
+  function openModal(d) {
+    const c = C[d];
+    mi.innerHTML = `<button class="x" type="button" aria-label="とじる">×</button><p class="day gold-text">December ${d}</p><h3>${c.t}</h3><div class="mimg"></div><p>${c.b}</p>${c.q ? `<button class="btn small" type="button" data-q>こたえを見る</button><p class="quiz-a">${c.q}</p>` : ''}<div class="row" style="justify-content:center;margin-top:10px">${c.go ? `<a class="btn small" href="${c.go}" data-close>見てみる</a>` : ''}${c.tel ? `<a class="btn small" href="tel:${CFG.tel.replace(/-/g, '')}">電話する</a>` : ''}</div>`;
+    $('.mimg', mi).appendChild(mkImg(c.i));
+    $('.x', mi).addEventListener('click', () => modal.close());
+    $$('[data-close]', mi).forEach(a => a.addEventListener('click', () => modal.close()));
+    const q = $('[data-q]', mi); if (q) q.addEventListener('click', () => { $('.quiz-a', mi).classList.add('on'); q.remove(); FX.burstAt(mi, 30, 1.2); });
+    if (modal.showModal) modal.showModal(); else modal.setAttribute('open', '');
+  }
+  modal.addEventListener('click', e => { if (e.target === modal) modal.close(); });
+})();
+
+/* =========================================================
+   Pick-up board
+   ========================================================= */
+(() => {
+  const grid = $('#bdGrid'), panel = $('#bdPanel'), chick = $('#bdChick');
+  const LV = [[0, 0, 1, 1, 1, 2, 2, 1], [1, 1, 2, 2, 3, 3, 3, 2], [1, 0, 1, 1, 2, 2, 2, 1]];
+  const LBL = ['空いています', 'ふつう', 'やや混雑', '混雑予想'];
+  const hrs = [11, 12, 13, 14, 15, 16, 17, 18];
+  grid.innerHTML = '<div></div>' + CFG.pickupDays.map(d => `<div class="bd-h">${md(d)}<small>${{ 23: 'イブイブ', 24: 'イブ', 25: 'クリスマス' }[dObj(d).getDate()] || ''}</small></div>`).join('');
+  hrs.forEach((h, hi) => { grid.insertAdjacentHTML('beforeend', `<div class="bd-t">${h}:00</div>`); CFG.pickupDays.forEach((d, di) => { const l = LV[di][hi]; grid.insertAdjacentHTML('beforeend', `<button type="button" class="cell" data-l="${l}" data-d="${di}" data-h="${h}" aria-label="${md(d)} ${h}:00〜${h + 1}:00 ${LBL[l]}"><span class="mini-oven"></span><span class="lbl-s">${LBL[l]}</span></button>`); }); });
+  const cells = $$('.cell', grid);
+  function select(c) {
+    cells.forEach(x => { x.classList.remove('sel'); const p = $('.pin', x); if (p) p.remove(); });
+    c.classList.add('sel'); c.appendChild(mkImg('chicken_done', 'pin')); FX.burstAt(c, 14, .8);
+    const d = CFG.pickupDays[+c.dataset.d], h = +c.dataset.h, l = +c.dataset.l; const when = `${md(d)} ${h}:00〜${h + 1}:00`;
+    const tip = l === 3 ? 'この時間は混雑が予想されます。前後の時間がおすすめです。' : l === 2 ? 'やや混み合う予想です。少しお待ちいただくことがあります。' : 'ゆったりお受け取りいただけそうです。';
+    panel.innerHTML = `<h4>${when}</h4><p><b>${LBL[l]}</b>　${tip}</p><p class="note" style="margin-bottom:12px">この時間でのご予約は、お電話またはDMで承ります（受付 ${CFG.reception}）。</p><div class="row"><a class="btn small" href="tel:${CFG.tel.replace(/-/g, '')}">電話で予約</a><button class="btn small ghost" type="button" id="copyDm">DMの文面をコピー</button></div>`;
+    $('#copyDm').addEventListener('click', async () => {
+      const text = `【クリスマス予約】\n受け取り日時：${when}\nご希望の商品：\nお名前：\nお電話番号：`;
+      try { await navigator.clipboard.writeText(text); toast(`コピーしました。DM（${CFG.dm}）に貼り付けて送ってください`); }
+      catch { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('コピーしました'); } catch { toast('コピーできませんでした'); } ta.remove(); }
+    });
+  }
+  cells.forEach(c => c.addEventListener('click', () => select(c)));
+  let gh = null, hover = null;
+  const cellAt = e => { const el = document.elementFromPoint(e.clientX, e.clientY); return el && el.closest('.cell'); };
+  drag(chick, {
+    start(e) { gh = document.createElement('div'); gh.className = 'drag-ghost'; gh.style.width = '84px'; gh.appendChild(mkImg('chicken_done')); document.body.appendChild(gh); chick.style.opacity = .3; gh.style.left = e.clientX + 'px'; gh.style.top = e.clientY + 'px'; },
+    move(e) { gh.style.left = e.clientX + 'px'; gh.style.top = e.clientY + 'px'; const c = cellAt(e); if (c !== hover) { hover && hover.classList.remove('hover'); hover = c; hover && hover.classList.add('hover'); } },
+    end(e, cancel) {
+      hover && hover.classList.remove('hover'); const c = !cancel && cellAt(e); chick.style.opacity = '';
+      if (c && c.dataset.l === '3') { c.classList.remove('hover'); toast('その時間は混雑予想です。前後の時間もおすすめ！'); }
+      if (c) { gh.remove(); select(c); } else { const r = chick.getBoundingClientRect(); gh.classList.add('back'); gh.style.left = r.left + r.width / 2 + 'px'; gh.style.top = r.top + r.height / 2 + 'px'; setTimeout(() => gh.remove(), 460); }
+      gh = null; hover = null;
+    },
+    tap() { toast('チキンを時間のマスへドラッグしてね（マスをタップしてもOK）'); },
+  });
+})();
+
+/* =========================================================
+   Menu cards
+   ========================================================= */
+(() => {
+  $('#setCards').innerHTML = ['light', 'standard', 'premium'].map(k => { const p = PLANS[k]; return `<article class="set-card"><span class="size">${p.serve}</span><h3>${p.name}</h3><p>${p.desc}</p><p class="pr">${yen(p.price)}<small>（税込）</small></p></article>`; }).join('');
+  const cc = $('#cakeCards');
+  Object.entries(CAKES).forEach(([k, c]) => { const a = document.createElement('article'); a.className = 'cake-card'; a.appendChild(mkImg('cake_' + k)); a.insertAdjacentHTML('beforeend', `<h4>${c.name}</h4><p>${Object.entries(c.sizes).map(([s, p]) => `${s}号 ${yen(p)}`).join('<br>')}<br><small>（税込）</small></p>`); cc.appendChild(a); });
+})();
+
+/* =========================================================
+   Boot
+   ========================================================= */
+fillText();
+headerMenu();
+$$('img[data-a]').forEach(hydrate);
+Opening.start();
+</script>
+</body>
+</html>
