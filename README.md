@@ -3,6 +3,7 @@
 | サイト | 内容 |
 | --- | --- |
 | [まるます町 MARUMASU TOWN](marumasu-town/index.html) | 文房具・キャラクターグッズの架空ブランドのティザーサイト。3Dミニチュアタウン、住人9体の図鑑、きせかえ、写真・らくがきモード、昼夜、BGM、グッズ予約カート、ミニゲーム2種（Three.js + GSAP、1ファイル） |
+| [居酒屋 緑青海](izakaya-rokushoukai/index.html) | 店頭ポスターをもとにした、〆のとんこつラーメンの集客LP（架空の店舗）。ヒアリングシート・構成案・原稿・写真プロンプトも同じフォルダに収録 |
 | [HYRULE MARKET 時のオカリナ 三つの店](hyrule-market/index.html) | 「ゼルダの伝説 時のオカリナ」を記念した非公式ファンサイト。3Dの時の神殿でマスターソードを抜く → 時空の渦 → 十字路から3店舗へ。店員の表情差分つき会話、実在の飲み物・お菓子とゼルダグッズの商品、ふくろ（カート）と宝箱の注文デモ、射的ゲーム、サイト全体を案内するゼルダのナビ（Three.js・複数ページ） |
 
 まるます町はHTML・CSS・JavaScriptをまとめた1つの `index.html`、HYRULE MARKET は複数ページ構成です。ブラウザで直接開くか、`npx serve .` などで配信してください（three.js / GSAP / Google Fonts をCDNから読み込みます）。
@@ -12,6 +13,7 @@
 
 - 一覧: https://kenkenta51-max.github.io/claude-code-original-WEBsite/
 - まるます町: https://kenkenta51-max.github.io/claude-code-original-WEBsite/marumasu-town/
+- 居酒屋 緑青海: https://kenkenta51-max.github.io/claude-code-original-WEBsite/izakaya-rokushoukai/
 - HYRULE MARKET: https://kenkenta51-max.github.io/claude-code-original-WEBsite/hyrule-market/
 
 ## HYRULE MARKET について
