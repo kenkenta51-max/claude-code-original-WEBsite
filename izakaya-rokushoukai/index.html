@@ -27,15 +27,19 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--navy);color:#fff;font-family:var(--sans);font-size:16px;line-height:1.85;letter-spacing:.02em;overflow-x:hidden;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%23ffffff' fill-opacity='.07'%3E%3Ccircle cx='0' cy='0' r='3'/%3E%3Ccircle cx='15' cy='15' r='3'/%3E%3Ccircle cx='30' cy='30' r='3'/%3E%3Ccircle cx='45' cy='45' r='3'/%3E%3Ccircle cx='60' cy='60' r='3'/%3E%3Ccircle cx='75' cy='45' r='3'/%3E%3Ccircle cx='90' cy='30' r='3'/%3E%3Ccircle cx='105' cy='15' r='3'/%3E%3Ccircle cx='120' cy='0' r='3'/%3E%3Ccircle cx='75' cy='75' r='3'/%3E%3Ccircle cx='90' cy='90' r='3'/%3E%3Ccircle cx='105' cy='105' r='3'/%3E%3Ccircle cx='120' cy='120' r='3'/%3E%3Ccircle cx='45' cy='75' r='3'/%3E%3Ccircle cx='30' cy='90' r='3'/%3E%3Ccircle cx='15' cy='105' r='3'/%3E%3Ccircle cx='0' cy='120' r='3'/%3E%3C/g%3E%3C/svg%3E");}
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' fill='%2316203D'/%3E%3Cg transform='translate(20 0)'%3E%3Ccircle r='20' fill='%2316203D'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.10'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(0 20)'%3E%3Ccircle r='20' fill='%2316203D'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.10'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(40 20)'%3E%3Ccircle r='20' fill='%2316203D'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.10'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(20 40)'%3E%3Ccircle r='20' fill='%2316203D'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.10'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");background-size:44px 44px;}
 body.locked{overflow:hidden}
 img{max-width:100%;height:auto;display:block}
 a{color:inherit}
 button{font:inherit;color:inherit}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
 .sec{padding:76px 0;position:relative}
-.sec--washi{background:var(--kinari);color:var(--ink);background-image:radial-gradient(rgba(176,40,43,.05) 1px,transparent 1.5px);background-size:14px 14px}
-.sec--deep{background:var(--navy2)}
+.sec--washi{background-color:var(--kinari);color:var(--ink);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006 .09' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .40 0 0 0 0 .25 0 0 0 -2.2 1.05'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23f)' opacity='.2'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .32 0 0 0 0 .2 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23B0282B' stroke-opacity='.08' stroke-width='.6'%3E%3Cpath d='M50 50L50 5M50 50L89 27.5M50 50L89 72.5M50 50L50 95M50 50L11 72.5M50 50L11 27.5M50 5L89 27.5L89 72.5L50 95L11 72.5L11 27.5Z'/%3E%3C/g%3E%3C/svg%3E");background-size:400px 400px,220px 220px,280px 280px;z-index:1}
+.sec--washi::before,.sec--washi::after{content:"";position:absolute;left:0;right:0;height:24px;background-size:48px 24px;background-repeat:repeat-x;pointer-events:none;z-index:2}
+.sec--washi::before{top:-23px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24'%3E%3Cpath d='M0 24A24 24 0 0 1 48 24Z' fill='%23FBF3E6'/%3E%3Cg fill='none' stroke='%23B0282B' stroke-opacity='.22'%3E%3Cpath d='M6 24a18 18 0 0 1 36 0'/%3E%3Cpath d='M12 24a12 12 0 0 1 24 0'/%3E%3Cpath d='M18 24a6 6 0 0 1 12 0'/%3E%3C/g%3E%3C/svg%3E")}
+.sec--washi::after{bottom:-23px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24'%3E%3Cpath d='M0 0A24 24 0 0 0 48 0Z' fill='%23FBF3E6'/%3E%3Cg fill='none' stroke='%23B0282B' stroke-opacity='.22'%3E%3Cpath d='M6 0a18 18 0 0 0 36 0'/%3E%3Cpath d='M12 0a12 12 0 0 0 24 0'/%3E%3Cpath d='M18 0a6 6 0 0 0 12 0'/%3E%3C/g%3E%3C/svg%3E")}
+.sec--washi.join-next::after,.sec--washi.join-prev::before{display:none}
+.sec--deep{background-color:#1A2549;background-image:radial-gradient(ellipse at 50% 0,rgba(217,178,106,.12),transparent 60%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.09'%3E%3Ccircle cx='0' cy='0' r='24'/%3E%3Ccircle cx='48' cy='0' r='24'/%3E%3Ccircle cx='0' cy='48' r='24'/%3E%3Ccircle cx='48' cy='48' r='24'/%3E%3Ccircle cx='24' cy='24' r='24'/%3E%3C/g%3E%3Ccircle cx='24' cy='24' r='2' fill='%23D9B26A' fill-opacity='.10'/%3E%3Ccircle cx='0' cy='0' r='2' fill='%23D9B26A' fill-opacity='.10'/%3E%3Ccircle cx='48' cy='48' r='2' fill='%23D9B26A' fill-opacity='.10'/%3E%3Ccircle cx='0' cy='48' r='2' fill='%23D9B26A' fill-opacity='.10'/%3E%3Ccircle cx='48' cy='0' r='2' fill='%23D9B26A' fill-opacity='.10'/%3E%3C/svg%3E");background-size:auto,48px 48px}
 .eyebrow{display:flex;align-items:center;gap:10px;font-size:.72rem;letter-spacing:.3em;color:var(--gold);font-weight:700;margin-bottom:8px}
 .eyebrow .kan{font:800 .95rem/1 var(--mincho);letter-spacing:.1em;padding:4px 8px;background:var(--shu);color:#fff;border-radius:2px}
 .sec--washi .eyebrow{color:var(--shu)}
@@ -46,6 +50,13 @@ h3{font-size:1.12rem;font-weight:900;margin:0 0 6px;line-height:1.5}
 p{margin:0 0 1em}
 .center{text-align:center}
 .note{font-size:.78rem;opacity:.8}
+
+.wm{position:absolute;top:34px;right:0;contain:paint;overflow:hidden;z-index:0;writing-mode:vertical-rl;font:400 clamp(9rem,6rem + 12vw,15rem)/1 var(--brush);color:#fff;opacity:.05;pointer-events:none;user-select:none}
+.sec--washi .wm{color:var(--shu);opacity:.07}
+.sec>.wrap{position:relative;z-index:1}
+.petals{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.petals i{position:absolute;top:-30px;width:12px;height:12px;background:radial-gradient(circle at 30% 30%,#FFE3E8,#F3B3C0);border-radius:100% 0 100% 0;opacity:.75;animation:fall linear infinite}
+@keyframes fall{0%{transform:translate(0,-20px) rotate(0)}50%{transform:translate(40px,50vh) rotate(200deg)}100%{transform:translate(-20px,105vh) rotate(420deg);opacity:0}}
 
 /* ====== 木札（共通） ====== */
 .fuda{--w:58px;--h:190px;position:relative;width:var(--w);height:var(--h);background:var(--wood);color:var(--yakiin);
@@ -69,7 +80,7 @@ p{margin:0 0 1em}
 .rail::before{left:8px}.rail::after{right:8px}
 
 /* ====== オープニング：暖簾をくぐる ====== */
-.opening{position:fixed;inset:0;z-index:200;display:flex;background:var(--navy);cursor:pointer;transition:background-color .6s .55s}
+.opening{position:fixed;inset:0;z-index:200;display:flex;overflow:hidden;background:var(--navy);cursor:pointer;transition:background-color .6s .55s}
 .opening .p{flex:1;margin:0 2px;background:linear-gradient(180deg,#9E2225,var(--shu) 30%,#A52427);transform-origin:50% -10%;transition:transform 1s cubic-bezier(.6,.05,.3,1),opacity .6s .5s;box-shadow:inset 0 -30px 40px rgba(0,0,0,.25)}
 .opening .p::before{content:"";display:block;height:12%;background:rgba(0,0,0,.15)}
 .opening .label{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none;transition:opacity .4s}
@@ -87,24 +98,11 @@ p{margin:0 0 1em}
 .opening.go .p{opacity:0}
 .opening.gone{display:none}
 
-/* ====== ヘッダー暖簾 ====== */
-.noren{position:relative;padding-top:max(14px,env(safe-area-inset-top));max-width:640px;margin:0 auto}
-.noren .rod{height:12px;margin:0 12px;border-radius:6px;background:var(--wood-h);box-shadow:0 3px 6px rgba(0,0,0,.35)}
-.noren .cloths{display:flex;gap:4px;margin:-6px 24px 0}
-.noren .cloth{flex:1;height:118px;background:linear-gradient(180deg,#A32326,var(--shu) 30%,#9E2225);position:relative;transform-origin:top center;animation:sway 5s ease-in-out infinite;box-shadow:inset 0 -8px 12px rgba(0,0,0,.18);clip-path:polygon(0 0,100% 0,100% 100%,0 96%)}
-.noren .cloth:nth-child(2){animation-delay:-.6s;clip-path:polygon(0 0,100% 0,100% 97%,0 100%)}
-.noren .cloth:nth-child(3){animation-delay:-1.3s}
-.noren .cloth:nth-child(4){animation-delay:-2s;clip-path:polygon(0 0,100% 0,100% 95%,0 100%)}
-.noren .cloth::before{content:"";position:absolute;top:0;left:50%;width:70%;height:16px;transform:translateX(-50%);background:rgba(0,0,0,.18);border-radius:0 0 4px 4px}
-@keyframes sway{0%,100%{transform:skewX(0) rotate(0)}50%{transform:skewX(-2.2deg) rotate(.6deg)}}
-.noren .name{position:absolute;left:0;right:0;top:44px;display:flex;justify-content:center;pointer-events:none;font:800 clamp(1.7rem,1.1rem + 3.6vw,2.4rem)/1 var(--mincho);letter-spacing:.14em;color:#FFF7EC;text-shadow:0 2px 0 rgba(0,0,0,.2)}
-.noren .name small{font-size:.5em;align-self:center;margin-right:.5em;letter-spacing:.2em}
-.noren .yomi{position:absolute;left:0;right:0;top:94px;text-align:center;font-size:.66rem;letter-spacing:.5em;color:#FFE8D6;opacity:.9;pointer-events:none}
-
 /* ====== 木札ナビ（PC） ====== */
 .fnav{display:none}
 @media (min-width:1000px){
-  .fnav{display:block;position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:40;width:220px}
+  .fnav{display:block;position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:40;width:220px;opacity:0;pointer-events:none;transition:opacity .5s}
+  body.past-fv .fnav{opacity:1;pointer-events:auto}
   .fnav .rail{height:12px}
   .fnav ul{display:flex;justify-content:space-around;list-style:none;margin:-8px 0 0;padding:0}
   .fnav a{text-decoration:none;display:block}
@@ -128,28 +126,127 @@ p{margin:0 0 1em}
 .cta-note a{text-decoration:none;font-weight:700;border-bottom:1px dotted}
 
 /* ====== 1. ファーストビュー ====== */
-.hero{padding:10px 0 56px;text-align:center;overflow:hidden}
-.hero .badge-top{display:inline-block;margin:18px 0 6px;padding:2px 14px;border:1px solid rgba(255,255,255,.4);border-radius:999px;font-size:.78rem;letter-spacing:.14em}
-.catch{font-family:var(--brush);font-weight:400;font-size:clamp(2.3rem,1.4rem + 5.6vw,3.4rem);line-height:1.3;margin:6px 0 0;color:#FFF7EC;letter-spacing:.04em;text-shadow:0 4px 18px rgba(0,0,0,.4)}
-.catch span{display:inline-block;opacity:0;transform:translateY(14px);animation:in .8s cubic-bezier(.2,.8,.2,1) forwards}
-@keyframes in{to{opacity:1;transform:none}}
-.hero-photo{position:relative;margin:22px -8px 0}
-.hero-photo img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 78%;border-radius:20px;box-shadow:0 24px 50px rgba(0,0,0,.45)}
-.steam{position:absolute;left:0;right:0;top:12%;height:170px;pointer-events:none;mix-blend-mode:screen}
-.steam path{fill:none;stroke:rgba(255,255,255,.5);stroke-width:7;stroke-linecap:round;filter:blur(5px);animation:steam 4.5s ease-in-out infinite;opacity:0}
-.steam path:nth-child(2){animation-delay:1.4s}.steam path:nth-child(3){animation-delay:2.8s}
-@keyframes steam{0%{opacity:0;transform:translateY(40px) scaleY(.8)}30%{opacity:.8}100%{opacity:0;transform:translateY(-40px) scaleY(1.2)}}
-.hero-tag{position:absolute;right:14px;top:-4px;z-index:3}
-.hero-tag .fuda{--w:64px;--h:220px;animation:sway-s 4s ease-in-out infinite}
-.hero-tag .fuda .tate{font-size:1.25rem}
-.hero-tag .fuda .price{font:400 1.1rem/1 var(--num);writing-mode:horizontal-tb;color:#FFE2A8;margin-top:auto;letter-spacing:0}
-.hero-tag .fuda .price i{display:block;font:700 .56rem/1.4 var(--sans);font-style:normal;text-align:center;opacity:.85}
-.hero-tag .fuda-wrap::before{height:44px;top:-14px}
-.hero .sub{margin:28px 0 6px;font-weight:900;font-size:1.08rem}
-.hero .sub .tag{display:inline-block;background:var(--shu);padding:1px 10px;border-radius:4px;margin-right:6px;font-size:.85rem}
-.hero .body{font-size:.96rem;opacity:.92}
+.fv{position:relative;height:100vh;height:100svh;min-height:640px;max-height:1100px;overflow:hidden;background:#0B1124;isolation:isolate}
+.fv-par{position:absolute;inset:-6% 0 0;will-change:transform}
+.fv-bg{position:absolute;inset:0;opacity:0;transform:scale(1.28)}
+.fv-bg img{position:absolute;left:0;bottom:13%;width:100%;height:auto;-webkit-mask-image:linear-gradient(transparent,#000 22%);mask-image:linear-gradient(transparent,#000 22%);animation:kb 22s ease-in-out infinite alternate;transform-origin:50% 70%}
+@keyframes kb{from{transform:scale(1.04) translate(0,0)}to{transform:scale(1.14) translate(-1.5%,-2%)}}
+.fv.play .fv-bg{animation:bgin 2.6s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes bgin{to{opacity:1;transform:none}}
+.fv-shade{position:absolute;inset:0;pointer-events:none;background:
+  linear-gradient(180deg,rgba(11,17,36,.92) 0,rgba(11,17,36,.55) 22%,rgba(11,17,36,0) 42%,rgba(11,17,36,0) 58%,rgba(11,17,36,.78) 80%,#0B1124 100%),
+  radial-gradient(ellipse at 50% 62%,transparent 30%,rgba(5,8,20,.55) 85%)}
+.fv-steam{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:screen;opacity:0;transition:opacity 2s 1s}
+.fv.play .fv-steam{opacity:1}
+.fv .petals{z-index:2}
+.fv-light{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 40%,rgba(255,220,170,.16) 50%,transparent 60%);transform:translateX(-120%);mix-blend-mode:screen}
+.fv.play .fv-light{animation:sweep 2.2s 2.4s ease-in-out both}
+@keyframes sweep{to{transform:translateX(120%)}}
+
+/* 暖簾 */
+.fv-noren{position:absolute;left:0;right:0;top:0;z-index:5;padding-top:env(safe-area-inset-top);transform:translateY(-110%)}
+.fv.play .fv-noren{animation:norenin 1.1s cubic-bezier(.3,1.35,.5,1) .1s forwards}
+@keyframes norenin{to{transform:none}}
+.fv-noren .rod{height:10px;margin:0 8px;border-radius:5px;background:var(--wood-h);box-shadow:0 3px 6px rgba(0,0,0,.5);position:relative;z-index:2}
+.fv-noren .cl{display:flex;gap:3px;margin:-5px 16px 0}
+.fv-noren .cl i{flex:1;height:64px;background:linear-gradient(180deg,#8E1C1F,var(--shu) 35%,#9A2124);transform-origin:top center;animation:sway 5s ease-in-out infinite;box-shadow:inset 0 -6px 10px rgba(0,0,0,.25),0 6px 14px rgba(0,0,0,.35);clip-path:polygon(0 0,100% 0,100% 100%,0 94%)}
+.fv-noren .cl i:nth-child(2){animation-delay:-.7s}.fv-noren .cl i:nth-child(3){animation-delay:-1.4s}.fv-noren .cl i:nth-child(4){animation-delay:-2.1s}
+@keyframes sway{0%,100%{transform:skewX(0) rotate(0)}50%{transform:skewX(-2.4deg) rotate(.7deg)}}
+.fv-brand{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top) + 16px);z-index:3;text-align:center;color:#FFF5E8;pointer-events:none;line-height:1}
+.fv-brand b{display:block;font:800 1.5rem/1 var(--mincho);letter-spacing:.42em;padding-left:.42em;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.fv-brand small{display:block;margin-top:6px;font:500 .52rem/1 var(--sans);letter-spacing:.55em;padding-left:.55em;opacity:.85}
+
+/* 提灯 */
+.lanterns{position:absolute;left:14px;top:calc(env(safe-area-inset-top) + 66px);z-index:4;display:flex;gap:12px}
+.chochin{position:relative;display:block;padding-top:16px;transform-origin:50% 0;opacity:0;transform:translateY(-60px)}
+.fv.play .chochin{animation:lanin .9s cubic-bezier(.3,1.4,.5,1) .5s forwards,sway-l 4.6s ease-in-out 1.4s infinite}
+.fv.play .chochin.c2{animation-delay:.7s,1.6s;animation-duration:.9s,5.4s}
+@keyframes lanin{to{opacity:1;transform:none}}
+@keyframes sway-l{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.chochin::before{content:"";position:absolute;left:50%;top:0;width:2px;height:16px;margin-left:-1px;background:#2A1B12}
+.chochin span{position:relative;display:grid;place-items:center;width:44px;height:58px;border-radius:46%/50%;
+  background:repeating-linear-gradient(180deg,rgba(80,10,5,.28) 0 1px,transparent 1px 6px),radial-gradient(ellipse at 50% 45%,#FFC98A 0,#F0602F 38%,#B5261C 72%,#6E140F 100%);
+  box-shadow:0 0 28px 6px rgba(255,110,50,.42),0 0 70px 18px rgba(255,120,40,.18);animation:flick 3.2s steps(1) infinite}
+.chochin span::before,.chochin span::after{content:"";position:absolute;left:50%;width:26px;height:6px;margin-left:-13px;background:#1C120C;border-radius:2px}
+.chochin span::before{top:-3px}.chochin span::after{bottom:-3px}
+.chochin b{font:800 1.15rem/1 var(--mincho);color:#2A0C08;opacity:.85}
+.chochin.c2 span{width:38px;height:50px}
+.chochin.c2 b{font-size:.98rem}
+@keyframes flick{0%,100%{filter:brightness(1)}12%{filter:brightness(1.12)}14%{filter:brightness(.9)}46%{filter:brightness(1.06)}70%{filter:brightness(.96)}}
+
+/* 縦書きキャッチ */
+.fv-copy{position:absolute;right:max(16px,calc(50% - 280px));top:calc(env(safe-area-inset-top) + 92px);z-index:4;display:flex;flex-direction:row-reverse;align-items:flex-start;gap:12px}
+.fv-catch{margin:0;display:flex;flex-direction:row-reverse;gap:10px;font:400 clamp(2.3rem,1.6rem + 3.4vw,3.6rem)/1.05 var(--brush);color:#FFF8EE;letter-spacing:.06em;text-shadow:0 0 18px rgba(0,0,0,.55),0 2px 2px rgba(0,0,0,.5)}
+.fv-catch .col{writing-mode:vertical-rl;display:block;clip-path:inset(0 0 100% 0)}
+.fv-catch .c2{margin-top:1.4em}
+.fv.play .fv-catch .c1{animation:brush 1.25s cubic-bezier(.55,.1,.3,1) 1s forwards}
+.fv.play .fv-catch .c2{animation:brush 1.1s cubic-bezier(.55,.1,.3,1) 1.75s forwards}
+@keyframes brush{0%{clip-path:inset(0 0 100% 0);filter:blur(5px)}70%{filter:blur(0)}100%{clip-path:inset(-10% -20% -10% -20%);filter:none}}
+.fv-kicker{writing-mode:vertical-rl;margin:4px 0 0;font:600 .78rem/1 var(--mincho);letter-spacing:.42em;color:var(--gold);position:relative;padding:14px 0;opacity:0}
+.fv-kicker::before,.fv-kicker::after{content:"";position:absolute;left:50%;width:1px;height:10px;background:var(--gold);margin-left:-.5px}
+.fv-kicker::before{top:0}.fv-kicker::after{bottom:0}
+.fv.play .fv-kicker{animation:fade 1s .8s forwards}
+@keyframes fade{to{opacity:1}}
+.fv-goldline{position:absolute;right:-10px;top:-14px;width:1px;height:calc(100% + 28px);background:linear-gradient(transparent,var(--gold) 15%,var(--gold) 85%,transparent);transform:scaleY(0);transform-origin:top;opacity:.7}
+.fv.play .fv-goldline{animation:line 1.4s .7s cubic-bezier(.6,0,.2,1) forwards}
+@keyframes line{to{transform:none}}
+
+/* 落款 */
+.seal{position:absolute;z-index:5;right:max(26px,calc(50% - 270px));top:calc(env(safe-area-inset-top) + 404px);width:54px;padding:8px 0;background:#B42A26;color:#FFF3EA;border-radius:4px;
+  writing-mode:vertical-rl;font:800 1.02rem/1 var(--mincho);letter-spacing:.18em;text-align:center;box-shadow:inset 0 0 0 2px #B42A26,inset 0 0 0 3.5px #FFE6DA,0 6px 16px rgba(0,0,0,.4);
+  display:flex;align-items:center;justify-content:center;height:84px;opacity:0;transform:rotate(-6deg)}
+.seal::after{content:"";position:absolute;inset:0;border-radius:4px;background:radial-gradient(circle at 20% 30%,rgba(255,255,255,.18) 0 2px,transparent 3px),radial-gradient(circle at 70% 75%,rgba(0,0,0,.18) 0 3px,transparent 4px),radial-gradient(circle at 80% 20%,rgba(0,0,0,.14) 0 2px,transparent 3px);mix-blend-mode:multiply}
+.fv.play .seal{animation:stamp .55s cubic-bezier(.5,0,.6,1.4) 2.75s forwards}
+@keyframes stamp{0%{opacity:0;transform:scale(2.6) rotate(-18deg)}70%{opacity:1;transform:scale(.9) rotate(-5deg)}100%{opacity:1;transform:scale(1) rotate(-6deg)}}
+.fv.shake{animation:shake .32s linear}
+@keyframes shake{20%{transform:translate(2px,1px)}40%{transform:translate(-2px,-1px)}60%{transform:translate(1px,-1px)}80%{transform:translate(-1px,1px)}}
+
+/* 木札の値札 */
+.fv-price{position:absolute;z-index:4;left:20px;top:calc(env(safe-area-inset-top) + 176px);opacity:0;transform:translateY(-90px)}
+.fv.play .fv-price{animation:pricein 1s cubic-bezier(.3,1.5,.5,1) 3.1s forwards}
+@keyframes pricein{to{opacity:1;transform:none}}
+.fv-price .fuda{--w:62px;--h:212px;animation:sway-s 4.2s ease-in-out 4.1s infinite}
+.fv-price .fuda .tate{font-size:1.2rem}
+.fv-price .fuda .price{font:400 1.08rem/1 var(--num);writing-mode:horizontal-tb;color:#FFE2A8;margin-top:auto;letter-spacing:0}
+.fv-price .fuda .price i{display:block;font:700 .56rem/1.4 var(--sans);font-style:normal;text-align:center;opacity:.85}
+.fv-price .fuda-wrap::before{height:110px;top:-84px}
+
+/* 下部 */
+.fv-bottom{position:absolute;left:0;right:0;bottom:0;z-index:6;padding:0 var(--pad) calc(22px + env(safe-area-inset-bottom));text-align:center}
+.fv-bottom .in{max-width:var(--max);margin:0 auto;opacity:0;transform:translateY(30px)}
+.fv.play .fv-bottom .in{animation:upin .9s cubic-bezier(.2,.8,.2,1) 3.3s forwards}
+@keyframes upin{to{opacity:1;transform:none}}
+.fv-sub{margin:0 0 14px;font-weight:900;font-size:.92rem;letter-spacing:.02em;text-shadow:0 2px 10px rgba(0,0,0,.7)}
+.fv-sub .tag{display:inline-block;background:var(--shu);padding:1px 9px;border-radius:3px;margin-right:6px;font:800 .86rem/1.5 var(--mincho)}
+.fv-bottom .cta-note{margin:10px 0 0;text-shadow:0 1px 6px rgba(0,0,0,.8)}
+.fv-scroll{display:none}
+@media (min-width:900px){
+  .fv{max-height:none}
+  .fv-copy{top:120px;right:calc(50% - 470px)}
+  .fv-catch{font-size:clamp(3.2rem,2rem + 2.4vw,4.4rem);gap:18px}
+  .seal{top:auto;bottom:210px;right:calc(50% - 250px);width:64px;height:100px;font-size:1.2rem}
+  .fv-price{left:calc(50% + 10px);top:110px}
+  .fv-price .fuda-wrap::before{height:90px;top:-64px}
+  .lanterns{left:calc(50% - 600px);top:74px;gap:22px}
+  .chochin span{width:60px;height:80px}.chochin.c2 span{width:52px;height:70px}
+  .fv-bg img{bottom:auto;top:4%;left:calc(50% - 600px);height:96%;width:auto;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 82%,transparent),linear-gradient(transparent,#000 18%);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 82%,transparent);}
+  .fv-shade{background:linear-gradient(180deg,rgba(11,17,36,.85) 0,rgba(11,17,36,0) 22%,rgba(11,17,36,0) 70%,#0B1124 100%),radial-gradient(ellipse at 30% 55%,transparent 30%,rgba(5,8,20,.6) 80%)}
+  .fv-bottom{left:calc(50% + 120px);right:auto;width:400px;bottom:48px;padding:0}
+  .fv-bottom .in{text-align:left}
+  .fv-sub{font-size:1rem}
+  .fv-scroll{display:block;position:absolute;z-index:6;left:32px;bottom:28px;writing-mode:vertical-rl;font-size:.62rem;letter-spacing:.4em;color:rgba(255,255,255,.7);padding-bottom:70px}
+  .fv-scroll::after{content:"";position:absolute;left:50%;bottom:0;width:1px;height:60px;background:linear-gradient(var(--gold),transparent);animation:scrl 2s ease-in-out infinite;transform-origin:top}
+  @keyframes scrl{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+}
+.fv-intro{padding:34px 0 46px;text-align:center;background:linear-gradient(#0B1124,var(--navy))}
+.fv-intro .body{font-size:.96rem;opacity:.92;margin:0}
 .pills{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:16px 0 0;padding:0;list-style:none}
 .pills li{font-size:.78rem;font-weight:700;padding:3px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18)}
+@media (prefers-reduced-motion:reduce){
+  .fv-bg,.chochin,.fv-kicker,.seal,.fv-price,.fv-bottom .in,.fv-noren{opacity:1!important;transform:none!important}
+  .fv-catch .col{clip-path:none!important}
+  .fv-steam{opacity:1}
+}
 
 /* ====== 2. 悩み ====== */
 .checks{list-style:none;margin:22px 0;padding:0;display:grid;gap:10px}
@@ -344,7 +441,7 @@ form.reserve{margin-top:26px;text-align:left;background:var(--kinari);color:var(
 .modal button.close{margin-top:14px;background:var(--kinari);color:var(--navy);border:0;border-radius:999px;padding:12px 30px;font:700 .95rem var(--sans);cursor:pointer}
 
 /* ====== フッター・固定バー ====== */
-footer{background:#0E1530;padding:40px 0 120px;font-size:.84rem;text-align:center;color:rgba(255,255,255,.85)}
+footer{background-color:#0E1530;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' fill='%230E1530'/%3E%3Cg transform='translate(20 0)'%3E%3Ccircle r='20' fill='%230E1530'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.08'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(0 20)'%3E%3Ccircle r='20' fill='%230E1530'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.08'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(40 20)'%3E%3Ccircle r='20' fill='%230E1530'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.08'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(20 40)'%3E%3Ccircle r='20' fill='%230E1530'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.08'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");background-size:44px 44px;padding:40px 0 120px;font-size:.84rem;text-align:center;color:rgba(255,255,255,.85)}
 footer .logo{font:800 1.4rem/1.3 var(--mincho);letter-spacing:.14em;color:#fff}
 footer .logo small{display:block;font:500 .62rem/1.6 var(--sans);letter-spacing:.4em;opacity:.7}
 footer p{margin:10px 0}
@@ -389,36 +486,37 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 </nav>
 
 <!-- ===== 1. ファーストビュー ===== -->
-<header class="noren" aria-label="居酒屋 緑青海">
-  <div class="rod"></div>
-  <div class="cloths" aria-hidden="true"><div class="cloth"></div><div class="cloth"></div><div class="cloth"></div><div class="cloth"></div></div>
-  <div class="name"><small>居酒屋</small>緑青海</div>
-  <div class="yomi">ROKUSHOUKAI</div>
-</header>
-
-<section class="hero" id="top">
-  <div class="wrap">
-    <span class="badge-top">〆の名物　とんこつラーメン</span>
-    <h1 class="catch" aria-label="飲んだあとの、本気の一杯。"><span style="animation-delay:.15s">飲んだあとの、</span><br><span style="animation-delay:.5s">本気の一杯。</span></h1>
-    <div class="hero-photo">
-      <svg class="steam" viewBox="0 0 400 170" preserveAspectRatio="none" aria-hidden="true"><path d="M150 170c-20-30 20-50 0-80s20-50 0-80"/><path d="M205 170c-20-30 20-50 0-80s20-50 0-80"/><path d="M255 170c-20-30 20-50 0-80s20-50 0-80"/></svg>
-      <img src="assets/hero-ramen.jpg" alt="黒い丼のとんこつラーメン。チャーシュー2枚、味玉、明太子、青ねぎ、きくらげ、海苔がのっている" width="800" height="1200" fetchpriority="high">
-      <div class="hero-tag" aria-label="とんこつラーメン 980円 税込">
-        <span class="fuda-wrap"><span class="fuda fuda--shu"><span class="tate">とんこつ</span><span class="price">¥980<i>税込</i></span></span></span>
-      </div>
-    </div>
-    <p class="sub"><span class="tag">〆</span>居酒屋 緑青海の、とんこつラーメン ¥980</p>
-    <p class="body">乾杯から〆まで、席を立たずにどうぞ。<br>18時間炊いた豚骨スープに、チャーシュー・味玉・明太子をのせた全部のせの一杯です。</p>
-    <div class="cta-box">
-      <a class="cta" href="#reserve">〆の一杯を予約する <span class="arrow">▶</span></a>
-      <p class="cta-note">Web予約は24時間受付／お電話 <a href="tel:0312345678">03-1234-5678</a></p>
-    </div>
-    <ul class="pills"><li>緑青町駅 東口 徒歩3分</li><li>17:00〜翌1:00</li><li>半個室あり</li></ul>
+<section class="fv" id="top" aria-label="居酒屋 緑青海 〆のとんこつラーメン">
+  <div class="fv-par" id="fvPar"><div class="fv-bg"><img src="assets/hero-ramen.jpg" alt="黒い丼のとんこつラーメン。チャーシュー2枚、味玉、明太子、青ねぎ、きくらげ、海苔がのっている" width="800" height="1200" fetchpriority="high"></div></div>
+  <canvas class="fv-steam" id="steam" aria-hidden="true"></canvas>
+  <div class="fv-shade"></div>
+  <div class="fv-light" aria-hidden="true"></div>
+  <div class="petals" aria-hidden="true"><i style="left:6%;width:12px;height:12px;animation-duration:13s;animation-delay:-2s"></i><i style="left:18%;width:10px;height:10px;animation-duration:16s;animation-delay:-9s"></i><i style="left:31%;width:13px;height:13px;animation-duration:12s;animation-delay:-5s"></i><i style="left:47%;width:9px;height:9px;animation-duration:18s;animation-delay:-12s"></i><i style="left:62%;width:11px;height:11px;animation-duration:14s;animation-delay:-1s"></i><i style="left:74%;width:12px;height:12px;animation-duration:17s;animation-delay:-7s"></i><i style="left:86%;width:10px;height:10px;animation-duration:15s;animation-delay:-11s"></i><i style="left:94%;width:8px;height:8px;animation-duration:19s;animation-delay:-4s"></i></div>
+  <div class="fv-noren" aria-hidden="true"><div class="rod"></div><div class="cl"><i></i><i></i><i></i><i></i></div>
+    <div class="fv-brand"><b>緑青海</b><small>IZAKAYA ROKUSHOUKAI</small></div></div>
+  <div class="lanterns" aria-hidden="true"><span class="chochin"><span><b>麺</b></span></span><span class="chochin c2"><span><b>酒</b></span></span></div>
+  <div class="fv-copy" id="fvCopy">
+    <span class="fv-goldline" aria-hidden="true"></span>
+    <h1 class="fv-catch" aria-label="飲んだあとの、本気の一杯。"><span class="col c1" aria-hidden="true">飲んだあとの、</span><span class="col c2" aria-hidden="true">本気の一杯。</span></h1>
+    <p class="fv-kicker">〆の名物　とんこつラーメン</p>
   </div>
+  <div class="seal" id="seal" aria-hidden="true">緑青海</div>
+  <div class="fv-price" aria-label="とんこつラーメン 980円 税込"><span class="fuda-wrap"><span class="fuda fuda--shu"><span class="tate">とんこつ</span><span class="price">¥980<i>税込</i></span></span></span></div>
+  <div class="fv-bottom"><div class="in">
+    <p class="fv-sub"><span class="tag">〆</span>居酒屋 緑青海の、とんこつラーメン ¥980</p>
+    <a class="cta" href="#reserve">〆の一杯を予約する <span class="arrow">▶</span></a>
+    <p class="cta-note">Web予約は24時間受付／お電話 <a href="tel:0312345678">03-1234-5678</a></p>
+  </div></div>
+  <span class="fv-scroll" aria-hidden="true">SCROLL</span>
 </section>
+<div class="fv-intro"><div class="wrap">
+  <p class="body">乾杯から〆まで、席を立たずにどうぞ。<br>18時間炊いた豚骨スープに、チャーシュー・味玉・明太子をのせた全部のせの一杯です。</p>
+  <ul class="pills"><li>緑青町駅 東口 徒歩3分</li><li>17:00〜翌1:00</li><li>半個室あり</li></ul>
+</div></div>
 
 <!-- ===== 2. 悩み・共感 ===== -->
 <section class="sec sec--deep" id="worry">
+  <span class="wm" aria-hidden="true">迷</span>
   <div class="wrap">
     <span class="eyebrow"><span class="kan">悩</span>ARU ARU</span>
     <h2 class="rv">〆のラーメン、どこ行く？</h2>
@@ -439,6 +537,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 
 <!-- ===== 3. 解決策 ===== -->
 <section class="sec sec--washi center" id="solution">
+  <span class="wm" aria-hidden="true">〆</span>
   <div class="wrap">
     <span class="eyebrow" style="justify-content:center"><span class="kan">解</span>SOLUTION</span>
     <h2 class="rv">〆まで、この席で完結。</h2>
@@ -455,6 +554,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 
 <!-- ===== 4. 選ばれる理由（木札タブ） ===== -->
 <section class="sec" id="reasons">
+  <span class="wm" aria-hidden="true">理</span>
   <div class="wrap">
     <span class="eyebrow"><span class="kan">理</span>3 REASONS</span>
     <h2 class="rv">選ばれる3つの理由</h2>
@@ -490,6 +590,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 
 <!-- ===== 4.5 食べ方ガイド ===== -->
 <section class="sec sec--washi" id="howto">
+  <span class="wm" aria-hidden="true">味</span>
   <div class="wrap">
     <span class="eyebrow"><span class="kan">味</span>HOW TO EAT</span>
     <h2 class="rv">一杯で三度おいしい</h2>
@@ -508,6 +609,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 
 <!-- ===== 5. お客様の声（絵馬） ===== -->
 <section class="sec sec--deep" id="voices">
+  <span class="wm" aria-hidden="true">声</span>
   <div class="wrap">
     <span class="eyebrow"><span class="kan">声</span>VOICES</span>
     <h2 class="rv">〆に選んだ人の声</h2>
@@ -526,6 +628,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 
 <!-- ===== 6. 料金（お品書き木札＋お好み注文札） ===== -->
 <section class="sec sec--washi" id="price">
+  <span class="wm" aria-hidden="true">品</span>
   <div class="wrap">
     <span class="eyebrow"><span class="kan">品</span>MENU &amp; PRICE</span>
     <h2 class="rv">〆の一杯は980円</h2>
@@ -582,6 +685,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 
 <!-- ===== 7. ご利用の流れ ===== -->
 <section class="sec" id="flow">
+  <span class="wm" aria-hidden="true">順</span>
   <div class="wrap">
     <span class="eyebrow"><span class="kan">順</span>FLOW</span>
     <h2 class="rv">ご予約は3ステップ</h2>
@@ -594,7 +698,8 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 </section>
 
 <!-- ===== 8. よくある質問 ===== -->
-<section class="sec sec--washi" id="faq">
+<section class="sec sec--washi join-next" id="faq">
+  <span class="wm" aria-hidden="true">問</span>
   <div class="wrap">
     <span class="eyebrow"><span class="kan">問</span>FAQ</span>
     <h2 class="rv">よくある質問</h2>
@@ -609,7 +714,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 </section>
 
 <!-- ===== 8.5 店舗情報・アクセス ===== -->
-<section class="sec sec--washi" id="access" style="padding-top:20px">
+<section class="sec sec--washi join-prev" id="access" style="padding-top:20px">
   <div class="wrap">
     <span class="eyebrow"><span class="kan">道</span>ACCESS</span>
     <h2 class="rv">店舗情報・アクセス</h2>
@@ -710,9 +815,37 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 
   // ---- オープニング：暖簾をくぐる（1セッション1回）
   const op = document.getElementById('opening');
-  const enter = () => { if (op.classList.contains('go')) return; op.classList.add('go'); document.body.classList.remove('locked'); store.set('noren','1'); setTimeout(() => op.classList.add('gone'), 1300); };
-  if (reduce || store.get('noren') || location.hash) { op.classList.add('gone'); }
+  const fv = document.querySelector('.fv');
+  const play = () => { if (fv.classList.contains('play')) return; fv.classList.add('play'); if (!reduce) setTimeout(() => { fv.classList.add('shake'); setTimeout(() => fv.classList.remove('shake'), 400); }, 3050); };
+  const enter = () => { if (op.classList.contains('go')) return; op.classList.add('go'); setTimeout(play, 250); document.body.classList.remove('locked'); store.set('noren','1'); setTimeout(() => op.classList.add('gone'), 1300); };
+  if (reduce || store.get('noren') || location.hash) { op.classList.add('gone'); play(); }
   else { document.body.classList.add('locked'); op.addEventListener('click', enter); op.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); } }); const auto = () => setTimeout(enter, 1500); if (document.readyState === 'complete') auto(); else addEventListener('load', auto); setTimeout(enter, 7000); }
+
+
+  // ---- FV：湯気とパララックス
+  const cv = document.getElementById('steam'), cx = cv.getContext('2d');
+  let W = 0, H = 0, parts = [], running = false;
+  const size = () => { W = cv.width = cv.clientWidth; H = cv.height = cv.clientHeight; };
+  size(); addEventListener('resize', size);
+  const spawn = () => ({x: wide() ? W * .5 - 330 + Math.random() * 200 : W * (.38 + Math.random() * .26), y: H * (wide() ? .52 : .6), r: 10 + Math.random() * 16, vy: .35 + Math.random() * .5, vx: (Math.random() - .5) * .25, a: 0, life: 0, max: 260 + Math.random() * 200, ph: Math.random() * 6.28});
+  const wide = () => innerWidth >= 900;
+  for (let i = 0; i < 34; i++) { const p = spawn(); p.life = Math.random() * p.max; parts.push(p); }
+  const tick = () => {
+    if (!running) return;
+    cx.clearRect(0, 0, W, H);
+    for (const p of parts) {
+      p.life++; p.y -= p.vy; p.ph += .02; p.x += p.vx + Math.sin(p.ph) * .35; p.r += .09;
+      const t = p.life / p.max, a = Math.sin(Math.PI * Math.min(1, t)) * .16;
+      const g = cx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+      g.addColorStop(0, `rgba(255,250,240,${a})`); g.addColorStop(1, 'rgba(255,250,240,0)');
+      cx.fillStyle = g; cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 6.29); cx.fill();
+      if (p.life > p.max) Object.assign(p, spawn());
+    }
+    requestAnimationFrame(tick);
+  };
+  if (!reduce) new IntersectionObserver(es => { const v = es[0].isIntersecting; if (v && !running) { running = true; requestAnimationFrame(tick); } else if (!v) running = false; }).observe(fv);
+  const par = document.getElementById('fvPar'), copy = document.getElementById('fvCopy');
+  if (!reduce) addEventListener('scroll', () => { const y = scrollY; if (y > innerHeight * 1.2) return; par.style.transform = `translate3d(0,${y * .32}px,0)`; copy.style.opacity = Math.max(0, 1 - y / (innerHeight * .55)); }, {passive: true});
 
   // ---- 木札をゆらす
   const swing = el => { if (reduce || !el) return; el.classList.remove('swing'); void el.offsetWidth; el.classList.add('swing'); };
@@ -786,9 +919,9 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
   ['worry', 'reasons', 'howto', 'price', 'reserve'].forEach(id => secIO.observe(document.getElementById(id)));
 
   // ---- 固定の予約ボタン
-  const sticky = document.getElementById('sticky'), heroCta = document.querySelector('.hero .cta-box'), form = document.getElementById('reserve');
+  const sticky = document.getElementById('sticky'), heroCta = document.querySelector('.fv .cta'), form = document.getElementById('reserve');
   let pastHero = false, atForm = false;
-  const upd = () => { const on = pastHero && !atForm; sticky.classList.toggle('show', on); sticky.setAttribute('aria-hidden', String(!on)); };
+  const upd = () => { document.body.classList.toggle('past-fv', pastHero); const on = pastHero && !atForm; sticky.classList.toggle('show', on); sticky.setAttribute('aria-hidden', String(!on)); };
   new IntersectionObserver(es => { pastHero = !es[0].isIntersecting && es[0].boundingClientRect.top < 0; upd(); }).observe(heroCta);
   new IntersectionObserver(es => { atForm = es[0].isIntersecting; upd(); }, {threshold: .05}).observe(form);
 
