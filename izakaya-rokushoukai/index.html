@@ -27,15 +27,19 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--navy);color:#fff;font-family:var(--sans);font-size:16px;line-height:1.85;letter-spacing:.02em;overflow-x:hidden;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%23ffffff' fill-opacity='.07'%3E%3Ccircle cx='0' cy='0' r='3'/%3E%3Ccircle cx='15' cy='15' r='3'/%3E%3Ccircle cx='30' cy='30' r='3'/%3E%3Ccircle cx='45' cy='45' r='3'/%3E%3Ccircle cx='60' cy='60' r='3'/%3E%3Ccircle cx='75' cy='45' r='3'/%3E%3Ccircle cx='90' cy='30' r='3'/%3E%3Ccircle cx='105' cy='15' r='3'/%3E%3Ccircle cx='120' cy='0' r='3'/%3E%3Ccircle cx='75' cy='75' r='3'/%3E%3Ccircle cx='90' cy='90' r='3'/%3E%3Ccircle cx='105' cy='105' r='3'/%3E%3Ccircle cx='120' cy='120' r='3'/%3E%3Ccircle cx='45' cy='75' r='3'/%3E%3Ccircle cx='30' cy='90' r='3'/%3E%3Ccircle cx='15' cy='105' r='3'/%3E%3Ccircle cx='0' cy='120' r='3'/%3E%3C/g%3E%3C/svg%3E");}
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' fill='%2316203D'/%3E%3Cg transform='translate(20 0)'%3E%3Ccircle r='20' fill='%2316203D'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.10'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(0 20)'%3E%3Ccircle r='20' fill='%2316203D'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.10'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(40 20)'%3E%3Ccircle r='20' fill='%2316203D'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.10'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(20 40)'%3E%3Ccircle r='20' fill='%2316203D'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.10'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");background-size:44px 44px;}
 body.locked{overflow:hidden}
 img{max-width:100%;height:auto;display:block}
 a{color:inherit}
 button{font:inherit;color:inherit}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
 .sec{padding:76px 0;position:relative}
-.sec--washi{background:var(--kinari);color:var(--ink);background-image:radial-gradient(rgba(176,40,43,.05) 1px,transparent 1.5px);background-size:14px 14px}
-.sec--deep{background:var(--navy2)}
+.sec--washi{background-color:var(--kinari);color:var(--ink);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006 .09' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .40 0 0 0 0 .25 0 0 0 -2.2 1.05'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23f)' opacity='.2'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .32 0 0 0 0 .2 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23B0282B' stroke-opacity='.08' stroke-width='.6'%3E%3Cpath d='M50 50L50 5M50 50L89 27.5M50 50L89 72.5M50 50L50 95M50 50L11 72.5M50 50L11 27.5M50 5L89 27.5L89 72.5L50 95L11 72.5L11 27.5Z'/%3E%3C/g%3E%3C/svg%3E");background-size:400px 400px,220px 220px,280px 280px;z-index:1}
+.sec--washi::before,.sec--washi::after{content:"";position:absolute;left:0;right:0;height:24px;background-size:48px 24px;background-repeat:repeat-x;pointer-events:none;z-index:2}
+.sec--washi::before{top:-23px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24'%3E%3Cpath d='M0 24A24 24 0 0 1 48 24Z' fill='%23FBF3E6'/%3E%3Cg fill='none' stroke='%23B0282B' stroke-opacity='.22'%3E%3Cpath d='M6 24a18 18 0 0 1 36 0'/%3E%3Cpath d='M12 24a12 12 0 0 1 24 0'/%3E%3Cpath d='M18 24a6 6 0 0 1 12 0'/%3E%3C/g%3E%3C/svg%3E")}
+.sec--washi::after{bottom:-23px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24'%3E%3Cpath d='M0 0A24 24 0 0 0 48 0Z' fill='%23FBF3E6'/%3E%3Cg fill='none' stroke='%23B0282B' stroke-opacity='.22'%3E%3Cpath d='M6 0a18 18 0 0 0 36 0'/%3E%3Cpath d='M12 0a12 12 0 0 0 24 0'/%3E%3Cpath d='M18 0a6 6 0 0 0 12 0'/%3E%3C/g%3E%3C/svg%3E")}
+.sec--washi.join-next::after,.sec--washi.join-prev::before{display:none}
+.sec--deep{background-color:#1A2549;background-image:radial-gradient(ellipse at 50% 0,rgba(217,178,106,.12),transparent 60%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.09'%3E%3Ccircle cx='0' cy='0' r='24'/%3E%3Ccircle cx='48' cy='0' r='24'/%3E%3Ccircle cx='0' cy='48' r='24'/%3E%3Ccircle cx='48' cy='48' r='24'/%3E%3Ccircle cx='24' cy='24' r='24'/%3E%3C/g%3E%3Ccircle cx='24' cy='24' r='2' fill='%23D9B26A' fill-opacity='.10'/%3E%3Ccircle cx='0' cy='0' r='2' fill='%23D9B26A' fill-opacity='.10'/%3E%3Ccircle cx='48' cy='48' r='2' fill='%23D9B26A' fill-opacity='.10'/%3E%3Ccircle cx='0' cy='48' r='2' fill='%23D9B26A' fill-opacity='.10'/%3E%3Ccircle cx='48' cy='0' r='2' fill='%23D9B26A' fill-opacity='.10'/%3E%3C/svg%3E");background-size:auto,48px 48px}
 .eyebrow{display:flex;align-items:center;gap:10px;font-size:.72rem;letter-spacing:.3em;color:var(--gold);font-weight:700;margin-bottom:8px}
 .eyebrow .kan{font:800 .95rem/1 var(--mincho);letter-spacing:.1em;padding:4px 8px;background:var(--shu);color:#fff;border-radius:2px}
 .sec--washi .eyebrow{color:var(--shu)}
@@ -46,6 +50,15 @@ h3{font-size:1.12rem;font-weight:900;margin:0 0 6px;line-height:1.5}
 p{margin:0 0 1em}
 .center{text-align:center}
 .note{font-size:.78rem;opacity:.8}
+
+.wm{position:absolute;top:34px;right:0;contain:paint;overflow:hidden;z-index:0;writing-mode:vertical-rl;font:400 clamp(9rem,6rem + 12vw,15rem)/1 var(--brush);color:#fff;opacity:.05;pointer-events:none;user-select:none}
+.sec--washi .wm{color:var(--shu);opacity:.07}
+.sec>.wrap{position:relative;z-index:1}
+.petals{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.petals i{position:absolute;top:-30px;width:12px;height:12px;background:radial-gradient(circle at 30% 30%,#FFE3E8,#F3B3C0);border-radius:100% 0 100% 0;opacity:.75;animation:fall linear infinite}
+@keyframes fall{0%{transform:translate(0,-20px) rotate(0)}50%{transform:translate(40px,50vh) rotate(200deg)}100%{transform:translate(-20px,105vh) rotate(420deg);opacity:0}}
+.hero{position:relative}
+.hero .wrap{position:relative;z-index:1}
 
 /* ====== 木札（共通） ====== */
 .fuda{--w:58px;--h:190px;position:relative;width:var(--w);height:var(--h);background:var(--wood);color:var(--yakiin);
@@ -69,7 +82,7 @@ p{margin:0 0 1em}
 .rail::before{left:8px}.rail::after{right:8px}
 
 /* ====== オープニング：暖簾をくぐる ====== */
-.opening{position:fixed;inset:0;z-index:200;display:flex;background:var(--navy);cursor:pointer;transition:background-color .6s .55s}
+.opening{position:fixed;inset:0;z-index:200;display:flex;overflow:hidden;background:var(--navy);cursor:pointer;transition:background-color .6s .55s}
 .opening .p{flex:1;margin:0 2px;background:linear-gradient(180deg,#9E2225,var(--shu) 30%,#A52427);transform-origin:50% -10%;transition:transform 1s cubic-bezier(.6,.05,.3,1),opacity .6s .5s;box-shadow:inset 0 -30px 40px rgba(0,0,0,.25)}
 .opening .p::before{content:"";display:block;height:12%;background:rgba(0,0,0,.15)}
 .opening .label{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none;transition:opacity .4s}
@@ -344,7 +357,7 @@ form.reserve{margin-top:26px;text-align:left;background:var(--kinari);color:var(
 .modal button.close{margin-top:14px;background:var(--kinari);color:var(--navy);border:0;border-radius:999px;padding:12px 30px;font:700 .95rem var(--sans);cursor:pointer}
 
 /* ====== フッター・固定バー ====== */
-footer{background:#0E1530;padding:40px 0 120px;font-size:.84rem;text-align:center;color:rgba(255,255,255,.85)}
+footer{background-color:#0E1530;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' fill='%230E1530'/%3E%3Cg transform='translate(20 0)'%3E%3Ccircle r='20' fill='%230E1530'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.08'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(0 20)'%3E%3Ccircle r='20' fill='%230E1530'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.08'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(40 20)'%3E%3Ccircle r='20' fill='%230E1530'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.08'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(20 40)'%3E%3Ccircle r='20' fill='%230E1530'/%3E%3Cg fill='none' stroke='%23D9B26A' stroke-opacity='.08'%3E%3Ccircle r='18'/%3E%3Ccircle r='13.5'/%3E%3Ccircle r='9'/%3E%3Ccircle r='4.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");background-size:44px 44px;padding:40px 0 120px;font-size:.84rem;text-align:center;color:rgba(255,255,255,.85)}
 footer .logo{font:800 1.4rem/1.3 var(--mincho);letter-spacing:.14em;color:#fff}
 footer .logo small{display:block;font:500 .62rem/1.6 var(--sans);letter-spacing:.4em;opacity:.7}
 footer p{margin:10px 0}
@@ -397,6 +410,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 </header>
 
 <section class="hero" id="top">
+  <div class="petals" aria-hidden="true"><i style="left:6%;width:12px;height:12px;animation-duration:13s;animation-delay:-2s"></i><i style="left:18%;width:10px;height:10px;animation-duration:16s;animation-delay:-9s"></i><i style="left:31%;width:13px;height:13px;animation-duration:12s;animation-delay:-5s"></i><i style="left:47%;width:9px;height:9px;animation-duration:18s;animation-delay:-12s"></i><i style="left:62%;width:11px;height:11px;animation-duration:14s;animation-delay:-1s"></i><i style="left:74%;width:12px;height:12px;animation-duration:17s;animation-delay:-7s"></i><i style="left:86%;width:10px;height:10px;animation-duration:15s;animation-delay:-11s"></i><i style="left:94%;width:8px;height:8px;animation-duration:19s;animation-delay:-4s"></i></div>
   <div class="wrap">
     <span class="badge-top">〆の名物　とんこつラーメン</span>
     <h1 class="catch" aria-label="飲んだあとの、本気の一杯。"><span style="animation-delay:.15s">飲んだあとの、</span><br><span style="animation-delay:.5s">本気の一杯。</span></h1>
@@ -419,6 +433,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 
 <!-- ===== 2. 悩み・共感 ===== -->
 <section class="sec sec--deep" id="worry">
+  <span class="wm" aria-hidden="true">迷</span>
   <div class="wrap">
     <span class="eyebrow"><span class="kan">悩</span>ARU ARU</span>
     <h2 class="rv">〆のラーメン、どこ行く？</h2>
@@ -439,6 +454,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 
 <!-- ===== 3. 解決策 ===== -->
 <section class="sec sec--washi center" id="solution">
+  <span class="wm" aria-hidden="true">〆</span>
   <div class="wrap">
     <span class="eyebrow" style="justify-content:center"><span class="kan">解</span>SOLUTION</span>
     <h2 class="rv">〆まで、この席で完結。</h2>
@@ -455,6 +471,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 
 <!-- ===== 4. 選ばれる理由（木札タブ） ===== -->
 <section class="sec" id="reasons">
+  <span class="wm" aria-hidden="true">理</span>
   <div class="wrap">
     <span class="eyebrow"><span class="kan">理</span>3 REASONS</span>
     <h2 class="rv">選ばれる3つの理由</h2>
@@ -490,6 +507,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 
 <!-- ===== 4.5 食べ方ガイド ===== -->
 <section class="sec sec--washi" id="howto">
+  <span class="wm" aria-hidden="true">味</span>
   <div class="wrap">
     <span class="eyebrow"><span class="kan">味</span>HOW TO EAT</span>
     <h2 class="rv">一杯で三度おいしい</h2>
@@ -508,6 +526,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 
 <!-- ===== 5. お客様の声（絵馬） ===== -->
 <section class="sec sec--deep" id="voices">
+  <span class="wm" aria-hidden="true">声</span>
   <div class="wrap">
     <span class="eyebrow"><span class="kan">声</span>VOICES</span>
     <h2 class="rv">〆に選んだ人の声</h2>
@@ -526,6 +545,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 
 <!-- ===== 6. 料金（お品書き木札＋お好み注文札） ===== -->
 <section class="sec sec--washi" id="price">
+  <span class="wm" aria-hidden="true">品</span>
   <div class="wrap">
     <span class="eyebrow"><span class="kan">品</span>MENU &amp; PRICE</span>
     <h2 class="rv">〆の一杯は980円</h2>
@@ -582,6 +602,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 
 <!-- ===== 7. ご利用の流れ ===== -->
 <section class="sec" id="flow">
+  <span class="wm" aria-hidden="true">順</span>
   <div class="wrap">
     <span class="eyebrow"><span class="kan">順</span>FLOW</span>
     <h2 class="rv">ご予約は3ステップ</h2>
@@ -594,7 +615,8 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 </section>
 
 <!-- ===== 8. よくある質問 ===== -->
-<section class="sec sec--washi" id="faq">
+<section class="sec sec--washi join-next" id="faq">
+  <span class="wm" aria-hidden="true">問</span>
   <div class="wrap">
     <span class="eyebrow"><span class="kan">問</span>FAQ</span>
     <h2 class="rv">よくある質問</h2>
@@ -609,7 +631,7 @@ footer .fiction{margin:16px auto 0;padding:10px 12px;border:1px solid rgba(255,2
 </section>
 
 <!-- ===== 8.5 店舗情報・アクセス ===== -->
-<section class="sec sec--washi" id="access" style="padding-top:20px">
+<section class="sec sec--washi join-prev" id="access" style="padding-top:20px">
   <div class="wrap">
     <span class="eyebrow"><span class="kan">道</span>ACCESS</span>
     <h2 class="rv">店舗情報・アクセス</h2>
